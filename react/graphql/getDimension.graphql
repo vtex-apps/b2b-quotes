@@ -1,0 +1,18 @@
+query GetDimension {
+  getDimension(dimType: manualPrice)
+    @context(provider: "vtex.order-auth-graphql") {
+    ruleCollection {
+      trigger {
+        effect {
+          description
+          effectType
+        }
+        condition {
+          conditionType
+          lessThan
+          greatherThan
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+mutation UseQuote($id: String, $orderFormId: String) {
+  useQuote(id: $id, orderFormId: $orderFormId)
+    @context(provider: "vtex.b2b-quotes-graphql")
+}

@@ -1,0 +1,15 @@
+mutation CreateQuote(
+  $referenceName: String
+  $items: [QuoteItemInput]
+  $subtotal: Float
+  $note: String
+  $sendToSalesRep: Boolean
+) {
+  createQuote(
+    referenceName: $referenceName
+    items: $items
+    subtotal: $subtotal
+    note: $note
+    sendToSalesRep: $sendToSalesRep
+  ) @context(provider: "vtex.b2b-quotes-graphql")
+}

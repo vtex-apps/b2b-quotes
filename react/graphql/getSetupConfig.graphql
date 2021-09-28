@@ -1,0 +1,10 @@
+query GetSetupConfig {
+  getSetupConfig @context(provider: "vtex.b2b-quotes-graphql") {
+    adminSetup {
+      cartLifeSpan
+      storeLogoUrl
+      hasSchema
+      allowManualPrice
+    }
+  }
+}

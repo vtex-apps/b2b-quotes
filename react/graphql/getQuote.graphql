@@ -1,0 +1,36 @@
+query GetQuote($id: String) {
+  getQuote(id: $id) @context(provider: "vtex.b2b-quotes-graphql") {
+    id
+    referenceName
+    creatorEmail
+    creatorRole
+    creationDate
+    expirationDate
+    lastUpdate
+    updateHistory {
+      email
+      role
+      date
+      status
+      note
+    }
+    items {
+      name
+      skuName
+      refId
+      id
+      productId
+      imageUrl
+      listPrice
+      price
+      quantity
+      sellingPrice
+      seller
+    }
+    subtotal
+    status
+    organization
+    organizationName
+    costCenterName
+  }
+}

@@ -1,0 +1,10 @@
+@media print {
+  div[class*='vtex-store-header'],
+  div[class*='vtex-store-footer'],
+  div[class*='noPrinting'] {
+    display: none !important;
+  }
+  div[class*='printing-area'] {
+    margin: 100px 20px;
+  }
+}

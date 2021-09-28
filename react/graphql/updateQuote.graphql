@@ -1,0 +1,15 @@
+mutation UpdateQuote(
+  $id: String
+  $items: [QuoteItemInput]
+  $subtotal: Float
+  $note: String
+  $decline: Boolean
+) {
+  updateQuote(
+    id: $id
+    items: $items
+    subtotal: $subtotal
+    note: $note
+    decline: $decline
+  ) @context(provider: "vtex.b2b-quotes-graphql")
+}

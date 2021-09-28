@@ -1,0 +1,72 @@
+{
+  "name": "B2B Quotes & Carts",
+  "features": [
+    {
+      "label": "Create Quotes and Carts",
+      "value": "create-quotes",
+      "roles": [
+        "store-admin",
+        "sales-admin",
+        "sales-manager",
+        "sales-representative",
+        "customer-admin",
+        "customer-approver",
+        "customer-buyer"
+      ]
+    },
+    {
+      "label": "Access My Cost Center's Quotes and Carts",
+      "value": "access-quotes-costcenter",
+      "roles": ["customer-approver", "customer-buyer", "sales-representative"]
+    },
+    {
+      "label": "Access My Organization's Quotes and Carts",
+      "value": "access-quotes-organization",
+      "roles": ["customer-admin", "sales-manager"]
+    },
+    {
+      "label": "Access All Quotes and Carts",
+      "value": "access-quotes-all",
+      "roles": ["store-admin", "sales-admin"]
+    },
+    {
+      "label": "Place Orders from Quotes and Carts",
+      "value": "use-quotes",
+      "roles": [
+        "store-admin",
+        "customer-admin",
+        "customer-approver",
+        "sales-admin",
+        "sales-manager",
+        "sales-representative"
+      ]
+    },
+    {
+      "label": "Decline Quotes and Carts",
+      "value": "decline-quotes",
+      "roles": [
+        "store-admin",
+        "sales-admin",
+        "sales-manager",
+        "sales-representative",
+        "customer-admin",
+        "customer-approver"
+      ]
+    },
+    {
+      "label": "Edit My Cost Center's Quotes and Carts",
+      "value": "edit-quotes-costcenter",
+      "roles": ["sales-representative"]
+    },
+    {
+      "label": "Edit My Organization's Quotes and Carts",
+      "value": "edit-quotes-organization",
+      "roles": ["sales-manager"]
+    },
+    {
+      "label": "Edit All Quotes and Carts",
+      "value": "edit-quotes-all",
+      "roles": ["store-admin", "sales-admin"]
+    }
+  ]
+}

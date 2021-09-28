@@ -1,0 +1,11 @@
+{
+  "store.b2b-quotes": {
+    "blocks": ["quotes-table"]
+  },
+  "store.create-b2b-quote": {
+    "blocks": ["create-quote"]
+  },
+  "store.b2b-quote-details": {
+    "blocks": ["quote-details"]
+  }
+}
