@@ -48,3 +48,10 @@ interface FilterStatement {
   verb: string
   object: Record<string, unknown> | string
 }
+
+interface MessageDescriptor {
+  id: string
+  description?: string | Record<string, unknown>
+  defaultMessage?: string
+  values?: Record<string, unknown>
+}

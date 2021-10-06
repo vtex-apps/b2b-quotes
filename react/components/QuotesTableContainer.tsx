@@ -1,8 +1,8 @@
 import type { FunctionComponent, ChangeEvent } from 'react'
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useQuery } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
-import { PageHeader } from 'vtex.styleguide'
+import { Layout, PageHeader, PageBlock, Spinner } from 'vtex.styleguide'
 
 import QuotesTable from './QuotesTable'
 import GET_QUOTES from '../graphql/getQuotes.graphql'
@@ -68,12 +68,15 @@ const QuotesTableContainer: FunctionComponent = () => {
     )
   }
 
-  const { data: permissionsData } = useQuery(GET_PERMISSIONS, {
-    ssr: false,
-    skip: !isAuthenticated,
-  })
+  const { data: permissionsData, loading: permissionsLoading } = useQuery(
+    GET_PERMISSIONS,
+    {
+      ssr: false,
+      skip: !isAuthenticated,
+    }
+  )
 
-  const { data, loading, fetchMore } = useQuery(GET_QUOTES, { ssr: false })
+  const { data, loading, refetch } = useQuery(GET_QUOTES, { ssr: false })
 
   if (!data || (isAuthenticated && !permissionsData)) return null
 
@@ -87,22 +90,15 @@ const QuotesTableContainer: FunctionComponent = () => {
       page: newPage,
     })
 
-    fetchMore({
-      variables: {
-        page: newPage,
-        pageSize: paginationState.pageSize,
-        organization: filterState.organization,
-        costCenter: filterState.costCenter,
-        status: filterState.status,
-        search: searchState.searchValue,
-        sortOrder: sortState.sortOrder,
-        sortedBy: sortState.sortedBy,
-      },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev
-
-        return fetchMoreResult
-      },
+    refetch({
+      page: newPage,
+      pageSize: paginationState.pageSize,
+      organization: filterState.organization,
+      costCenter: filterState.costCenter,
+      status: filterState.status,
+      search: searchState.searchValue,
+      sortOrder: sortState.sortOrder,
+      sortedBy: sortState.sortedBy,
     })
   }
 
@@ -114,22 +110,15 @@ const QuotesTableContainer: FunctionComponent = () => {
       page: newPage,
     })
 
-    fetchMore({
-      variables: {
-        page: newPage,
-        pageSize: paginationState.pageSize,
-        organization: filterState.organization,
-        costCenter: filterState.costCenter,
-        status: filterState.status,
-        search: searchState.searchValue,
-        sortOrder: sortState.sortOrder,
-        sortedBy: sortState.sortedBy,
-      },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev
-
-        return fetchMoreResult
-      },
+    refetch({
+      page: newPage,
+      pageSize: paginationState.pageSize,
+      organization: filterState.organization,
+      costCenter: filterState.costCenter,
+      status: filterState.status,
+      search: searchState.searchValue,
+      sortOrder: sortState.sortOrder,
+      sortedBy: sortState.sortedBy,
     })
   }
 
@@ -143,22 +132,15 @@ const QuotesTableContainer: FunctionComponent = () => {
       pageSize: +value,
     })
 
-    fetchMore({
-      variables: {
-        page: 1,
-        pageSize: +value,
-        organization: filterState.organization,
-        costCenter: filterState.costCenter,
-        status: filterState.status,
-        search: searchState.searchValue,
-        sortOrder: sortState.sortOrder,
-        sortedBy: sortState.sortedBy,
-      },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev
-
-        return fetchMoreResult
-      },
+    refetch({
+      page: 1,
+      pageSize: +value,
+      organization: filterState.organization,
+      costCenter: filterState.costCenter,
+      status: filterState.status,
+      search: searchState.searchValue,
+      sortOrder: sortState.sortOrder,
+      sortedBy: sortState.sortedBy,
     })
   }
 
@@ -216,22 +198,15 @@ const QuotesTableContainer: FunctionComponent = () => {
       page: 1,
     })
 
-    fetchMore({
-      variables: {
-        page: 1,
-        pageSize: paginationState.pageSize,
-        search: searchState.searchValue,
-        sortOrder: sortState.sortOrder,
-        sortedBy: sortState.sortedBy,
-        status: statuses,
-        organization: organizations,
-        costCenter: costCenters,
-      },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev
-
-        return fetchMoreResult
-      },
+    refetch({
+      page: 1,
+      pageSize: paginationState.pageSize,
+      search: searchState.searchValue,
+      sortOrder: sortState.sortOrder,
+      sortedBy: sortState.sortedBy,
+      status: statuses,
+      organization: organizations,
+      costCenter: costCenters,
     })
   }
 
@@ -250,42 +225,28 @@ const QuotesTableContainer: FunctionComponent = () => {
       searchValue: '',
     })
 
-    fetchMore({
-      variables: {
-        page: 1,
-        pageSize: paginationState.pageSize,
-        organization: filterState.organization,
-        costCenter: filterState.costCenter,
-        status: filterState.status,
-        search: '',
-        sortOrder: sortState.sortOrder,
-        sortedBy: sortState.sortedBy,
-      },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev
-
-        return fetchMoreResult
-      },
+    refetch({
+      page: 1,
+      pageSize: paginationState.pageSize,
+      organization: filterState.organization,
+      costCenter: filterState.costCenter,
+      status: filterState.status,
+      search: '',
+      sortOrder: sortState.sortOrder,
+      sortedBy: sortState.sortedBy,
     })
   }
 
   const handleInputSearchSubmit = () => {
-    fetchMore({
-      variables: {
-        page: 1,
-        pageSize: paginationState.pageSize,
-        organization: filterState.organization,
-        costCenter: filterState.costCenter,
-        status: filterState.status,
-        search: searchState.searchValue,
-        sortOrder: sortState.sortOrder,
-        sortedBy: sortState.sortedBy,
-      },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev
-
-        return fetchMoreResult
-      },
+    refetch({
+      page: 1,
+      pageSize: paginationState.pageSize,
+      organization: filterState.organization,
+      costCenter: filterState.costCenter,
+      status: filterState.status,
+      search: searchState.searchValue,
+      sortOrder: sortState.sortOrder,
+      sortedBy: sortState.sortedBy,
     })
   }
 
@@ -300,22 +261,15 @@ const QuotesTableContainer: FunctionComponent = () => {
       sortOrder,
       sortedBy,
     })
-    fetchMore({
-      variables: {
-        page: 1,
-        pageSize: paginationState.pageSize,
-        organization: filterState.organization,
-        costCenter: filterState.costCenter,
-        status: filterState.status,
-        search: searchState.searchValue,
-        sortOrder,
-        sortedBy,
-      },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev
-
-        return fetchMoreResult
-      },
+    refetch({
+      page: 1,
+      pageSize: paginationState.pageSize,
+      organization: filterState.organization,
+      costCenter: filterState.costCenter,
+      status: filterState.status,
+      search: searchState.searchValue,
+      sortOrder,
+      sortedBy,
     })
   }
 
@@ -329,53 +283,57 @@ const QuotesTableContainer: FunctionComponent = () => {
 
   if (
     !isAuthenticated ||
-    !permissionsData.checkUserPermission?.permissions?.length ||
+    !permissionsData?.checkUserPermission?.permissions?.length ||
     !permissionsData.checkUserPermission.permissions.some(
       (permission: string) => permission.indexOf('access-quotes') >= 0
     )
   ) {
     return (
-      <Fragment>
-        <QuotesTablePageHeader />
-        <div className="flex flex-row ph5 ph7-ns">
-          <div className="flex flex-column w-100">
-            <div className="mb5">
-              {!isAuthenticated ? (
+      <Layout fullWidth>
+        <div className="mw9 center">
+          <Layout fullWidth pageHeader={<QuotesTablePageHeader />}>
+            <PageBlock>
+              {permissionsLoading ? (
+                <Spinner />
+              ) : !isAuthenticated ? (
                 <FormattedMessage id="store/b2b-quotes.error.notAuthenticated" />
               ) : (
                 <FormattedMessage id="store/b2b-quotes.error.notPermitted" />
               )}
-            </div>
-          </div>
+            </PageBlock>
+          </Layout>
         </div>
-      </Fragment>
+      </Layout>
     )
   }
 
   return (
-    <Fragment>
-      <QuotesTablePageHeader />
-      <QuotesTable
-        quotes={data.getQuotes?.data ?? []}
-        permissions={permissionsData.checkUserPermission.permissions}
-        page={paginationState.page}
-        pageSize={paginationState.pageSize}
-        total={data.getQuotes?.pagination?.total ?? 0}
-        loading={loading}
-        handlePrevClick={handlePrevClick}
-        handleNextClick={handleNextClick}
-        filterStatements={filterState.filterStatements}
-        handleFiltersChange={handleFiltersChange}
-        handleInputSearchChange={handleInputSearchChange}
-        handleInputSearchClear={handleInputSearchClear}
-        handleInputSearchSubmit={handleInputSearchSubmit}
-        handleRowsChange={handleRowsChange}
-        handleSort={handleSort}
-        searchValue={searchState.searchValue}
-        sortOrder={sortState.sortOrder}
-        sortedBy={sortState.sortedBy}
-      />
-    </Fragment>
+    <Layout fullWidth>
+      <div className="mw9 center">
+        <Layout fullWidth pageHeader={<QuotesTablePageHeader />}>
+          <QuotesTable
+            quotes={data.getQuotes?.data ?? []}
+            permissions={permissionsData.checkUserPermission.permissions}
+            page={paginationState.page}
+            pageSize={paginationState.pageSize}
+            total={data.getQuotes?.pagination?.total ?? 0}
+            loading={loading}
+            handlePrevClick={handlePrevClick}
+            handleNextClick={handleNextClick}
+            filterStatements={filterState.filterStatements}
+            handleFiltersChange={handleFiltersChange}
+            handleInputSearchChange={handleInputSearchChange}
+            handleInputSearchClear={handleInputSearchClear}
+            handleInputSearchSubmit={handleInputSearchSubmit}
+            handleRowsChange={handleRowsChange}
+            handleSort={handleSort}
+            searchValue={searchState.searchValue}
+            sortOrder={sortState.sortOrder}
+            sortedBy={sortState.sortedBy}
+          />
+        </Layout>
+      </div>
+    </Layout>
   )
 }
 

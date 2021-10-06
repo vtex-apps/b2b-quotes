@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { Fragment, useState, useContext, useEffect } from 'react'
 import {
+  Layout,
+  PageHeader,
+  PageBlock,
+  Spinner,
   Input,
   Textarea,
   Button,
   Table,
   Totalizer,
   ToastContext,
-  PageHeader,
 } from 'vtex.styleguide'
 import { useCssHandles } from 'vtex.css-handles'
 import { useQuery, useMutation } from 'react-apollo'
@@ -126,6 +129,8 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
     savingQuote: false,
   })
 
+  const [itemState, setItemState] = useState([] as QuoteItem[])
+
   const { formatMessage } = useIntl()
   const { navigate } = useRuntime()
 
@@ -133,20 +138,40 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
   const sessionResponse: any = useSessionResponse()
   const handles = useCssHandles(CSS_HANDLES)
 
-  const { data: permissionsData } = useQuery(GET_PERMISSIONS, {
-    ssr: false,
-    skip: !isAuthenticated,
-  })
+  const { data: permissionsData, loading: permissionsLoading } = useQuery(
+    GET_PERMISSIONS,
+    {
+      ssr: false,
+      skip: !isAuthenticated,
+    }
+  )
 
   const { data } = useQuery(getOrderForm, {
     ssr: false,
   })
 
+  useEffect(() => {
+    if (!data?.orderForm?.items?.length) return
+
+    const itemsCopy = [] as QuoteItem[]
+
+    data.orderForm.items.forEach((item: QuoteItem) => {
+      const existingItem = itemsCopy.find(
+        (existing: QuoteItem) => existing.id === item.id
+      )
+
+      if (existingItem) {
+        existingItem.quantity += item.quantity
+      } else {
+        itemsCopy.push(item)
+      }
+    })
+
+    setItemState(itemsCopy)
+  }, [data])
+
   const [SaveCartMutation] = useMutation(saveCartMutation)
   const [ClearCartMutation] = useMutation(clearCartMutation)
-
-  if (!permissionsData || !data?.orderForm) return null
-  const { orderForm } = data
 
   if (sessionResponse) {
     isAuthenticated =
@@ -158,14 +183,12 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
     )
   }
 
-  const { name, note, savingQuote, errorMessage } = _state
-
   const toastMessage = (message: MessageDescriptor) => {
     const translatedMessage = formatMessage(message)
 
     const action = undefined
 
-    showToast({ translatedMessage, action })
+    showToast({ message: translatedMessage, duration: 5000, action })
   }
 
   const defaultSchema = {
@@ -247,8 +270,7 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
     },
   }
 
-  let itemsCopy: any = orderForm?.items ? orderForm.items : []
-  const { totalizers } = orderForm ?? {}
+  const { totalizers } = data?.orderForm ?? {}
 
   const subtotal = (
     totalizers?.find((x: { id: string }) => x.id === 'Items') || {
@@ -284,7 +306,7 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
         orderFormId,
       },
     }).then(() => {
-      itemsCopy = null
+      setItemState([])
       navigate({
         page: 'store.b2b-quotes',
         fallbackToWindowLocation: true,
@@ -294,69 +316,64 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
   }
 
   const handleSaveCart = (sendToSalesRep: boolean) => {
+    const { orderForm } = data
+
     if (!isAuthenticated) {
       toastMessage(messages.notAuthenticated)
     } else {
       activeLoading(true)
-      if (
-        name &&
-        name.length > 0 &&
-        orderForm?.items &&
-        orderForm.items.length
-      ) {
-        // referenceName: String
-        // items: [QuoteItem]
-        // subtotal: Float
-        // note: String
-        // sendToSalesRep: Boolean
+      // referenceName: String
+      // items: [QuoteItem]
+      // subtotal: Float
+      // note: String
+      // sendToSalesRep: Boolean
 
-        const cart = {
-          referenceName: name,
-          items: orderForm.items.map((item: any) => {
-            return {
-              name: item.name,
-              skuName: item.skuName,
-              refId: item.refId,
-              id: item.id,
-              productId: item.productId,
-              imageUrl: item.imageUrl,
-              listPrice: parseInt(String(item.listPrice * 100), 10),
-              price: parseInt(String(item.price * 100), 10),
-              quantity: item.quantity,
-              sellingPrice: parseInt(String(item.sellingPrice * 100), 10),
-            }
-          }),
-          subtotal: parseInt(String(subtotal), 10),
-          note,
-          sendToSalesRep,
-        }
+      const cart = {
+        referenceName: _state.name,
+        items: itemState.map((item: any) => {
+          return {
+            name: item.name,
+            skuName: item.skuName,
+            refId: item.refId,
+            id: item.id,
+            productId: item.productId,
+            imageUrl: item.imageUrl,
+            listPrice: parseInt(String(item.listPrice * 100), 10),
+            price: parseInt(String(item.price * 100), 10),
+            quantity: item.quantity,
+            sellingPrice: parseInt(String(item.sellingPrice * 100), 10),
+          }
+        }),
+        subtotal: parseInt(String(subtotal), 10),
+        note: _state.note,
+        sendToSalesRep,
+      }
 
-        SaveCartMutation({
-          variables: cart,
-        })
-          .then((result: any) => {
-            if (result.data.createQuote) {
-              activeLoading(false)
-              toastMessage(messages.createSuccess)
-              activeLoading(false)
-              handleClearCart(orderForm.orderFormId)
-            } else {
-              toastMessage(messages.createError)
-              activeLoading(false)
-            }
-          })
-          .catch(() => {
+      SaveCartMutation({
+        variables: cart,
+      })
+        .then((result: any) => {
+          if (result.data.createQuote) {
+            activeLoading(false)
+            toastMessage(messages.createSuccess)
+            activeLoading(false)
+            handleClearCart(orderForm.orderFormId)
+          } else {
             toastMessage(messages.createError)
             activeLoading(false)
-          })
-      }
+          }
+        })
+        .catch(() => {
+          toastMessage(messages.createError)
+          activeLoading(false)
+        })
 
       activeLoading(false)
     }
   }
 
   const saveQuote = (sendToSalesRep: boolean) => {
-    if (!name) {
+    if (!_state.name) {
       setState({
         ..._state,
         errorMessage: formatMessage(messages.required),
@@ -366,133 +383,131 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
     }
   }
 
-  const { permissions = [] } = permissionsData.checkUserPermission
+  const { permissions = [] } = permissionsData?.checkUserPermission ?? {}
 
   return (
-    <div className={`${handles.containerCreate} pv6 ph4 mw9 center`}>
-      <PageHeader
-        title={formatMessage(messages.title)}
-        linkLabel={formatMessage(messages.back)}
-        onLinkClick={() => {
-          navigate({
-            page: 'store.b2b-quotes',
-          })
-        }}
-      />
-
-      {(!permissions.includes('create-quotes') || !isAuthenticated) && (
-        <div className="flex flex-row ph5 ph7-ns">
-          <div className="flex flex-column w-100">
-            <div className={`mb5 ${handles.notAuthenticatedMessage}`}>
-              {!isAuthenticated ? (
+    <Layout fullWidth>
+      <div className="mw9 center">
+        <Layout
+          fullWidth
+          pageHeader={
+            <PageHeader
+              title={formatMessage(messages.title)}
+              linkLabel={formatMessage(messages.back)}
+              onLinkClick={() => {
+                navigate({
+                  page: 'store.b2b-quotes',
+                })
+              }}
+            />
+          }
+        >
+          {(!isAuthenticated || !permissions.includes('create-quotes')) && (
+            <PageBlock>
+              {permissionsLoading ? (
+                <Spinner />
+              ) : !isAuthenticated ? (
                 <FormattedMessage id="store/b2b-quotes.error.notAuthenticated" />
               ) : (
                 <FormattedMessage id="store/b2b-quotes.error.notPermitted" />
               )}
-            </div>
-          </div>
-        </div>
-      )}
+            </PageBlock>
+          )}
 
-      {isAuthenticated && permissions.includes('create-quotes') && (
-        <div>
-          <div className="flex flex-column ph5 ph7-ns">
-            <div className={`${handles.inputCreate} mb5 flex flex-column`}>
-              <Input
-                size="large"
-                placeholder={formatMessage(messages.placeholderName)}
-                dataAttributes={{ 'hj-white-list': true, test: 'string' }}
-                label={formatMessage(messages.labelName)}
-                value={name}
-                errorMessage={errorMessage}
-                onChange={(e: any) => {
-                  setState({ ..._state, name: e.target.value })
-                }}
-              />
-            </div>
-          </div>
-          <div className="flex flex-row ph5 ph7-ns">
-            <div
-              className={`flex flex-column w-100 mb5 ${handles.noteContainer}`}
-            >
-              <Textarea
-                label={formatMessage(messages.labelDescription)}
-                onChange={(e: any) =>
-                  setState({ ..._state, note: e.target.value })
-                }
-                value={note}
-                characterCountdownText={
-                  <FormattedMessage
-                    id="store/b2b-quotes.create.characterLeft"
-                    values={{ count: _state.note.length }}
+          {isAuthenticated && permissions.includes('create-quotes') && (
+            <PageBlock>
+              <div className="flex flex-column ph5 ph7-ns">
+                <div className={`${handles.inputCreate} mb5 flex flex-column`}>
+                  <Input
+                    size="large"
+                    placeholder={formatMessage(messages.placeholderName)}
+                    dataAttributes={{ 'hj-white-list': true, test: 'string' }}
+                    label={formatMessage(messages.labelName)}
+                    value={_state.name}
+                    errorMessage={_state.errorMessage}
+                    onChange={(e: any) => {
+                      setState({ ..._state, name: e.target.value })
+                    }}
                   />
-                }
-                maxLength="500"
-                rows="4"
-              />
-            </div>
-          </div>
-          <div className="flex flex-row ph5 ph7-ns">
-            <div
-              className={`flex flex-column w-100 mb5 ${handles.listContainer}`}
-            >
-              <Table
-                fullWidth
-                schema={defaultSchema}
-                items={itemsCopy}
-                density="medium"
-                emptyStateLabel={formatMessage(messages.emptyState)}
-              />
-            </div>
-          </div>
-          <div className="flex flex-row ph5 ph7-ns">
-            <div
-              className={`flex flex-column w-100 mb5  ${handles.totalizerContainer}`}
-            >
-              <Totalizer items={summary} />
-            </div>
-          </div>
-          <div
-            className={`${handles.buttonsContainer} mb5 flex flex-column items-end pt6`}
-          >
-            <div className="flex justify-content flex-row">
-              <div className={`no-wrap mr4 ${handles.buttonSaveQuote}`}>
-                <Button
-                  variation="secondary"
-                  isLoading={savingQuote}
-                  onClick={() => {
-                    saveQuote(false)
-                  }}
-                  disabled={!itemsCopy?.length || !name}
-                >
-                  <FormattedMessage id="store/b2b-quotes.create.button.save-for-later" />
-                </Button>
+                </div>
               </div>
-              <div className={`no-wrap ${handles.buttonRequestQuote}`}>
-                <Button
-                  variation="primary"
-                  isLoading={savingQuote}
-                  onClick={() => {
-                    saveQuote(true)
-                  }}
-                  disabled={!itemsCopy?.length || !name}
+              <div className="flex flex-row ph5 ph7-ns">
+                <div
+                  className={`flex flex-column w-100 mb5 ${handles.noteContainer}`}
                 >
-                  <FormattedMessage id="store/b2b-quotes.create.button.request-quote" />
-                </Button>
+                  <Textarea
+                    label={formatMessage(messages.labelDescription)}
+                    onChange={(e: any) =>
+                      setState({ ..._state, note: e.target.value })
+                    }
+                    value={_state.note}
+                    characterCountdownText={
+                      <FormattedMessage
+                        id="store/b2b-quotes.create.characterLeft"
+                        values={{ count: _state.note.length }}
+                      />
+                    }
+                    maxLength="500"
+                    rows="4"
+                  />
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+              <div className="flex flex-row ph5 ph7-ns">
+                <div
+                  className={`flex flex-column w-100 mb5 ${handles.listContainer}`}
+                >
+                  <Table
+                    fullWidth
+                    schema={defaultSchema}
+                    items={itemState}
+                    density="medium"
+                    emptyStateLabel={formatMessage(messages.emptyState)}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-row ph5 ph7-ns">
+                <div
+                  className={`flex flex-column w-100 mb5  ${handles.totalizerContainer}`}
+                >
+                  <Totalizer items={summary} />
+                </div>
+              </div>
+              <div
+                className={`${handles.buttonsContainer} mb5 flex flex-column items-end pt6`}
+              >
+                <div className="flex justify-content flex-row">
+                  <div className={`no-wrap mr4 ${handles.buttonSaveQuote}`}>
+                    <Button
+                      variation="secondary"
+                      isLoading={_state.savingQuote}
+                      onClick={() => {
+                        saveQuote(false)
+                      }}
+                      disabled={!itemState?.length || !_state.name}
+                    >
+                      <FormattedMessage id="store/b2b-quotes.create.button.save-for-later" />
+                    </Button>
+                  </div>
+                  <div className={`no-wrap ${handles.buttonRequestQuote}`}>
+                    <Button
+                      variation="primary"
+                      isLoading={_state.savingQuote}
+                      onClick={() => {
+                        saveQuote(true)
+                      }}
+                      disabled={!itemState?.length || !_state.name}
+                    >
+                      <FormattedMessage id="store/b2b-quotes.create.button.request-quote" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </PageBlock>
+          )}
+        </Layout>
+      </div>
+    </Layout>
   )
-}
-
-interface MessageDescriptor {
-  id: string
-  description?: string | Record<string, unknown>
-  defaultMessage?: string
-  values?: Record<string, unknown>
 }
 
 export default QuoteCreate

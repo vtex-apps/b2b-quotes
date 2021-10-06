@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import type { FunctionComponent, ChangeEvent } from 'react'
 import React from 'react'
-import { Table, Tag, Checkbox, Input } from 'vtex.styleguide'
+import { PageBlock, Table, Tag, Checkbox, Input } from 'vtex.styleguide'
 import { useIntl, defineMessages } from 'react-intl'
 import { FormattedCurrency } from 'vtex.format-currency'
 import { useRuntime } from 'vtex.render-runtime'
@@ -181,6 +181,7 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
     properties: {
       referenceName: {
         title: formatMessage(messages.refName),
+        width: 200,
         cellRenderer: ({
           rowData: { viewedByCustomer, viewedBySales, referenceName },
         }: CellRendererProps) => {
@@ -370,13 +371,21 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
   }
 
   return (
-    <div className="pa9 mh9">
+    <PageBlock>
       <Table
         fullWidth
         items={quotes}
         loading={loading}
         schema={getSchema()}
         lineActions={lineActions}
+        onRowClick={({ rowData: { id } }: CellRendererProps) => {
+          if (!id) return
+
+          navigate({
+            page: 'store.b2b-quote-details',
+            params: { id },
+          })
+        }}
         fixFirstColumn
         emptyStateLabel={formatMessage(messages.emptyState)}
         pagination={{
@@ -471,7 +480,7 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
           },
         }}
       />
-    </div>
+    </PageBlock>
   )
 }
 

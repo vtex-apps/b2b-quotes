@@ -13,7 +13,7 @@
   "store/b2b-quotes.back": "Back",
   "store/b2b-quotes.error.notAuthenticated": "Please log in to view this content.",
   "store/b2b-quotes.error.notPermitted": "You do not have the necessary permissions to view this content.",
-  "store/b2b-quotes.quotes-table.title": "My Quotes",
+  "store/b2b-quotes.quotes-table.title": "My Quotes and Carts",
   "store/b2b-quotes.quotes-table.newLine.label": "New Quote",
   "store/b2b-quotes.quotes-table.empty-state-label": "No quotes found.",
   "store/b2b-quotes.quotes-table.details.label": "Details",
@@ -55,10 +55,12 @@
   "store/b2b-quotes.quote-details.items.total.title": "Total",
   "store/b2b-quotes.quote-details.apply-discount.title": "Apply Percentage Discount",
   "store/b2b-quotes.quote-details.apply-discount.help-text": "Apply a percentage discount to the quote subtotal. Note: this will override any changes made to individual SKU prices.",
+  "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Discounts above {maxDiscount}% will be automatically denied.",
   "store/b2b-quotes.quote-details.update-history.title": "Update History",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{Created}other{Updated}} on {date} by {email} ({role}) with status {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Notes:",
   "store/b2b-quotes.quote-details.add-note.label": "Add Note",
+  "store/b2b-quotes.quote-details.update-success": "Quote saved successfully.",
   "store/b2b-quotes.quote-details.update-error": "Error saving quote. See console for more details.",
   "store/b2b-quotes.quote-details.use-error": "Error using quote. See console for more details."
 }
