@@ -14,7 +14,7 @@
   "dependencies": {
     "vtex.storefront-permissions": "1.x",
     "vtex.b2b-organizations-graphql": "0.x",
-    "vtex.b2b-quotes-graphql": "0.x",
+    "vtex.b2b-quotes-graphql": "1.x",
     "vtex.checkout": "0.x",
     "vtex.store": "2.x",
     "vtex.styleguide": "9.x",
@@ -29,9 +29,7 @@
     "vtex.css-handles": "0.x",
     "vtex.format-currency": "0.x"
   },
-  "registries": [
-    "smartcheckout"
-  ],
+  "registries": ["smartcheckout"],
   "policies": [],
   "billingOptions": {
     "termsURL": "https://compliance.vtex.com/gdpr/policies/vtex-privacy-policy",
@@ -40,9 +38,7 @@
     },
     "free": true,
     "type": "free",
-    "availableCountries": [
-      "*"
-    ]
+    "availableCountries": ["*"]
   },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }
