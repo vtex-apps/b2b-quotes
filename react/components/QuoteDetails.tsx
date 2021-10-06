@@ -20,7 +20,6 @@ import {
   ToastContext,
 } from 'vtex.styleguide'
 import { formatCurrency, FormattedCurrency } from 'vtex.format-currency'
-// import { useOrderForm } from 'vtex.order-manager/OrderForm'
 import { useCheckoutURL } from 'vtex.checkout-resources/Utils'
 
 import { arrayShallowEqual } from '../utils/shallowEquals'
