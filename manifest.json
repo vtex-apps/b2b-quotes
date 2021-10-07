@@ -1,7 +1,7 @@
 {
   "vendor": "vtex",
   "name": "b2b-quotes",
-  "version": "0.0.1",
+  "version": "0.0.2-beta.0",
   "title": "B2B Quotes & Carts",
   "description": "Allows B2B Customers to request quotes from their sales reps and/or save carts for future use",
   "builders": {
@@ -27,7 +27,9 @@
     "vtex.css-handles": "0.x",
     "vtex.format-currency": "0.x"
   },
-  "registries": ["smartcheckout"],
+  "registries": [
+    "smartcheckout"
+  ],
   "policies": [],
   "billingOptions": {
     "termsURL": "https://compliance.vtex.com/gdpr/policies/vtex-privacy-policy",
@@ -36,7 +38,9 @@
     },
     "free": true,
     "type": "free",
-    "availableCountries": ["*"]
+    "availableCountries": [
+      "*"
+    ]
   },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }
