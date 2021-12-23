@@ -35,5 +35,38 @@
     "type": "free",
     "availableCountries": ["*"]
   },
+  "settingsSchema": {
+    "title": "B2B Quotes & Carts",
+    "type": "object",
+    "properties": {
+      "hasSchema": {
+        "type": "boolean",
+        "default": false
+      },
+      "adminSetup": {
+        "title": "B2B Quotes Settings",
+        "type": "object",
+        "properties": {
+          "cartLifeSpan": {
+            "title": "Default expiration date (in days) for quotes and saved carts",
+            "type": "number",
+            "default": 30,
+            "minimum": 1
+          }
+        },
+        "required": ["cartLifeSpan"]
+      }
+    },
+    "required": ["adminSetup"]
+  },
+  "settingsUiSchema": {
+    "ui:order": ["adminSetup", "hasSchema"],
+    "adminSetup": {
+      "ui:order": ["cartLifeSpan"]
+    },
+    "hasSchema": {
+      "ui:widget": "hidden"
+    }
+  },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }
