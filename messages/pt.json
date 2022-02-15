@@ -62,5 +62,7 @@
   "store/b2b-quotes.quote-details.add-note.label": "Add Note",
   "store/b2b-quotes.quote-details.update-success": "Quote saved successfully.",
   "store/b2b-quotes.quote-details.update-error": "Error saving quote. See console for more details.",
-  "store/b2b-quotes.quote-details.use-error": "Error using quote. See console for more details."
+  "store/b2b-quotes.quote-details.use-error": "Error using quote. See console for more details.",
+  "store/b2b-quotes.quote-details.discount-error": "Existem alguns descontos maiores que o permitido.",
+  "store/b2b-quotes.quote-details.percentage-discount.title": "Percentual de Desconto"
 }

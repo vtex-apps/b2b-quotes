@@ -5,6 +5,7 @@ import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import { useQuery, useMutation } from 'react-apollo'
 import { useRuntime } from 'vtex.render-runtime'
 import {
+  Alert,
   Layout,
   PageHeader,
   PageBlock,
@@ -106,6 +107,9 @@ const messages = defineMessages({
   addNote: {
     id: `${storePrefix}quote-details.add-note.label`,
   },
+  percentageDiscount: {
+    id: `${storePrefix}quote-details.percentage-discount.title`,
+  },
 })
 
 const QuoteDetails: FunctionComponent = () => {
@@ -181,6 +185,8 @@ const QuoteDetails: FunctionComponent = () => {
   const [discountState, setDiscountState] = useState(0)
   const [updatingQuoteState, setUpdatingQuoteState] = useState(false)
   const [usingQuoteState, setUsingQuoteState] = useState(false)
+  const [originalPrice, setOriginalPrice] = useState(0)
+  const [updatingSubtotal, setUpdatingSubtotal] = useState(0)
 
   const { data, loading, refetch } = useQuery(GET_QUOTE, {
     variables: { id: params?.id },
@@ -195,6 +201,24 @@ const QuoteDetails: FunctionComponent = () => {
     data: permissionsData,
     loading: permissionsLoading,
   } = useQuery(GET_PERMISSIONS, { ssr: false })
+
+  useEffect(() => {
+    if (!quoteState.items.find((item) => item.error)) {
+      setUpdatingSubtotal(
+        quoteState.items.reduce(
+          (sum, item) => sum + item.sellingPrice * item.quantity,
+          0
+        )
+      )
+    }
+
+    const price = quoteState.items.reduce(
+      (sum: number, item: QuoteItem) => sum + item.listPrice * item.quantity,
+      0
+    )
+
+    setOriginalPrice(price)
+  }, [quoteState])
 
   useEffect(() => {
     if (!orderFormData?.orderForm) return
@@ -242,6 +266,7 @@ const QuoteDetails: FunctionComponent = () => {
       },
     } = data
 
+    setUpdatingSubtotal(subtotal)
     setQuoteState({
       id,
       costCenter,
@@ -277,7 +302,7 @@ const QuoteDetails: FunctionComponent = () => {
 
   const handleSaveQuote = () => {
     setUpdatingQuoteState(true)
-    const { id, items, subtotal } = quoteState
+    const { id, items } = quoteState
 
     const itemsChanged = !arrayShallowEqual(data.getQuote.items, items)
 
@@ -285,7 +310,7 @@ const QuoteDetails: FunctionComponent = () => {
       variables: {
         id,
         ...(itemsChanged && { items }),
-        ...(itemsChanged && { subtotal }),
+        ...(itemsChanged && { subtotal: updatingSubtotal }),
         ...(noteState && { note: noteState }),
         decline: false,
       },
@@ -354,18 +379,17 @@ const QuoteDetails: FunctionComponent = () => {
   const handleUpdateSellingPrice: (
     id: string
   ) => ChangeEventHandler<HTMLInputElement> = (itemId) => (event) => {
-    let newSubtotal = 0
     const newItems = quoteState.items.map((item: QuoteItem) => {
       if (item.id === itemId) {
-        newSubtotal += +event.target.value * item.quantity * 100
+        const newPrice = ((event.target.value as unknown) as number) * 100
 
         return {
           ...item,
-          sellingPrice: ((event.target.value as unknown) as number) * 100,
+          sellingPrice: newPrice,
+          error:
+            !newPrice || newPrice / item.listPrice < maxDiscountState / 100,
         }
       }
-
-      newSubtotal += item.sellingPrice * item.quantity
 
       return item
     })
@@ -373,7 +397,6 @@ const QuoteDetails: FunctionComponent = () => {
     setQuoteState({
       ...quoteState,
       items: newItems,
-      subtotal: newSubtotal,
     })
   }
 
@@ -396,6 +419,7 @@ const QuoteDetails: FunctionComponent = () => {
       return item
     })
 
+    setUpdatingSubtotal(newSubtotal)
     setQuoteState({
       ...quoteState,
       items: newItems,
@@ -410,7 +434,7 @@ const QuoteDetails: FunctionComponent = () => {
 
     items.forEach((item: QuoteItem) => {
       const newSellingPrice = Math.round(
-        item.sellingPrice * ((100 - percent) / 100)
+        item.listPrice * ((100 - percent) / 100)
       )
 
       newSubtotal += newSellingPrice * item.quantity
@@ -418,6 +442,7 @@ const QuoteDetails: FunctionComponent = () => {
       newItems.push({ ...item, sellingPrice: newSellingPrice })
     })
 
+    setUpdatingSubtotal(newSubtotal)
     setQuoteState({
       ...quoteState,
       items: newItems,
@@ -507,7 +532,17 @@ const QuoteDetails: FunctionComponent = () => {
                     totalizers={[
                       {
                         label: formatMessage(messages.subtotal),
-                        value: formatPrice(quoteState.subtotal),
+                        value: formatPrice(originalPrice),
+                      },
+                      {
+                        label: formatMessage(messages.percentageDiscount),
+                        value: `${Math.round(
+                          100 - (quoteState.subtotal / originalPrice) * 100
+                        )}%`,
+                      },
+                      {
+                        label: formatMessage(messages.total),
+                        value: formatPrice(updatingSubtotal),
                       },
                       {
                         label: formatMessage(messages.expiration),
@@ -573,13 +608,29 @@ const QuoteDetails: FunctionComponent = () => {
                           },
                           minWidth: 300,
                         },
+                        listPrice: {
+                          title: formatMessage(messages.price),
+                          headerRight: true,
+                          width: 120,
+                          cellRenderer: ({ rowData }: any) => {
+                            return (
+                              isSalesRep && (
+                                <div className="w-100 tr">
+                                  <FormattedCurrency
+                                    value={rowData.listPrice / 100}
+                                  />
+                                </div>
+                              )
+                            )
+                          },
+                        },
                         sellingPrice: {
                           title: formatMessage(messages.price),
                           headerRight: true,
                           width: 120,
                           cellRenderer: ({
                             cellData: sellingPrice,
-                            rowData: { id: itemId },
+                            rowData: { id: itemId, error },
                           }: any) => {
                             if (
                               formState.isEditable &&
@@ -593,6 +644,7 @@ const QuoteDetails: FunctionComponent = () => {
                                   onChange={handleUpdateSellingPrice(itemId)}
                                   currencyCode={currencyCode}
                                   locale={locale}
+                                  error={error}
                                 />
                               )
                             }
@@ -652,6 +704,7 @@ const QuoteDetails: FunctionComponent = () => {
                       <h3 className="t-heading-4 mb8">
                         <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.title" />
                       </h3>
+
                       <Slider
                         onChange={([value]: [number]) => {
                           handlePercentageDiscount(value)
@@ -665,6 +718,7 @@ const QuoteDetails: FunctionComponent = () => {
                         formatValue={(a: number) => `${a}%`}
                         value={discountState}
                       />
+
                       <div className="mt1">
                         <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.help-text" />
                       </div>
@@ -687,7 +741,7 @@ const QuoteDetails: FunctionComponent = () => {
                       return (
                         <div key={index} className="ph4 pv2">
                           <Card>
-                            <p>
+                            <div>
                               <FormattedMessage
                                 id="store/b2b-quotes.quote-details.update-history.update-details"
                                 values={{
@@ -708,15 +762,15 @@ const QuoteDetails: FunctionComponent = () => {
                                   index,
                                 }}
                               />
-                            </p>
+                            </div>
                             {update.note && (
-                              <p>
+                              <div>
                                 <b>
                                   <FormattedMessage id="store/b2b-quotes.quote-details.update-history.notes" />
                                 </b>
                                 <br />
                                 {update.note}
-                              </p>
+                              </div>
                             )}
                           </Card>
                         </div>
@@ -743,14 +797,25 @@ const QuoteDetails: FunctionComponent = () => {
                     </div>
                   )}
                 </div>
+
+                {quoteState.items.some((item) => item.error) ? (
+                  <div className="mb4">
+                    <Alert type="error">
+                      <FormattedMessage
+                        id="store/b2b-quotes.quote-details.discount-error"
+                        values={{ count: noteState.length }}
+                      />
+                    </Alert>
+                  </div>
+                ) : null}
+
                 <div className="nowrap">
                   {quoteDeclinable && (
                     <span className="mr4">
                       <Button
                         variation="danger"
                         onClick={() => handleDeclineQuote()}
-                        isLoading={updatingQuoteState}
-                        disabled={!formState.isEditable}
+                        disabled={!formState.isEditable || updatingQuoteState}
                       >
                         <FormattedMessage id="store/b2b-quotes.quote-details.decline" />
                       </Button>
@@ -762,9 +827,10 @@ const QuoteDetails: FunctionComponent = () => {
                       onClick={() => handleSaveQuote()}
                       isLoading={updatingQuoteState}
                       disabled={
-                        quoteState.items.length &&
-                        noteState === '' &&
-                        arrayShallowEqual(items, quoteState.items)
+                        quoteState.items.some((item) => item.error) ||
+                        (quoteState.items.length &&
+                          noteState === '' &&
+                          arrayShallowEqual(items, quoteState.items))
                       }
                     >
                       {isSalesRep ? (
