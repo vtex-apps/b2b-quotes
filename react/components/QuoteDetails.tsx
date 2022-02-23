@@ -630,7 +630,7 @@ const QuoteDetails: FunctionComponent = () => {
                                   className={`w-100 tr${
                                     rowData.listPrice !== rowData.sellingPrice
                                       ? ' strike '
-                                      : null
+                                      : ''
                                   }`}
                                 >
                                   <FormattedCurrency

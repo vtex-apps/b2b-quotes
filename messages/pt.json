@@ -67,6 +67,6 @@
   "store/b2b-quotes.quote-details.percentage-discount.title": "Percentage Discount",
   "store/b2b-quotes.quote-details.original-subtotal.title": "Original Subtotal",
   "store/b2b-quotes.quote-details.original-price.title": "Original Price",
-  "store/b2b-quotes.quote-details.quote-price.title": "Quote Price",
+  "store/b2b-quotes.quote-details.quote-price.title": "Quoted Price",
   "store/b2b-quotes.quote-details.quoted-subtotal.title": "Quoted Subtotal"
 }
