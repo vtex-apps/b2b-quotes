@@ -110,6 +110,18 @@ const messages = defineMessages({
   percentageDiscount: {
     id: `${storePrefix}quote-details.percentage-discount.title`,
   },
+  quotedSubtotal: {
+    id: `${storePrefix}quote-details.quoted-subtotal.title`,
+  },
+  originalSubtotal: {
+    id: `${storePrefix}quote-details.original-subtotal.title`,
+  },
+  quotePrice: {
+    id: `${storePrefix}quote-details.quote-price.title`,
+  },
+  originalPrice: {
+    id: `${storePrefix}quote-details.original-price.title`,
+  },
 })
 
 const QuoteDetails: FunctionComponent = () => {
@@ -185,7 +197,7 @@ const QuoteDetails: FunctionComponent = () => {
   const [discountState, setDiscountState] = useState(0)
   const [updatingQuoteState, setUpdatingQuoteState] = useState(false)
   const [usingQuoteState, setUsingQuoteState] = useState(false)
-  const [originalPrice, setOriginalPrice] = useState(0)
+  const [originalSubtotal, setOriginalSubtotal] = useState(0)
   const [updatingSubtotal, setUpdatingSubtotal] = useState(0)
 
   const { data, loading, refetch } = useQuery(GET_QUOTE, {
@@ -217,7 +229,7 @@ const QuoteDetails: FunctionComponent = () => {
       0
     )
 
-    setOriginalPrice(price)
+    setOriginalSubtotal(price)
   }, [quoteState])
 
   useEffect(() => {
@@ -531,17 +543,17 @@ const QuoteDetails: FunctionComponent = () => {
                   <Table
                     totalizers={[
                       {
-                        label: formatMessage(messages.subtotal),
-                        value: formatPrice(originalPrice),
+                        label: formatMessage(messages.originalSubtotal),
+                        value: formatPrice(originalSubtotal),
                       },
                       {
                         label: formatMessage(messages.percentageDiscount),
                         value: `${Math.round(
-                          100 - (quoteState.subtotal / originalPrice) * 100
+                          100 - (quoteState.subtotal / originalSubtotal) * 100
                         )}%`,
                       },
                       {
-                        label: formatMessage(messages.total),
+                        label: formatMessage(messages.quotedSubtotal),
                         value: formatPrice(updatingSubtotal),
                       },
                       {
@@ -561,7 +573,6 @@ const QuoteDetails: FunctionComponent = () => {
                         ),
                       },
                     ]}
-                    disableHeader
                     fullWidth
                     schema={{
                       properties: {
@@ -609,13 +620,19 @@ const QuoteDetails: FunctionComponent = () => {
                           minWidth: 300,
                         },
                         listPrice: {
-                          title: formatMessage(messages.price),
+                          title: formatMessage(messages.originalPrice),
                           headerRight: true,
                           width: 120,
                           cellRenderer: ({ rowData }: any) => {
                             return (
                               isSalesRep && (
-                                <div className="w-100 tr">
+                                <div
+                                  className={`w-100 tr${
+                                    rowData.listPrice !== rowData.sellingPrice
+                                      ? ' strike '
+                                      : null
+                                  }`}
+                                >
                                   <FormattedCurrency
                                     value={rowData.listPrice / 100}
                                   />
@@ -625,7 +642,7 @@ const QuoteDetails: FunctionComponent = () => {
                           },
                         },
                         sellingPrice: {
-                          title: formatMessage(messages.price),
+                          title: formatMessage(messages.quotePrice),
                           headerRight: true,
                           width: 120,
                           cellRenderer: ({
