@@ -41,6 +41,7 @@ interface QuoteItem {
   quantity: number
   sellingPrice: number
   seller: string
+  error: boolean
 }
 
 interface FilterStatement {

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Improvement of Quote Details,
+- Calculate the discount against original price (listPrice item) 
+- If user input some value above from max discount, it's blocked to save, and an alert is shown.
+
 ## [0.0.3] - 2022-01-06
 
 ## [0.0.2] - 2021-12-23
