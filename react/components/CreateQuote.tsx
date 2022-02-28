@@ -17,6 +17,8 @@ import { useQuery, useMutation } from 'react-apollo'
 import { FormattedCurrency } from 'vtex.format-currency'
 import { useRuntime } from 'vtex.render-runtime'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
+import { OrderForm } from 'vtex.order-manager'
+import type { OrderForm as OrderFormType } from 'vtex.checkout-graphql'
 
 import { getSession } from '../modules/session'
 import saveCartMutation from '../graphql/createQuote.graphql'
@@ -130,13 +132,14 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
   })
 
   const [itemState, setItemState] = useState([] as QuoteItem[])
-
+  const [sentToSalesRep, setSentToSalesRep] = useState(false)
   const { formatMessage } = useIntl()
   const { navigate } = useRuntime()
 
   const { showToast } = useContext(ToastContext)
   const sessionResponse: any = useSessionResponse()
   const handles = useCssHandles(CSS_HANDLES)
+  const { setOrderForm }: OrderFormContext = OrderForm.useOrderForm()
 
   const { data: permissionsData, loading: permissionsLoading } = useQuery(
     GET_PERMISSIONS,
@@ -146,7 +149,7 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
     }
   )
 
-  const { data } = useQuery(getOrderForm, {
+  const { data, refetch } = useQuery(getOrderForm, {
     ssr: false,
   })
 
@@ -301,17 +304,10 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
   }
 
   const handleClearCart = (orderFormId: string) => {
-    ClearCartMutation({
+    return ClearCartMutation({
       variables: {
         orderFormId,
       },
-    }).then(() => {
-      setItemState([])
-      navigate({
-        page: 'store.b2b-quotes',
-        fallbackToWindowLocation: true,
-        fetchPage: true,
-      })
     })
   }
 
@@ -322,11 +318,6 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
       toastMessage(messages.notAuthenticated)
     } else {
       activeLoading(true)
-      // referenceName: String
-      // items: [QuoteItem]
-      // subtotal: Float
-      // note: String
-      // sendToSalesRep: Boolean
 
       const cart = {
         referenceName: _state.name,
@@ -354,10 +345,23 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
       })
         .then((result: any) => {
           if (result.data.createQuote) {
-            activeLoading(false)
             toastMessage(messages.createSuccess)
-            activeLoading(false)
-            handleClearCart(orderForm.orderFormId)
+            handleClearCart(orderForm.orderFormId).then(() => {
+              activeLoading(false)
+              setItemState([])
+              navigate({
+                page: 'store.b2b-quotes',
+                fallbackToWindowLocation: true,
+                fetchPage: true,
+              })
+              refetch().then((resp: any) => {
+                if (resp?.data?.orderForm) {
+                  setOrderForm(resp?.data?.orderForm)
+                }
+
+                return resp
+              })
+            })
           } else {
             toastMessage(messages.createError)
             activeLoading(false)
@@ -367,12 +371,11 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
           toastMessage(messages.createError)
           activeLoading(false)
         })
-
-      activeLoading(false)
     }
   }
 
   const saveQuote = (sendToSalesRep: boolean) => {
+    setSentToSalesRep(sendToSalesRep)
     if (!_state.name) {
       setState({
         ..._state,
@@ -479,11 +482,13 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
                   <div className={`no-wrap mr4 ${handles.buttonSaveQuote}`}>
                     <Button
                       variation="secondary"
-                      isLoading={_state.savingQuote}
+                      isLoading={_state.savingQuote && !sentToSalesRep}
                       onClick={() => {
                         saveQuote(false)
                       }}
-                      disabled={!itemState?.length || !_state.name}
+                      disabled={
+                        !itemState?.length || !_state.name || _state.savingQuote
+                      }
                     >
                       <FormattedMessage id="store/b2b-quotes.create.button.save-for-later" />
                     </Button>
@@ -491,11 +496,13 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
                   <div className={`no-wrap ${handles.buttonRequestQuote}`}>
                     <Button
                       variation="primary"
-                      isLoading={_state.savingQuote}
+                      isLoading={_state.savingQuote && sentToSalesRep}
                       onClick={() => {
                         saveQuote(true)
                       }}
-                      disabled={!itemState?.length || !_state.name}
+                      disabled={
+                        !itemState?.length || !_state.name || _state.savingQuote
+                      }
                     >
                       <FormattedMessage id="store/b2b-quotes.create.button.request-quote" />
                     </Button>
@@ -508,6 +515,12 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
       </div>
     </Layout>
   )
+}
+
+interface OrderFormContext {
+  loading: boolean
+  orderForm: OrderFormType | undefined
+  setOrderForm: (orderForm: Partial<OrderFormType>) => void
 }
 
 export default QuoteCreate

@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Clicking on request quote button creates the same quote multiple times
+- Fixed the loading button controllers
+- Clear cart ui after create quote has been created
 
 ## [0.1.0] - 2022-02-23
 
