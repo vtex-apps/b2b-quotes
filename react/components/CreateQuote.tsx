@@ -388,6 +388,10 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
 
   const { permissions = [] } = permissionsData?.checkUserPermission ?? {}
 
+  useEffect(() => {
+    refetch()
+  }, [refetch])
+
   return (
     <Layout fullWidth>
       <div className="mw9 center">
