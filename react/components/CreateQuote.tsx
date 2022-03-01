@@ -347,17 +347,20 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
           if (result.data.createQuote) {
             toastMessage(messages.createSuccess)
             handleClearCart(orderForm.orderFormId).then(() => {
-              activeLoading(false)
               setItemState([])
-              navigate({
-                page: 'store.b2b-quotes',
-                fallbackToWindowLocation: true,
-                fetchPage: true,
-              })
               refetch().then((resp: any) => {
                 if (resp?.data?.orderForm) {
                   setOrderForm(resp?.data?.orderForm)
                 }
+
+                setTimeout(() => {
+                  activeLoading(false)
+                  navigate({
+                    page: 'store.b2b-quotes',
+                    fallbackToWindowLocation: true,
+                    fetchPage: true,
+                  })
+                }, 500)
 
                 return resp
               })
