@@ -78,6 +78,10 @@ const QuotesTableContainer: FunctionComponent = () => {
 
   const { data, loading, refetch } = useQuery(GET_QUOTES, { ssr: false })
 
+  useEffect(() => {
+    refetch()
+  }, [refetch])
+
   if (!data || (isAuthenticated && !permissionsData)) return null
 
   const handlePrevClick = () => {

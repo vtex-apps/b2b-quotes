@@ -15,6 +15,8 @@
     "vtex.storefront-permissions": "1.x",
     "vtex.b2b-organizations-graphql": "0.x",
     "vtex.b2b-quotes-graphql": "1.x",
+    "vtex.checkout-graphql": "0.x",
+    "vtex.order-manager": "0.x",
     "vtex.store": "2.x",
     "vtex.styleguide": "9.x",
     "vtex.render-runtime": "8.x",
@@ -24,9 +26,7 @@
     "vtex.css-handles": "0.x",
     "vtex.format-currency": "0.x"
   },
-  "registries": [
-    "smartcheckout"
-  ],
+  "registries": ["smartcheckout"],
   "policies": [],
   "billingOptions": {
     "termsURL": "https://compliance.vtex.com/gdpr/policies/vtex-privacy-policy",
@@ -35,9 +35,7 @@
     },
     "free": true,
     "type": "free",
-    "availableCountries": [
-      "*"
-    ]
+    "availableCountries": ["*"]
   },
   "settingsSchema": {
     "title": "B2B Quotes & Carts",
@@ -58,24 +56,15 @@
             "minimum": 1
           }
         },
-        "required": [
-          "cartLifeSpan"
-        ]
+        "required": ["cartLifeSpan"]
       }
     },
-    "required": [
-      "adminSetup"
-    ]
+    "required": ["adminSetup"]
   },
   "settingsUiSchema": {
-    "ui:order": [
-      "adminSetup",
-      "hasSchema"
-    ],
+    "ui:order": ["adminSetup", "hasSchema"],
     "adminSetup": {
-      "ui:order": [
-        "cartLifeSpan"
-      ]
+      "ui:order": ["cartLifeSpan"]
     },
     "hasSchema": {
       "ui:widget": "hidden"
