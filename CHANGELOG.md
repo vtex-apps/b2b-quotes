@@ -7,8 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- UI to change of expiration date by sales role
+- Improvement of quote details UI
+
 ## [0.1.1] - 2022-03-02
+
 ### Fixed
+
 - Clicking on request quote button creates the same quote multiple times
 - Fixed the loading button controllers
 - Clear cart ui after create quote has been created

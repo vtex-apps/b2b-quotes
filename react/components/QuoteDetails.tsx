@@ -19,6 +19,7 @@ import {
   Input,
   InputCurrency,
   ToastContext,
+  DatePicker,
 } from 'vtex.styleguide'
 import { formatCurrency, FormattedCurrency } from 'vtex.format-currency'
 import { useCheckoutURL } from 'vtex.checkout-resources/Utils'
@@ -121,6 +122,9 @@ const messages = defineMessages({
   },
   originalPrice: {
     id: `${storePrefix}quote-details.original-price.title`,
+  },
+  expirationDateChange: {
+    id: `${storePrefix}quote-details.expiration-data-change.title`,
   },
 })
 
@@ -314,7 +318,7 @@ const QuoteDetails: FunctionComponent = () => {
 
   const handleSaveQuote = () => {
     setUpdatingQuoteState(true)
-    const { id, items } = quoteState
+    const { id, items, expirationDate } = quoteState
 
     const itemsChanged = !arrayShallowEqual(data.getQuote.items, items)
 
@@ -325,6 +329,7 @@ const QuoteDetails: FunctionComponent = () => {
         ...(itemsChanged && { subtotal: updatingSubtotal }),
         ...(noteState && { note: noteState }),
         decline: false,
+        expirationDate,
       },
     })
       .catch((error) => {
@@ -363,7 +368,8 @@ const QuoteDetails: FunctionComponent = () => {
       })
   }
 
-  const { id = '', items = [], status = '' } = data?.getQuote ?? {}
+  const { id = '', items = [], status = '', expirationDate } =
+    data?.getQuote ?? {}
 
   const handleDeclineQuote = () => {
     setUpdatingQuoteState(true)
@@ -721,32 +727,55 @@ const QuoteDetails: FunctionComponent = () => {
                       <h3 className="t-heading-4 mb8">
                         <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.title" />
                       </h3>
+                      <div className="pa5">
+                        <Slider
+                          onChange={([value]: [number]) => {
+                            handlePercentageDiscount(value)
+                          }}
+                          min={0}
+                          max={maxDiscountState}
+                          step={1}
+                          disabled={false}
+                          defaultValues={[0]}
+                          alwaysShowCurrentValue
+                          formatValue={(a: number) => `${a}%`}
+                          value={discountState}
+                        />
 
-                      <Slider
-                        onChange={([value]: [number]) => {
-                          handlePercentageDiscount(value)
-                        }}
-                        min={0}
-                        max={maxDiscountState}
-                        step={1}
-                        disabled={false}
-                        defaultValues={[0]}
-                        alwaysShowCurrentValue
-                        formatValue={(a: number) => `${a}%`}
-                        value={discountState}
-                      />
-
-                      <div className="mt1">
-                        <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.help-text" />
-                      </div>
-                      {maxDiscountState < 100 && (
                         <div className="mt1">
-                          <FormattedMessage
-                            id="store/b2b-quotes.quote-details.apply-discount.maxDiscount-text"
-                            values={{ maxDiscount: maxDiscountState }}
-                          />
+                          <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.help-text" />
                         </div>
-                      )}
+                        {maxDiscountState < 100 && (
+                          <div className="mt1">
+                            <FormattedMessage
+                              id="store/b2b-quotes.quote-details.apply-discount.maxDiscount-text"
+                              values={{ maxDiscount: maxDiscountState }}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {formState.isEditable && isSalesRep && (
+                    <div className="mt3">
+                      <h3 className="t-heading-4">
+                        <FormattedMessage id="store/b2b-quotes.quote-details.expiration-date-change.title" />
+                      </h3>
+                      <div className="pa5">
+                        <DatePicker
+                          label={formatMessage(messages.expiration)}
+                          minDate={new Date()}
+                          locale="en-US"
+                          value={new Date(quoteState.expirationDate)}
+                          onChange={(date: Date) =>
+                            setQuoteState({
+                              ...quoteState,
+                              expirationDate: date.toISOString(),
+                            })
+                          }
+                        />
+                      </div>
                     </div>
                   )}
 
@@ -795,7 +824,7 @@ const QuoteDetails: FunctionComponent = () => {
                     })}
                   </div>
                   {formState.isEditable && (
-                    <div className="mt3">
+                    <div className="mt3 pa5">
                       <Textarea
                         label={formatMessage(messages.addNote)}
                         value={noteState}
@@ -847,6 +876,7 @@ const QuoteDetails: FunctionComponent = () => {
                         quoteState.items.some((item) => item.error) ||
                         (quoteState.items.length &&
                           noteState === '' &&
+                          expirationDate === quoteState.expirationDate &&
                           arrayShallowEqual(items, quoteState.items))
                       }
                     >

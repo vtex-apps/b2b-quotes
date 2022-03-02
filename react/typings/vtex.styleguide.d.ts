@@ -2,6 +2,7 @@ declare module 'vtex.styleguide' {
   export const PageHeader
   export const Alert
   export const Modal
+  export const DatePicker
   export const Box
   export const Card
   export const Checkbox
