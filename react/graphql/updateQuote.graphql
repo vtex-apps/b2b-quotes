@@ -4,6 +4,7 @@ mutation UpdateQuote(
   $subtotal: Float
   $note: String
   $decline: Boolean
+  $expirationDate: String
 ) {
   updateQuote(
     input: {
@@ -12,6 +13,7 @@ mutation UpdateQuote(
       subtotal: $subtotal
       note: $note
       decline: $decline
+      expirationDate: $expirationDate
     }
   ) @context(provider: "vtex.b2b-quotes-graphql")
 }
