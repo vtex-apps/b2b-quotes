@@ -124,7 +124,7 @@ const messages = defineMessages({
     id: `${storePrefix}quote-details.original-price.title`,
   },
   expirationDateChange: {
-    id: `${storePrefix}quote-details.expiration-data-change.title`,
+    id: `${storePrefix}quote-details.expiration-date-change.title`,
   },
 })
 

@@ -76,13 +76,10 @@ const QuotesTableContainer: FunctionComponent = () => {
     }
   )
 
-  const { data, loading, refetch } = useQuery(GET_QUOTES, { ssr: false })
-
-  useEffect(() => {
-    refetch()
-  }, [refetch])
-
-  if (!data || (isAuthenticated && !permissionsData)) return null
+  const { data, loading, refetch } = useQuery(GET_QUOTES, {
+    fetchPolicy: 'network-only',
+    ssr: false,
+  })
 
   const handlePrevClick = () => {
     if (paginationState.page === 1) return
@@ -316,11 +313,11 @@ const QuotesTableContainer: FunctionComponent = () => {
       <div className="mw9 center">
         <Layout fullWidth pageHeader={<QuotesTablePageHeader />}>
           <QuotesTable
-            quotes={data.getQuotes?.data ?? []}
+            quotes={data?.getQuotes?.data ?? []}
             permissions={permissionsData.checkUserPermission.permissions}
             page={paginationState.page}
             pageSize={paginationState.pageSize}
-            total={data.getQuotes?.pagination?.total ?? 0}
+            total={data?.getQuotes?.pagination?.total ?? 0}
             loading={loading}
             handlePrevClick={handlePrevClick}
             handleNextClick={handleNextClick}

@@ -16,5 +16,11 @@
   },
   "quote-details": {
     "component": "QuoteDetails"
+  },
+  "my-account-link.b2b-quotes": {
+    "component": "B2BQuotesLink"
+  },
+  "my-account-page.b2b-quotes": {
+    "component": "B2BQuotesListAccount"
   }
 }

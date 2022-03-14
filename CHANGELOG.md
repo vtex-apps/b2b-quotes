@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `Quotes and Saved Carts` link to My Account menu
+
+### Fixed
+
+- When creating new quote, calculate subtotal from list of items rather than using totalizers from orderForm (if items currently have no availability, they will not be included in totalizer amount)
+- If a promotion causes two instances of the same SKU to have different selling prices, add them to the quote as separate lines
+- Do not allow free items to be added to quote
+- Use `network-only` fetch policy when fetching quotes to ensure freshest data
+- Remove unnecessary refetches
+
 ## [0.2.0] - 2022-03-10
 
 ### Added
@@ -27,7 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Improvement of Quote Details,
-- Calculate the discount against original price (listPrice item) 
+- Calculate the discount against original price (listPrice item)
 - If user input some value above from max discount, it's blocked to save, and an alert is shown.
 
 ## [0.0.3] - 2022-01-06
