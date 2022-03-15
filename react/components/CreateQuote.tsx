@@ -277,14 +277,6 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
     },
   }
 
-  // const { totalizers } = data?.orderForm ?? {}
-
-  // const subtotal = (
-  //   totalizers?.find((x: { id: string }) => x.id === 'Items') || {
-  //     value: 0,
-  //   }
-  // ).value
-
   const summary = [
     {
       label: formatMessage(messages.subtotal),
