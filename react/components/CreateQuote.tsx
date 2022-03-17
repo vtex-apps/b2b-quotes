@@ -151,6 +151,7 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
   )
 
   const { data, refetch } = useQuery(getOrderForm, {
+    fetchPolicy: 'network-only',
     ssr: false,
   })
 
