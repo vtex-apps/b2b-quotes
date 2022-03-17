@@ -124,7 +124,7 @@ const messages = defineMessages({
     id: `${storePrefix}quote-details.original-price.title`,
   },
   expirationDateChange: {
-    id: `${storePrefix}quote-details.expiration-data-change.title`,
+    id: `${storePrefix}quote-details.expiration-date-change.title`,
   },
 })
 
@@ -161,8 +161,6 @@ const QuoteDetails: FunctionComponent = () => {
 
     showToast({ message: translatedMessage, duration: 5000, action })
   }
-
-  // const { orderForm } = useOrderForm()
 
   const formatPrice = (value: number) =>
     formatCurrency({
@@ -607,7 +605,6 @@ const QuoteDetails: FunctionComponent = () => {
                         },
                         name: {
                           title: formatMessage(messages.name),
-                          // eslint-disable-next-line react/display-name
                           cellRenderer: ({ rowData }: any) => {
                             return (
                               <div>
@@ -703,7 +700,6 @@ const QuoteDetails: FunctionComponent = () => {
                         total: {
                           title: formatMessage(messages.total),
                           headerRight: true,
-                          // eslint-disable-next-line react/display-name
                           cellRenderer: ({ rowData }: any) => {
                             return (
                               <span className="tr w-100">

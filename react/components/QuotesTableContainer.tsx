@@ -2,6 +2,7 @@ import type { FunctionComponent, ChangeEvent } from 'react'
 import React, { useState, useEffect } from 'react'
 import { useQuery } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
+import { useRuntime } from 'vtex.render-runtime'
 import { Layout, PageHeader, PageBlock, Spinner } from 'vtex.styleguide'
 
 import QuotesTable from './QuotesTable'
@@ -35,6 +36,7 @@ let isAuthenticated =
   JSON.parse(String(localStore.getItem('orderquote_isAuthenticated'))) ?? false
 
 const QuotesTableContainer: FunctionComponent = () => {
+  const { navigate, rootPath } = useRuntime()
   const [paginationState, setPaginationState] = useState({
     page: 1,
     pageSize: 25,
@@ -76,13 +78,10 @@ const QuotesTableContainer: FunctionComponent = () => {
     }
   )
 
-  const { data, loading, refetch } = useQuery(GET_QUOTES, { ssr: false })
-
-  useEffect(() => {
-    refetch()
-  }, [refetch])
-
-  if (!data || (isAuthenticated && !permissionsData)) return null
+  const { data, loading, refetch } = useQuery(GET_QUOTES, {
+    fetchPolicy: 'network-only',
+    ssr: false,
+  })
 
   const handlePrevClick = () => {
     if (paginationState.page === 1) return
@@ -281,6 +280,12 @@ const QuotesTableContainer: FunctionComponent = () => {
     return (
       <PageHeader
         title={<FormattedMessage id="store/b2b-quotes.quotes-table.title" />}
+        linkLabel={<FormattedMessage id="store/b2b-quotes.back" />}
+        onLinkClick={() =>
+          navigate({
+            to: `${rootPath ?? ''}/account`,
+          })
+        }
       />
     )
   }
@@ -316,11 +321,11 @@ const QuotesTableContainer: FunctionComponent = () => {
       <div className="mw9 center">
         <Layout fullWidth pageHeader={<QuotesTablePageHeader />}>
           <QuotesTable
-            quotes={data.getQuotes?.data ?? []}
+            quotes={data?.getQuotes?.data ?? []}
             permissions={permissionsData.checkUserPermission.permissions}
             page={paginationState.page}
             pageSize={paginationState.pageSize}
-            total={data.getQuotes?.pagination?.total ?? 0}
+            total={data?.getQuotes?.pagination?.total ?? 0}
             loading={loading}
             handlePrevClick={handlePrevClick}
             handleNextClick={handleNextClick}

@@ -49,7 +49,7 @@ const useSessionResponse = () => {
 }
 
 let isAuthenticated =
-  JSON.parse(String(localStore.getItem('orderquote_isAuthenticated'))) ?? false
+  JSON.parse(String(localStore.getItem('b2bquotes_isAuthenticated'))) ?? false
 
 const storePrefix = 'store/b2b-quotes.'
 
@@ -132,6 +132,7 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
   })
 
   const [itemState, setItemState] = useState([] as QuoteItem[])
+  const [subtotalState, setSubtotalState] = useState(0)
   const [sentToSalesRep, setSentToSalesRep] = useState(false)
   const { formatMessage } = useIntl()
   const { navigate } = useRuntime()
@@ -150,6 +151,7 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
   )
 
   const { data, refetch } = useQuery(getOrderForm, {
+    fetchPolicy: 'network-only',
     ssr: false,
   })
 
@@ -157,20 +159,27 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
     if (!data?.orderForm?.items?.length) return
 
     const itemsCopy = [] as QuoteItem[]
+    let subtotal = 0
 
     data.orderForm.items.forEach((item: QuoteItem) => {
       const existingItem = itemsCopy.find(
-        (existing: QuoteItem) => existing.id === item.id
+        (existing: QuoteItem) =>
+          existing.id === item.id && existing.sellingPrice === item.sellingPrice
       )
 
       if (existingItem) {
         existingItem.quantity += item.quantity
-      } else {
+      } else if (item.sellingPrice !== 0) {
         itemsCopy.push(item)
       }
     })
 
+    itemsCopy.forEach((item: QuoteItem) => {
+      subtotal += item.sellingPrice * item.quantity * 100
+    })
+
     setItemState(itemsCopy)
+    setSubtotalState(subtotal)
   }, [data])
 
   const [SaveCartMutation] = useMutation(saveCartMutation)
@@ -181,7 +190,7 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
       sessionResponse?.namespaces?.profile?.isAuthenticated?.value === 'true'
 
     localStore.setItem(
-      'orderquote_isAuthenticated',
+      'b2bquotes_isAuthenticated',
       JSON.stringify(isAuthenticated)
     )
   }
@@ -198,7 +207,6 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
     properties: {
       imageUrl: {
         title: formatMessage(messages.image),
-        // eslint-disable-next-line react/display-name
         cellRenderer: ({ rowData: { imageUrl, skuName } }: any) =>
           imageUrl && (
             <div className="dib v-mid relative">
@@ -220,7 +228,6 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
       },
       name: {
         title: formatMessage(messages.name),
-        // eslint-disable-next-line react/display-name
         cellRenderer: ({ rowData }: any) => {
           return (
             <div className={handles.itemNameContainer}>
@@ -241,7 +248,6 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
       sellingPrice: {
         title: formatMessage(messages.price),
         headerRight: true,
-        // eslint-disable-next-line react/display-name
         cellRenderer: ({ cellData }: any) => {
           return (
             <span className="tr w-100">
@@ -258,7 +264,6 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
       total: {
         title: formatMessage(messages.total),
         headerRight: true,
-        // eslint-disable-next-line react/display-name
         cellRenderer: ({ rowData }: any) => {
           return (
             <span className="tr w-100">
@@ -273,27 +278,13 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
     },
   }
 
-  const { totalizers } = data?.orderForm ?? {}
-
-  const subtotal = (
-    totalizers?.find((x: { id: string }) => x.id === 'Items') || {
-      value: 0,
-    }
-  ).value
-
-  // TODO: Capture order-level discounts
-  //
-  //   const discounts = (
-  //     totalizers?.find((x: { id: string }) => x.id === 'Discounts') || {
-  //       value: 0,
-  //     }
-  //   ).value
-
   const summary = [
     {
       label: formatMessage(messages.subtotal),
       value: (
-        <FormattedCurrency value={subtotal === 0 ? subtotal : subtotal / 100} />
+        <FormattedCurrency
+          value={subtotalState === 0 ? subtotalState : subtotalState / 100}
+        />
       ),
       isLoading: false,
     },
@@ -335,7 +326,7 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
             sellingPrice: parseInt(String(item.sellingPrice * 100), 10),
           }
         }),
-        subtotal: parseInt(String(subtotal), 10),
+        subtotal: parseInt(String(subtotalState), 10),
         note: _state.note,
         sendToSalesRep,
       }
@@ -348,22 +339,23 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
             toastMessage(messages.createSuccess)
             handleClearCart(orderForm.orderFormId).then(() => {
               setItemState([])
-              refetch().then((resp: any) => {
-                if (resp?.data?.orderForm) {
-                  setOrderForm(resp?.data?.orderForm)
-                }
+              setSubtotalState(0)
+              setTimeout(() => {
+                refetch().then((resp: any) => {
+                  if (resp?.data?.orderForm) {
+                    setOrderForm(resp?.data?.orderForm)
+                  }
 
-                setTimeout(() => {
                   activeLoading(false)
                   navigate({
                     page: 'store.b2b-quotes',
                     fallbackToWindowLocation: true,
                     fetchPage: true,
                   })
-                }, 500)
 
-                return resp
-              })
+                  return resp
+                })
+              }, 500)
             })
           } else {
             toastMessage(messages.createError)
@@ -390,10 +382,6 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
   }
 
   const { permissions = [] } = permissionsData?.checkUserPermission ?? {}
-
-  useEffect(() => {
-    refetch()
-  }, [refetch])
 
   return (
     <Layout fullWidth>

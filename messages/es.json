@@ -1,4 +1,5 @@
 {
+  "store/b2b-quotes.myAccountLink": "Quotes and Saved Carts",
   "store/b2b-quotes.create.title": "Guardar Cotización",
   "store/b2b-quotes.create.nameLabel": "Nombre",
   "store/b2b-quotes.create.descriptionLabel": "Descripción",
