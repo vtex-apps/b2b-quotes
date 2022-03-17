@@ -2,6 +2,7 @@ import type { FunctionComponent, ChangeEvent } from 'react'
 import React, { useState, useEffect } from 'react'
 import { useQuery } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
+import { useRuntime } from 'vtex.render-runtime'
 import { Layout, PageHeader, PageBlock, Spinner } from 'vtex.styleguide'
 
 import QuotesTable from './QuotesTable'
@@ -35,6 +36,7 @@ let isAuthenticated =
   JSON.parse(String(localStore.getItem('orderquote_isAuthenticated'))) ?? false
 
 const QuotesTableContainer: FunctionComponent = () => {
+  const { navigate, rootPath } = useRuntime()
   const [paginationState, setPaginationState] = useState({
     page: 1,
     pageSize: 25,
@@ -278,6 +280,12 @@ const QuotesTableContainer: FunctionComponent = () => {
     return (
       <PageHeader
         title={<FormattedMessage id="store/b2b-quotes.quotes-table.title" />}
+        linkLabel={<FormattedMessage id="store/b2b-quotes.back" />}
+        onLinkClick={() =>
+          navigate({
+            to: `${rootPath ?? ''}/account`,
+          })
+        }
       />
     )
   }
