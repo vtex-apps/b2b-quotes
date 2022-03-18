@@ -6,10 +6,10 @@
     "component": "QuotesTable"
   },
   "store.create-b2b-quote": {
-    "required": ["create-quote"]
+    "required": ["quote-details"]
   },
   "create-quote": {
-    "component": "CreateQuote"
+    "component": "CreateQuoteLegacy"
   },
   "store.b2b-quote-details": {
     "required": ["quote-details"]

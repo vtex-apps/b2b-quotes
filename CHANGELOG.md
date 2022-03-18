@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Use same component (`QuoteDetails`) for creating and updating quotes, allowing salespeople to create and revise a quote in a single operation
+
 ## [0.3.0] - 2022-03-17
 
 ### Added
