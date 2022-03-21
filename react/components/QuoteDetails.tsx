@@ -274,6 +274,15 @@ const QuoteDetails: FunctionComponent = () => {
   const [updatingSubtotal, setUpdatingSubtotal] = useState(0)
   const [sentToSalesRep, setSentToSalesRep] = useState(false)
 
+  const setEditable = () => {
+    setFormState((f) => {
+      return {
+        ...f,
+        isEditable: true,
+      }
+    })
+  }
+
   const { data, loading, refetch } = useQuery(GET_QUOTE, {
     variables: { id: params?.id },
     ssr: false,
@@ -377,12 +386,7 @@ const QuoteDetails: FunctionComponent = () => {
     })
 
     if (status === 'pending' || status === 'ready' || status === 'revised') {
-      setFormState((f) => {
-        return {
-          ...f,
-          isEditable: true,
-        }
-      })
+      setEditable()
     }
   }, [data])
 
@@ -397,12 +401,7 @@ const QuoteDetails: FunctionComponent = () => {
       subtotal += item.sellingPrice * item.quantity
     })
 
-    setFormState((f) => {
-      return {
-        ...f,
-        isEditable: true,
-      }
-    })
+    setEditable()
     setQuoteState((prevState) => {
       return { ...prevState, items: itemsCopy }
     })
@@ -426,10 +425,10 @@ const QuoteDetails: FunctionComponent = () => {
     const { orderForm } = orderFormData
 
     setUpdatingQuoteState(true)
-    const { referenceName, items } = quoteState
+    const { referenceName, items: quoteItems } = quoteState
     const cart = {
       referenceName,
-      items,
+      items: quoteItems,
       subtotal: updatingSubtotal,
       note: noteState,
       sendToSalesRep,
@@ -665,6 +664,141 @@ const QuoteDetails: FunctionComponent = () => {
     status !== 'expired' &&
     status !== 'declined'
 
+  const renderQuoteName = () => {
+    if (isNewQuote) {
+      return (
+        <Input
+          size="large"
+          placeholder={formatMessage(messages.placeholderName)}
+          dataAttributes={{
+            'hj-white-list': true,
+            test: 'string',
+          }}
+          label={formatMessage(messages.labelName)}
+          value={quoteState.referenceName}
+          errorMessage={formState.errorMessage}
+          onChange={(e: any) => {
+            setQuoteState({
+              ...quoteState,
+              referenceName: e.target.value,
+            })
+          }}
+        />
+      )
+    }
+
+    return <h3 className="t-heading-3 mb8">{quoteState.referenceName}</h3>
+  }
+
+  const renderPercentageDiscount = () => {
+    if (
+      updatingSubtotal &&
+      originalSubtotal &&
+      Math.round(100 - (updatingSubtotal / originalSubtotal) * 100) <=
+        maxDiscountState
+    ) {
+      return (
+        <Fragment>
+          <div className="mt5">
+            <Slider
+              onChange={([value]: [number]) => {
+                handlePercentageDiscount(value)
+              }}
+              min={0}
+              max={maxDiscountState}
+              step={1}
+              disabled={false}
+              defaultValues={[0]}
+              alwaysShowCurrentValue
+              formatValue={(a: number) => `${a}%`}
+              value={discountState}
+            />
+          </div>
+
+          <div className="mt1">
+            <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.help-text" />
+          </div>
+        </Fragment>
+      )
+    }
+
+    return (
+      <div className="mt1">
+        <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.disabled-message" />
+      </div>
+    )
+  }
+
+  const renderQuoteSaveButtons = () => {
+    if (isNewQuote) {
+      return (
+        <Fragment>
+          <span className="mr4">
+            <Button
+              variation="secondary"
+              isLoading={updatingQuoteState && !sentToSalesRep}
+              onClick={() => {
+                createQuote(false)
+              }}
+              disabled={
+                !quoteState.items?.length ||
+                !quoteState.referenceName ||
+                updatingQuoteState
+              }
+            >
+              <FormattedMessage id="store/b2b-quotes.create.button.save-for-later" />
+            </Button>
+          </span>
+          <span className="mr4">
+            <Button
+              variation="primary"
+              isLoading={updatingQuoteState && sentToSalesRep}
+              onClick={() => {
+                createQuote(!isSalesRep)
+              }}
+              disabled={
+                !quoteState.items?.length ||
+                !quoteState.referenceName ||
+                updatingQuoteState
+              }
+            >
+              {isSalesRep ? (
+                <FormattedMessage id="store/b2b-quotes.quote-details.save" />
+              ) : (
+                <FormattedMessage id="store/b2b-quotes.create.button.request-quote" />
+              )}
+            </Button>
+          </span>
+        </Fragment>
+      )
+    }
+
+    return (
+      <Fragment>
+        <span className="mr4">
+          <Button
+            variation="primary"
+            onClick={() => handleSaveQuote()}
+            isLoading={updatingQuoteState}
+            disabled={
+              quoteState.items.some((item) => item.error) ||
+              (quoteState.items.length &&
+                noteState === '' &&
+                expirationDate === quoteState.expirationDate &&
+                arrayShallowEqual(items, quoteState.items))
+            }
+          >
+            {isSalesRep ? (
+              <FormattedMessage id="store/b2b-quotes.quote-details.save" />
+            ) : (
+              <FormattedMessage id="store/b2b-quotes.quote-details.submit-to-sales-rep" />
+            )}
+          </Button>
+        </span>
+      </Fragment>
+    )
+  }
+
   if (
     !isAuthenticated ||
     !permissions?.length ||
@@ -736,29 +870,7 @@ const QuoteDetails: FunctionComponent = () => {
               <Fragment>
                 <div className="flex flex-column ph5 ph7-ns">
                   <div className="mb5 flex flex-column">
-                    {isNewQuote ? (
-                      <Input
-                        size="large"
-                        placeholder={formatMessage(messages.placeholderName)}
-                        dataAttributes={{
-                          'hj-white-list': true,
-                          test: 'string',
-                        }}
-                        label={formatMessage(messages.labelName)}
-                        value={quoteState.referenceName}
-                        errorMessage={formState.errorMessage}
-                        onChange={(e: any) => {
-                          setQuoteState({
-                            ...quoteState,
-                            referenceName: e.target.value,
-                          })
-                        }}
-                      />
-                    ) : (
-                      <h3 className="t-heading-3 mb8">
-                        {quoteState.referenceName}
-                      </h3>
-                    )}
+                    {renderQuoteName()}
                   </div>
                 </div>
                 <div className="pa5">
@@ -957,37 +1069,7 @@ const QuoteDetails: FunctionComponent = () => {
                         <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.title" />
                       </h3>
                       <div className="pa5">
-                        {updatingSubtotal &&
-                        originalSubtotal &&
-                        Math.round(
-                          100 - (updatingSubtotal / originalSubtotal) * 100
-                        ) <= maxDiscountState ? (
-                          <Fragment>
-                            <div className="mt5">
-                              <Slider
-                                onChange={([value]: [number]) => {
-                                  handlePercentageDiscount(value)
-                                }}
-                                min={0}
-                                max={maxDiscountState}
-                                step={1}
-                                disabled={false}
-                                defaultValues={[0]}
-                                alwaysShowCurrentValue
-                                formatValue={(a: number) => `${a}%`}
-                                value={discountState}
-                              />
-                            </div>
-
-                            <div className="mt1">
-                              <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.help-text" />
-                            </div>
-                          </Fragment>
-                        ) : (
-                          <div className="mt1">
-                            <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.disabled-message" />
-                          </div>
-                        )}
+                        {renderPercentageDiscount()}
                         {maxDiscountState < 100 && (
                           <div className="mt1">
                             <FormattedMessage
@@ -1114,70 +1196,7 @@ const QuoteDetails: FunctionComponent = () => {
                       </Button>
                     </span>
                   )}
-                  {isNewQuote ? (
-                    <Fragment>
-                      <span className="mr4">
-                        <Button
-                          variation="secondary"
-                          isLoading={updatingQuoteState && !sentToSalesRep}
-                          onClick={() => {
-                            createQuote(false)
-                          }}
-                          disabled={
-                            !quoteState.items?.length ||
-                            !quoteState.referenceName ||
-                            updatingQuoteState
-                          }
-                        >
-                          <FormattedMessage id="store/b2b-quotes.create.button.save-for-later" />
-                        </Button>
-                      </span>
-                      <span className="mr4">
-                        <Button
-                          variation="primary"
-                          isLoading={updatingQuoteState && sentToSalesRep}
-                          onClick={() => {
-                            createQuote(!isSalesRep)
-                          }}
-                          disabled={
-                            !quoteState.items?.length ||
-                            !quoteState.referenceName ||
-                            updatingQuoteState
-                          }
-                        >
-                          {isSalesRep ? (
-                            <FormattedMessage id="store/b2b-quotes.quote-details.save" />
-                          ) : (
-                            <FormattedMessage id="store/b2b-quotes.create.button.request-quote" />
-                          )}
-                        </Button>
-                      </span>
-                    </Fragment>
-                  ) : (
-                    <Fragment>
-                      <span className="mr4">
-                        <Button
-                          variation="primary"
-                          onClick={() => handleSaveQuote()}
-                          isLoading={updatingQuoteState}
-                          disabled={
-                            quoteState.items.some((item) => item.error) ||
-                            (quoteState.items.length &&
-                              noteState === '' &&
-                              expirationDate === quoteState.expirationDate &&
-                              arrayShallowEqual(items, quoteState.items))
-                          }
-                        >
-                          {isSalesRep ? (
-                            <FormattedMessage id="store/b2b-quotes.quote-details.save" />
-                          ) : (
-                            <FormattedMessage id="store/b2b-quotes.quote-details.submit-to-sales-rep" />
-                          )}
-                        </Button>
-                      </span>
-                    </Fragment>
-                  )}
-
+                  {renderQuoteSaveButtons()}
                   {quoteUsable && (
                     <span className="mr4">
                       <Button

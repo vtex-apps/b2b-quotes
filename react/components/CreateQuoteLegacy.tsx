@@ -122,7 +122,7 @@ const CSS_HANDLES = [
   'totalizerContainer',
 ] as const
 
-const QuoteCreate: StorefrontFunctionComponent = () => {
+const CreateQuoteLegacy: StorefrontFunctionComponent = () => {
   const [_state, setState] = useState({
     name: '',
     note: '',
@@ -511,4 +511,4 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
   )
 }
 
-export default QuoteCreate
+export default CreateQuoteLegacy
