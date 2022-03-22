@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import type { FunctionComponent, ChangeEventHandler } from 'react'
 import React, { useState, useEffect, useContext, Fragment } from 'react'
-import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
+import { useIntl, FormattedMessage } from 'react-intl'
 import { useQuery, useMutation } from 'react-apollo'
 import { useRuntime } from 'vtex.render-runtime'
 import {
@@ -25,7 +25,13 @@ import { formatCurrency, FormattedCurrency } from 'vtex.format-currency'
 import { useCheckoutURL } from 'vtex.checkout-resources/Utils'
 import { OrderForm } from 'vtex.order-manager'
 
+import { quoteMessages } from '../utils/messages'
 import { arrayShallowEqual } from '../utils/shallowEquals'
+import {
+  useSessionResponse,
+  initQuoteFromOrderForm,
+  itemDiscountEligible,
+} from '../utils/helpers'
 import useCheckout from '../modules/checkoutHook'
 import { labelTypeByStatusMap } from './QuotesTable'
 import GET_PERMISSIONS from '../graphql/getPermissions.graphql'
@@ -36,121 +42,12 @@ import UPDATE_QUOTE from '../graphql/updateQuote.graphql'
 import USE_QUOTE from '../graphql/useQuote.graphql'
 import GET_AUTH_RULES from '../graphql/getDimension.graphql'
 import CLEAR_CART from '../graphql/clearCartMutation.graphql'
-import { getSession } from '../modules/session'
 import storageFactory from '../utils/storage'
 
 const localStore = storageFactory(() => localStorage)
 
-const useSessionResponse = () => {
-  const [session, setSession] = useState<unknown>()
-  const sessionPromise = getSession()
-
-  useEffect(() => {
-    if (!sessionPromise) {
-      return
-    }
-
-    sessionPromise.then((sessionResponse) => {
-      const { response } = sessionResponse
-
-      setSession(response)
-    })
-  }, [sessionPromise])
-
-  return session
-}
-
 let isAuthenticated =
   JSON.parse(String(localStore.getItem('b2bquotes_isAuthenticated'))) ?? false
-
-const storePrefix = 'store/b2b-quotes.'
-
-const messages = defineMessages({
-  updateSuccess: {
-    id: `${storePrefix}quote-details.update-success`,
-  },
-  updateError: {
-    id: `${storePrefix}quote-details.update-error`,
-  },
-  useError: {
-    id: `${storePrefix}quote-details.use-error`,
-  },
-  updatePageTitle: {
-    id: `${storePrefix}quote-details.title`,
-  },
-  back: {
-    id: `${storePrefix}back`,
-  },
-  subtotal: {
-    id: `${storePrefix}quote-details.subtotal.title`,
-  },
-  expiration: {
-    id: `${storePrefix}quote-details.expiration.title`,
-  },
-  status: {
-    id: `${storePrefix}quote-details.status.title`,
-  },
-  image: {
-    id: `${storePrefix}quote-details.items.image.title`,
-  },
-  refCode: {
-    id: `${storePrefix}quote-details.items.refId.title`,
-  },
-  name: {
-    id: `${storePrefix}quote-details.items.name.title`,
-  },
-  price: {
-    id: `${storePrefix}quote-details.items.price.title`,
-  },
-  quantity: {
-    id: `${storePrefix}quote-details.items.quantity.title`,
-  },
-  total: {
-    id: `${storePrefix}quote-details.items.total.title`,
-  },
-  addNote: {
-    id: `${storePrefix}quote-details.add-note.label`,
-  },
-  percentageDiscount: {
-    id: `${storePrefix}quote-details.percentage-discount.title`,
-  },
-  quotedSubtotal: {
-    id: `${storePrefix}quote-details.quoted-subtotal.title`,
-  },
-  originalSubtotal: {
-    id: `${storePrefix}quote-details.original-subtotal.title`,
-  },
-  quotePrice: {
-    id: `${storePrefix}quote-details.quote-price.title`,
-  },
-  originalPrice: {
-    id: `${storePrefix}quote-details.original-price.title`,
-  },
-  expirationDateChange: {
-    id: `${storePrefix}quote-details.expiration-date-change.title`,
-  },
-  createPageTitle: {
-    id: `${storePrefix}create.title`,
-  },
-  createSuccess: {
-    id: `${storePrefix}create.success`,
-  },
-  createError: {
-    id: `${storePrefix}create.error`,
-  },
-  required: {
-    id: `${storePrefix}create.required`,
-  },
-  placeholderName: {
-    id: `${storePrefix}create.placeholder.quotationName`,
-  },
-  labelName: {
-    id: `${storePrefix}create.nameLabel`,
-  },
-  emptyState: {
-    id: `${storePrefix}create.empty-state-label`,
-  },
-})
 
 const initialState = {
   id: '',
@@ -170,47 +67,6 @@ const initialState = {
   updateHistory: [],
   viewedByCustomer: false,
   viewedBySales: false,
-}
-
-const initQuoteFromOrderForm = (orderForm: any) => {
-  const quoteItems = [] as QuoteItem[]
-
-  orderForm?.items?.forEach((item: QuoteItem) => {
-    const existingItem = quoteItems.find(
-      (existing: QuoteItem) =>
-        existing.id === item.id && existing.sellingPrice === item.sellingPrice
-    )
-
-    if (existingItem) {
-      existingItem.quantity += item.quantity
-    } else if (item.sellingPrice !== 0) {
-      quoteItems.push({
-        ...item,
-        listPrice: item.listPrice * 100,
-        price: item.price * 100,
-        sellingPrice: item.sellingPrice * 100,
-      })
-    }
-  })
-
-  return quoteItems
-}
-
-const itemDiscountEligible = ({
-  listPrice,
-  sellingPrice,
-  error,
-  maxDiscountState,
-}: {
-  listPrice: number
-  sellingPrice: number
-  error: boolean | undefined
-  maxDiscountState: number
-}) => {
-  return !(
-    !error &&
-    Math.round(100 - (sellingPrice / listPrice) * 100) > maxDiscountState
-  )
 }
 
 const QuoteDetails: FunctionComponent = () => {
@@ -439,7 +295,7 @@ const QuoteDetails: FunctionComponent = () => {
     })
       .then((result: any) => {
         if (result.data.createQuote) {
-          toastMessage(messages.createSuccess)
+          toastMessage(quoteMessages.createSuccess)
           handleClearCart(orderForm.orderFormId).then(() => {
             setQuoteState(initialState)
             setUpdatingSubtotal(0)
@@ -462,12 +318,12 @@ const QuoteDetails: FunctionComponent = () => {
             }, 500)
           })
         } else {
-          toastMessage(messages.createError)
+          toastMessage(quoteMessages.createError)
           setUpdatingQuoteState(false)
         }
       })
       .catch(() => {
-        toastMessage(messages.createError)
+        toastMessage(quoteMessages.createError)
         setUpdatingQuoteState(false)
       })
   }
@@ -477,7 +333,7 @@ const QuoteDetails: FunctionComponent = () => {
     if (!quoteState.referenceName) {
       setFormState({
         ...formState,
-        errorMessage: formatMessage(messages.required),
+        errorMessage: formatMessage(quoteMessages.required),
       })
     } else {
       handleCreateQuote(sendToSalesRep)
@@ -502,14 +358,14 @@ const QuoteDetails: FunctionComponent = () => {
     })
       .catch((error) => {
         console.error(error)
-        toastMessage(messages.updateError)
+        toastMessage(quoteMessages.updateError)
         setUpdatingQuoteState(false)
       })
       .then(() => {
         setNoteState('')
         setDiscountState(0)
         setUpdatingQuoteState(false)
-        toastMessage(messages.updateSuccess)
+        toastMessage(quoteMessages.updateSuccess)
         refetch({ id: params?.id })
       })
   }
@@ -527,7 +383,7 @@ const QuoteDetails: FunctionComponent = () => {
     })
       .catch((error) => {
         console.error(error)
-        toastMessage(messages.useError)
+        toastMessage(quoteMessages.useError)
         setUsingQuoteState(false)
       })
       .then(() => {
@@ -550,14 +406,14 @@ const QuoteDetails: FunctionComponent = () => {
     })
       .catch((error) => {
         console.error(error)
-        toastMessage(messages.updateError)
+        toastMessage(quoteMessages.updateError)
         setUpdatingQuoteState(false)
       })
       .then(() => {
         setNoteState('')
         setDiscountState(0)
         setUpdatingQuoteState(false)
-        toastMessage(messages.updateSuccess)
+        toastMessage(quoteMessages.updateSuccess)
         refetch({ id: params?.id })
       })
   }
@@ -669,12 +525,12 @@ const QuoteDetails: FunctionComponent = () => {
       return (
         <Input
           size="large"
-          placeholder={formatMessage(messages.placeholderName)}
+          placeholder={formatMessage(quoteMessages.placeholderName)}
           dataAttributes={{
             'hj-white-list': true,
             test: 'string',
           }}
-          label={formatMessage(messages.labelName)}
+          label={formatMessage(quoteMessages.labelName)}
           value={quoteState.referenceName}
           errorMessage={formState.errorMessage}
           onChange={(e: any) => {
@@ -817,10 +673,10 @@ const QuoteDetails: FunctionComponent = () => {
               <PageHeader
                 title={formatMessage(
                   isNewQuote
-                    ? messages.createPageTitle
-                    : messages.updatePageTitle
+                    ? quoteMessages.createPageTitle
+                    : quoteMessages.updatePageTitle
                 )}
-                linkLabel={formatMessage(messages.back)}
+                linkLabel={formatMessage(quoteMessages.back)}
                 onLinkClick={() => {
                   navigate({
                     page: 'store.b2b-quotes',
@@ -852,9 +708,11 @@ const QuoteDetails: FunctionComponent = () => {
           pageHeader={
             <PageHeader
               title={formatMessage(
-                isNewQuote ? messages.createPageTitle : messages.updatePageTitle
+                isNewQuote
+                  ? quoteMessages.createPageTitle
+                  : quoteMessages.updatePageTitle
               )}
-              linkLabel={formatMessage(messages.back)}
+              linkLabel={formatMessage(quoteMessages.back)}
               onLinkClick={() => {
                 navigate({
                   page: 'store.b2b-quotes',
@@ -877,11 +735,11 @@ const QuoteDetails: FunctionComponent = () => {
                   <Table
                     totalizers={[
                       {
-                        label: formatMessage(messages.originalSubtotal),
+                        label: formatMessage(quoteMessages.originalSubtotal),
                         value: formatPrice(originalSubtotal),
                       },
                       {
-                        label: formatMessage(messages.percentageDiscount),
+                        label: formatMessage(quoteMessages.percentageDiscount),
                         value:
                           updatingSubtotal && originalSubtotal
                             ? `${Math.round(
@@ -891,12 +749,12 @@ const QuoteDetails: FunctionComponent = () => {
                             : `0%`,
                       },
                       {
-                        label: formatMessage(messages.quotedSubtotal),
+                        label: formatMessage(quoteMessages.quotedSubtotal),
                         value: formatPrice(updatingSubtotal),
                       },
                       ...(quoteState.expirationDate && [
                         {
-                          label: formatMessage(messages.expiration),
+                          label: formatMessage(quoteMessages.expiration),
                           value: formatDate(quoteState.expirationDate, {
                             day: 'numeric',
                             month: 'numeric',
@@ -906,7 +764,7 @@ const QuoteDetails: FunctionComponent = () => {
                       ]),
                       ...(quoteState.expirationDate && [
                         {
-                          label: formatMessage(messages.status),
+                          label: formatMessage(quoteMessages.status),
                           value: (
                             <Tag type={labelTypeByStatusMap[quoteState.status]}>
                               {quoteState.status}
@@ -919,7 +777,7 @@ const QuoteDetails: FunctionComponent = () => {
                     schema={{
                       properties: {
                         imageUrl: {
-                          title: formatMessage(messages.image),
+                          title: formatMessage(quoteMessages.image),
                           cellRenderer: ({
                             rowData: { imageUrl, skuName },
                           }: any) =>
@@ -938,11 +796,11 @@ const QuoteDetails: FunctionComponent = () => {
                           width: 70,
                         },
                         refId: {
-                          title: formatMessage(messages.refCode),
+                          title: formatMessage(quoteMessages.refCode),
                           width: 200,
                         },
                         name: {
-                          title: formatMessage(messages.name),
+                          title: formatMessage(quoteMessages.name),
                           cellRenderer: ({ rowData }: any) => {
                             return (
                               <div>
@@ -961,7 +819,7 @@ const QuoteDetails: FunctionComponent = () => {
                           minWidth: 300,
                         },
                         listPrice: {
-                          title: formatMessage(messages.originalPrice),
+                          title: formatMessage(quoteMessages.originalPrice),
                           headerRight: true,
                           width: 120,
                           cellRenderer: ({ rowData }: any) => {
@@ -983,7 +841,7 @@ const QuoteDetails: FunctionComponent = () => {
                           },
                         },
                         sellingPrice: {
-                          title: formatMessage(messages.quotePrice),
+                          title: formatMessage(quoteMessages.quotePrice),
                           headerRight: true,
                           width: 120,
                           cellRenderer: ({
@@ -1021,7 +879,7 @@ const QuoteDetails: FunctionComponent = () => {
                           },
                         },
                         quantity: {
-                          title: formatMessage(messages.quantity),
+                          title: formatMessage(quoteMessages.quantity),
                           width: 100,
                           cellRenderer: ({
                             cellData: quantity,
@@ -1042,7 +900,7 @@ const QuoteDetails: FunctionComponent = () => {
                           },
                         },
                         total: {
-                          title: formatMessage(messages.total),
+                          title: formatMessage(quoteMessages.total),
                           headerRight: true,
                           cellRenderer: ({ rowData }: any) => {
                             return (
@@ -1061,7 +919,7 @@ const QuoteDetails: FunctionComponent = () => {
                       },
                     }}
                     items={quoteState.items}
-                    emptyStateLabel={formatMessage(messages.emptyState)}
+                    emptyStateLabel={formatMessage(quoteMessages.emptyState)}
                   />
                   {formState.isEditable && isSalesRep && (
                     <div className="mt3">
@@ -1091,7 +949,7 @@ const QuoteDetails: FunctionComponent = () => {
                         </h3>
                         <div className="pa5">
                           <DatePicker
-                            label={formatMessage(messages.expiration)}
+                            label={formatMessage(quoteMessages.expiration)}
                             minDate={new Date()}
                             locale="en-US"
                             value={new Date(quoteState.expirationDate)}
@@ -1155,7 +1013,7 @@ const QuoteDetails: FunctionComponent = () => {
                   {formState.isEditable && (
                     <div className="mt3 pa5">
                       <Textarea
-                        label={formatMessage(messages.addNote)}
+                        label={formatMessage(quoteMessages.addNote)}
                         value={noteState}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                           setNoteState(e.target.value)
