@@ -18,7 +18,6 @@ import { FormattedCurrency } from 'vtex.format-currency'
 import { useRuntime } from 'vtex.render-runtime'
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
 import { OrderForm } from 'vtex.order-manager'
-import type { OrderForm as OrderFormType } from 'vtex.checkout-graphql'
 
 import { getSession } from '../modules/session'
 import saveCartMutation from '../graphql/createQuote.graphql'
@@ -123,7 +122,7 @@ const CSS_HANDLES = [
   'totalizerContainer',
 ] as const
 
-const QuoteCreate: StorefrontFunctionComponent = () => {
+const CreateQuoteLegacy: StorefrontFunctionComponent = () => {
   const [_state, setState] = useState({
     name: '',
     note: '',
@@ -512,10 +511,4 @@ const QuoteCreate: StorefrontFunctionComponent = () => {
   )
 }
 
-interface OrderFormContext {
-  loading: boolean
-  orderForm: OrderFormType | undefined
-  setOrderForm: (orderForm: Partial<OrderFormType>) => void
-}
-
-export default QuoteCreate
+export default CreateQuoteLegacy

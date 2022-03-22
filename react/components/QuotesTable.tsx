@@ -2,9 +2,11 @@
 import type { FunctionComponent, ChangeEvent } from 'react'
 import React from 'react'
 import { PageBlock, Table, Tag, Checkbox, Input } from 'vtex.styleguide'
-import { useIntl, defineMessages } from 'react-intl'
+import { useIntl } from 'react-intl'
 import { FormattedCurrency } from 'vtex.format-currency'
 import { useRuntime } from 'vtex.render-runtime'
+
+import { tableMessages } from '../utils/messages'
 
 interface QuotesTableProps {
   permissions: string[]
@@ -49,86 +51,6 @@ export const labelTypeByStatusMap: Record<string, string> = {
   revised: 'warning',
 }
 
-const storePrefix = 'store/b2b-quotes.'
-
-const messages = defineMessages({
-  details: {
-    id: `${storePrefix}quotes-table.details.label`,
-  },
-  refName: {
-    id: `${storePrefix}quotes-table.referenceName.title`,
-  },
-  subtotal: {
-    id: `${storePrefix}quotes-table.subtotal.title`,
-  },
-  email: {
-    id: `${storePrefix}quotes-table.creatorEmail.title`,
-  },
-  creationDate: {
-    id: `${storePrefix}quotes-table.creationDate.title`,
-  },
-  expirationDate: {
-    id: `${storePrefix}quotes-table.expirationDate.title`,
-  },
-  status: {
-    id: `${storePrefix}quotes-table.status.title`,
-  },
-  lastUpdate: {
-    id: `${storePrefix}quotes-table.lastUpdate.title`,
-  },
-  organization: {
-    id: `${storePrefix}quotes-table.organization.title`,
-  },
-  costCenter: {
-    id: `${storePrefix}quotes-table.costCenter.title`,
-  },
-  any: {
-    id: `${storePrefix}quotes-table.filters.any`,
-  },
-  is: {
-    id: `${storePrefix}quotes-table.filters.is`,
-  },
-  emptyState: {
-    id: `${storePrefix}quotes-table.empty-state-label`,
-  },
-  showRows: {
-    id: `${storePrefix}quotes-table.showRows`,
-  },
-  of: {
-    id: `${storePrefix}quotes-table.of`,
-  },
-  placeholderSearch: {
-    id: `${storePrefix}quotes-table.search.placeholder`,
-  },
-  toggleFields: {
-    id: `${storePrefix}quotes-table.toggleFields.label`,
-  },
-  showAllFields: {
-    id: `${storePrefix}quotes-table.toggleFields.showAllLabel`,
-  },
-  hideAllFields: {
-    id: `${storePrefix}quotes-table.toggleFields.hideAllLabel`,
-  },
-  newQuote: {
-    id: `${storePrefix}quotes-table.newLine.label`,
-  },
-  clearFilters: {
-    id: `${storePrefix}quotes-table.clearFilters.label`,
-  },
-  statusFilter: {
-    id: `${storePrefix}quotes-table.statusFilter.label`,
-  },
-  filtersAll: {
-    id: `${storePrefix}quotes-table.filters.all`,
-  },
-  filtersNone: {
-    id: `${storePrefix}quotes-table.filters.none`,
-  },
-  filtersIncludes: {
-    id: `${storePrefix}quotes-table.filters.includes`,
-  },
-})
-
 const QuotesTable: FunctionComponent<QuotesTableProps> = ({
   permissions,
   quotes,
@@ -165,7 +87,7 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
 
   const lineActions = [
     {
-      label: () => formatMessage(messages.details),
+      label: () => formatMessage(tableMessages.details),
       onClick: ({ rowData: { id } }: CellRendererProps) => {
         if (!id) return
 
@@ -180,7 +102,7 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
   const getSchema = () => ({
     properties: {
       referenceName: {
-        title: formatMessage(messages.refName),
+        title: formatMessage(tableMessages.refName),
         width: 200,
         cellRenderer: ({
           rowData: { viewedByCustomer, viewedBySales, referenceName },
@@ -198,7 +120,7 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
         },
       },
       subtotal: {
-        title: formatMessage(messages.subtotal),
+        title: formatMessage(tableMessages.subtotal),
         headerRight: true,
         cellRenderer: ({ rowData: { subtotal } }: CellRendererProps) => (
           <div className="w-100 tr">
@@ -207,10 +129,10 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
         ),
       },
       creatorEmail: {
-        title: formatMessage(messages.email),
+        title: formatMessage(tableMessages.email),
       },
       creationDate: {
-        title: formatMessage(messages.creationDate),
+        title: formatMessage(tableMessages.creationDate),
         cellRenderer: ({ rowData: { creationDate } }: CellRendererProps) => {
           return (
             <>
@@ -225,7 +147,7 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
         sortable: true,
       },
       expirationDate: {
-        title: formatMessage(messages.expirationDate),
+        title: formatMessage(tableMessages.expirationDate),
         cellRenderer: ({ rowData: { expirationDate } }: CellRendererProps) => {
           return (
             <>
@@ -240,14 +162,14 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
         sortable: true,
       },
       status: {
-        title: formatMessage(messages.status),
+        title: formatMessage(tableMessages.status),
         cellRenderer: ({ rowData: { status } }: CellRendererProps) => (
           <Tag type={labelTypeByStatusMap[status]}>{status}</Tag>
         ),
         sortable: true,
       },
       lastUpdate: {
-        title: formatMessage(messages.lastUpdate),
+        title: formatMessage(tableMessages.lastUpdate),
         cellRenderer: ({ rowData: { lastUpdate } }: CellRendererProps) => {
           return (
             <>
@@ -262,7 +184,7 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
         sortable: true,
       },
       organization: {
-        title: formatMessage(messages.organization),
+        title: formatMessage(tableMessages.organization),
         sortable: true,
         cellRenderer: ({
           rowData: { organizationName },
@@ -271,7 +193,7 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
         },
       },
       costCenter: {
-        title: formatMessage(messages.costCenter),
+        title: formatMessage(tableMessages.costCenter),
         sortable: true,
         cellRenderer: ({ rowData: { costCenterName } }: CellRendererProps) => {
           return <>{costCenterName}</>
@@ -355,14 +277,14 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
       renderFilterLabel: (st: any) => {
         if (!st || !st.object) {
           // you should treat empty object cases only for alwaysVisibleFilters
-          return formatMessage(messages.any)
+          return formatMessage(tableMessages.any)
         }
 
-        return `${formatMessage(messages.is)} ${st.object}`
+        return `${formatMessage(tableMessages.is)} ${st.object}`
       },
       verbs: [
         {
-          label: formatMessage(messages.is),
+          label: formatMessage(tableMessages.is),
           value: '=',
           object: simpleInputObject,
         },
@@ -387,33 +309,33 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
           })
         }}
         fixFirstColumn
-        emptyStateLabel={formatMessage(messages.emptyState)}
+        emptyStateLabel={formatMessage(tableMessages.emptyState)}
         pagination={{
           onNextClick: handleNextClick,
           onPrevClick: handlePrevClick,
           onRowsChange: handleRowsChange,
           currentItemFrom: (page - 1) * pageSize + 1,
           currentItemTo: total < page * pageSize ? total : page * pageSize,
-          textShowRows: formatMessage(messages.showRows),
-          textOf: formatMessage(messages.of),
+          textShowRows: formatMessage(tableMessages.showRows),
+          textOf: formatMessage(tableMessages.of),
           totalItems: total,
           rowsOptions: [25, 50, 100],
         }}
         toolbar={{
           inputSearch: {
             value: searchValue,
-            placeholder: formatMessage(messages.placeholderSearch),
+            placeholder: formatMessage(tableMessages.placeholderSearch),
             onChange: handleInputSearchChange,
             onClear: handleInputSearchClear,
             onSubmit: handleInputSearchSubmit,
           },
           fields: {
-            label: formatMessage(messages.toggleFields),
-            showAllLabel: formatMessage(messages.showAllFields),
-            hideAllLabel: formatMessage(messages.hideAllFields),
+            label: formatMessage(tableMessages.toggleFields),
+            showAllLabel: formatMessage(tableMessages.showAllFields),
+            hideAllLabel: formatMessage(tableMessages.hideAllFields),
           },
           newLine: {
-            label: formatMessage(messages.newQuote),
+            label: formatMessage(tableMessages.newQuote),
             handleCallback: handleNewQuote,
           },
         }}
@@ -426,15 +348,15 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
           alwaysVisibleFilters: ['status'],
           statements: filterStatements,
           onChangeStatements: handleFiltersChange,
-          clearAllFiltersButtonLabel: formatMessage(messages.clearFilters),
+          clearAllFiltersButtonLabel: formatMessage(tableMessages.clearFilters),
           collapseLeft: true,
           options: {
             status: {
-              label: formatMessage(messages.statusFilter),
+              label: formatMessage(tableMessages.statusFilter),
               renderFilterLabel: (st: any) => {
                 if (!st || !st.object) {
                   // you should treat empty object cases only for alwaysVisibleFilters
-                  return formatMessage(messages.filtersAll)
+                  return formatMessage(tableMessages.filtersAll)
                 }
 
                 const keys = st.object ? Object.keys(st.object) : []
@@ -451,15 +373,15 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
 
                 return `${
                   isAllTrue
-                    ? formatMessage(messages.filtersAll)
+                    ? formatMessage(tableMessages.filtersAll)
                     : isAllFalse
-                    ? formatMessage(messages.filtersNone)
+                    ? formatMessage(tableMessages.filtersNone)
                     : `${trueKeysLabel}`
                 }`
               },
               verbs: [
                 {
-                  label: formatMessage(messages.filtersIncludes),
+                  label: formatMessage(tableMessages.filtersIncludes),
                   value: 'includes',
                   object: statusSelectorObject,
                 },
@@ -467,13 +389,13 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
             },
             ...(showOrganizationFilter && {
               organization: {
-                label: formatMessage(messages.organization),
+                label: formatMessage(tableMessages.organization),
                 ...simpleInputVerbsAndLabel(),
               },
             }),
             ...(showCostCenterFilter && {
               costCenter: {
-                label: formatMessage(messages.costCenter),
+                label: formatMessage(tableMessages.costCenter),
                 ...simpleInputVerbsAndLabel(),
               },
             }),

@@ -1,36 +1,17 @@
 import type { FunctionComponent, ChangeEvent } from 'react'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useQuery } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
 import { Layout, PageHeader, PageBlock, Spinner } from 'vtex.styleguide'
 
+import { useSessionResponse } from '../utils/helpers'
 import QuotesTable from './QuotesTable'
 import GET_QUOTES from '../graphql/getQuotes.graphql'
 import GET_PERMISSIONS from '../graphql/getPermissions.graphql'
-import { getSession } from '../modules/session'
 import storageFactory from '../utils/storage'
 
 const localStore = storageFactory(() => localStorage)
-
-const useSessionResponse = () => {
-  const [session, setSession] = useState<unknown>()
-  const sessionPromise = getSession()
-
-  useEffect(() => {
-    if (!sessionPromise) {
-      return
-    }
-
-    sessionPromise.then((sessionResponse) => {
-      const { response } = sessionResponse
-
-      setSession(response)
-    })
-  }, [sessionPromise])
-
-  return session
-}
 
 let isAuthenticated =
   JSON.parse(String(localStore.getItem('orderquote_isAuthenticated'))) ?? false

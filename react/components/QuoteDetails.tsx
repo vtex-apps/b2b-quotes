@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import type { FunctionComponent, ChangeEventHandler } from 'react'
 import React, { useState, useEffect, useContext, Fragment } from 'react'
-import { useIntl, defineMessages, FormattedMessage } from 'react-intl'
+import { useIntl, FormattedMessage } from 'react-intl'
 import { useQuery, useMutation } from 'react-apollo'
 import { useRuntime } from 'vtex.render-runtime'
 import {
@@ -23,110 +23,51 @@ import {
 } from 'vtex.styleguide'
 import { formatCurrency, FormattedCurrency } from 'vtex.format-currency'
 import { useCheckoutURL } from 'vtex.checkout-resources/Utils'
+import { OrderForm } from 'vtex.order-manager'
 
+import { quoteMessages } from '../utils/messages'
 import { arrayShallowEqual } from '../utils/shallowEquals'
+import {
+  useSessionResponse,
+  initQuoteFromOrderForm,
+  itemDiscountEligible,
+} from '../utils/helpers'
 import useCheckout from '../modules/checkoutHook'
 import { labelTypeByStatusMap } from './QuotesTable'
 import GET_PERMISSIONS from '../graphql/getPermissions.graphql'
 import GET_QUOTE from '../graphql/getQuote.graphql'
 import GET_ORDERFORM from '../graphql/orderForm.gql'
+import CREATE_QUOTE from '../graphql/createQuote.graphql'
 import UPDATE_QUOTE from '../graphql/updateQuote.graphql'
 import USE_QUOTE from '../graphql/useQuote.graphql'
 import GET_AUTH_RULES from '../graphql/getDimension.graphql'
-import { getSession } from '../modules/session'
+import CLEAR_CART from '../graphql/clearCartMutation.graphql'
 import storageFactory from '../utils/storage'
 
 const localStore = storageFactory(() => localStorage)
 
-const useSessionResponse = () => {
-  const [session, setSession] = useState<unknown>()
-  const sessionPromise = getSession()
-
-  useEffect(() => {
-    if (!sessionPromise) {
-      return
-    }
-
-    sessionPromise.then((sessionResponse) => {
-      const { response } = sessionResponse
-
-      setSession(response)
-    })
-  }, [sessionPromise])
-
-  return session
-}
-
 let isAuthenticated =
-  JSON.parse(String(localStore.getItem('orderquote_isAuthenticated'))) ?? false
+  JSON.parse(String(localStore.getItem('b2bquotes_isAuthenticated'))) ?? false
 
-const storePrefix = 'store/b2b-quotes.'
-
-const messages = defineMessages({
-  updateSuccess: {
-    id: `${storePrefix}quote-details.update-success`,
-  },
-  updateError: {
-    id: `${storePrefix}quote-details.update-error`,
-  },
-  useError: {
-    id: `${storePrefix}quote-details.use-error`,
-  },
-  pageTitle: {
-    id: `${storePrefix}quote-details.title`,
-  },
-  back: {
-    id: `${storePrefix}back`,
-  },
-  subtotal: {
-    id: `${storePrefix}quote-details.subtotal.title`,
-  },
-  expiration: {
-    id: `${storePrefix}quote-details.expiration.title`,
-  },
-  status: {
-    id: `${storePrefix}quote-details.status.title`,
-  },
-  image: {
-    id: `${storePrefix}quote-details.items.image.title`,
-  },
-  refCode: {
-    id: `${storePrefix}quote-details.items.refId.title`,
-  },
-  name: {
-    id: `${storePrefix}quote-details.items.name.title`,
-  },
-  price: {
-    id: `${storePrefix}quote-details.items.price.title`,
-  },
-  quantity: {
-    id: `${storePrefix}quote-details.items.quantity.title`,
-  },
-  total: {
-    id: `${storePrefix}quote-details.items.total.title`,
-  },
-  addNote: {
-    id: `${storePrefix}quote-details.add-note.label`,
-  },
-  percentageDiscount: {
-    id: `${storePrefix}quote-details.percentage-discount.title`,
-  },
-  quotedSubtotal: {
-    id: `${storePrefix}quote-details.quoted-subtotal.title`,
-  },
-  originalSubtotal: {
-    id: `${storePrefix}quote-details.original-subtotal.title`,
-  },
-  quotePrice: {
-    id: `${storePrefix}quote-details.quote-price.title`,
-  },
-  originalPrice: {
-    id: `${storePrefix}quote-details.original-price.title`,
-  },
-  expirationDateChange: {
-    id: `${storePrefix}quote-details.expiration-date-change.title`,
-  },
-})
+const initialState = {
+  id: '',
+  costCenter: '',
+  costCenterName: '',
+  creationDate: '',
+  creatorEmail: '',
+  creatorRole: '',
+  expirationDate: '',
+  items: [],
+  lastUpdate: '',
+  organization: '',
+  organizationName: '',
+  referenceName: '',
+  status: '',
+  subtotal: 0,
+  updateHistory: [],
+  viewedByCustomer: false,
+  viewedBySales: false,
+}
 
 const QuoteDetails: FunctionComponent = () => {
   const {
@@ -136,6 +77,8 @@ const QuoteDetails: FunctionComponent = () => {
     navigate,
   } = useRuntime()
 
+  const isNewQuote = !params?.id
+
   const sessionResponse: any = useSessionResponse()
 
   if (sessionResponse) {
@@ -143,7 +86,7 @@ const QuoteDetails: FunctionComponent = () => {
       sessionResponse?.namespaces?.profile?.isAuthenticated?.value === 'true'
 
     localStore.setItem(
-      'orderquote_isAuthenticated',
+      'b2bquotes_isAuthenticated',
       JSON.stringify(isAuthenticated)
     )
   }
@@ -152,6 +95,7 @@ const QuoteDetails: FunctionComponent = () => {
   const { formatMessage, formatDate } = intl
   const { url: checkoutUrl } = useCheckoutURL()
   const goToCheckout = useCheckout()
+  const { setOrderForm }: OrderFormContext = OrderForm.useOrderForm()
   const { showToast } = useContext(ToastContext)
 
   const toastMessage = (message: MessageDescriptor) => {
@@ -169,28 +113,11 @@ const QuoteDetails: FunctionComponent = () => {
       value: value / 100,
     })
 
-  const [quoteState, setQuoteState] = useState<Quote>({
-    id: '',
-    costCenter: '',
-    costCenterName: '',
-    creationDate: '',
-    creatorEmail: '',
-    creatorRole: '',
-    expirationDate: '',
-    items: [],
-    lastUpdate: '',
-    organization: '',
-    organizationName: '',
-    referenceName: '',
-    status: '',
-    subtotal: 0,
-    updateHistory: [],
-    viewedByCustomer: false,
-    viewedBySales: false,
-  })
+  const [quoteState, setQuoteState] = useState<Quote>(initialState)
 
   const [formState, setFormState] = useState({
     isEditable: false,
+    errorMessage: '',
   })
 
   const [orderFormState, setOrderFormState] = useState('')
@@ -201,14 +128,27 @@ const QuoteDetails: FunctionComponent = () => {
   const [usingQuoteState, setUsingQuoteState] = useState(false)
   const [originalSubtotal, setOriginalSubtotal] = useState(0)
   const [updatingSubtotal, setUpdatingSubtotal] = useState(0)
+  const [sentToSalesRep, setSentToSalesRep] = useState(false)
+
+  const setEditable = () => {
+    setFormState((f) => {
+      return {
+        ...f,
+        isEditable: true,
+      }
+    })
+  }
 
   const { data, loading, refetch } = useQuery(GET_QUOTE, {
     variables: { id: params?.id },
     ssr: false,
-    skip: !params?.id,
+    skip: isNewQuote,
   })
 
-  const { data: orderFormData } = useQuery(GET_ORDERFORM, { ssr: false })
+  const {
+    data: orderFormData,
+    refetch: refetchOrderForm,
+  } = useQuery(GET_ORDERFORM, { ssr: false })
 
   const { data: orderAuthData } = useQuery(GET_AUTH_RULES, { ssr: false })
   const {
@@ -302,17 +242,103 @@ const QuoteDetails: FunctionComponent = () => {
     })
 
     if (status === 'pending' || status === 'ready' || status === 'revised') {
-      setFormState((f) => {
-        return {
-          ...f,
-          isEditable: true,
-        }
-      })
+      setEditable()
     }
   }, [data])
 
+  useEffect(() => {
+    // only run this function if this is a new quote and there is orderForm data
+    if (!(isNewQuote && orderFormData?.orderForm?.items?.length)) return
+
+    let subtotal = 0
+    const itemsCopy = initQuoteFromOrderForm(orderFormData.orderForm)
+
+    itemsCopy.forEach((item: QuoteItem) => {
+      subtotal += item.sellingPrice * item.quantity
+    })
+
+    setEditable()
+    setQuoteState((prevState) => {
+      return { ...prevState, items: itemsCopy }
+    })
+    setUpdatingSubtotal(subtotal)
+  }, [isNewQuote, orderFormData])
+
+  const [createQuoteMutation] = useMutation(CREATE_QUOTE)
   const [updateQuote] = useMutation(UPDATE_QUOTE)
   const [mutationUseQuote] = useMutation(USE_QUOTE)
+  const [clearCart] = useMutation(CLEAR_CART)
+
+  const handleClearCart = (orderFormId: string) => {
+    return clearCart({
+      variables: {
+        orderFormId,
+      },
+    })
+  }
+
+  const handleCreateQuote = (sendToSalesRep: boolean) => {
+    const { orderForm } = orderFormData
+
+    setUpdatingQuoteState(true)
+    const { referenceName, items: quoteItems } = quoteState
+    const cart = {
+      referenceName,
+      items: quoteItems,
+      subtotal: updatingSubtotal,
+      note: noteState,
+      sendToSalesRep,
+    }
+
+    createQuoteMutation({
+      variables: cart,
+    })
+      .then((result: any) => {
+        if (result.data.createQuote) {
+          toastMessage(quoteMessages.createSuccess)
+          handleClearCart(orderForm.orderFormId).then(() => {
+            setQuoteState(initialState)
+            setUpdatingSubtotal(0)
+            setOriginalSubtotal(0)
+            setTimeout(() => {
+              refetchOrderForm().then((resp: any) => {
+                if (resp?.data?.orderForm) {
+                  setOrderForm(resp?.data?.orderForm)
+                }
+
+                setUpdatingQuoteState(false)
+                navigate({
+                  page: 'store.b2b-quotes',
+                  fallbackToWindowLocation: true,
+                  fetchPage: true,
+                })
+
+                return resp
+              })
+            }, 500)
+          })
+        } else {
+          toastMessage(quoteMessages.createError)
+          setUpdatingQuoteState(false)
+        }
+      })
+      .catch(() => {
+        toastMessage(quoteMessages.createError)
+        setUpdatingQuoteState(false)
+      })
+  }
+
+  const createQuote = (sendToSalesRep: boolean) => {
+    setSentToSalesRep(sendToSalesRep)
+    if (!quoteState.referenceName) {
+      setFormState({
+        ...formState,
+        errorMessage: formatMessage(quoteMessages.required),
+      })
+    } else {
+      handleCreateQuote(sendToSalesRep)
+    }
+  }
 
   const handleSaveQuote = () => {
     setUpdatingQuoteState(true)
@@ -332,14 +358,14 @@ const QuoteDetails: FunctionComponent = () => {
     })
       .catch((error) => {
         console.error(error)
-        toastMessage(messages.updateError)
+        toastMessage(quoteMessages.updateError)
         setUpdatingQuoteState(false)
       })
       .then(() => {
         setNoteState('')
         setDiscountState(0)
         setUpdatingQuoteState(false)
-        toastMessage(messages.updateSuccess)
+        toastMessage(quoteMessages.updateSuccess)
         refetch({ id: params?.id })
       })
   }
@@ -357,7 +383,7 @@ const QuoteDetails: FunctionComponent = () => {
     })
       .catch((error) => {
         console.error(error)
-        toastMessage(messages.useError)
+        toastMessage(quoteMessages.useError)
         setUsingQuoteState(false)
       })
       .then(() => {
@@ -380,14 +406,14 @@ const QuoteDetails: FunctionComponent = () => {
     })
       .catch((error) => {
         console.error(error)
-        toastMessage(messages.updateError)
+        toastMessage(quoteMessages.updateError)
         setUpdatingQuoteState(false)
       })
       .then(() => {
         setNoteState('')
         setDiscountState(0)
         setUpdatingQuoteState(false)
-        toastMessage(messages.updateSuccess)
+        toastMessage(quoteMessages.updateSuccess)
         refetch({ id: params?.id })
       })
   }
@@ -403,7 +429,9 @@ const QuoteDetails: FunctionComponent = () => {
           ...item,
           sellingPrice: newPrice,
           error:
-            !newPrice || newPrice / item.listPrice < maxDiscountState / 100,
+            !newPrice || newPrice / item.listPrice < maxDiscountState / 100
+              ? true
+              : undefined, // setting error to false will cause create/update mutation to error
         }
       }
 
@@ -445,18 +473,26 @@ const QuoteDetails: FunctionComponent = () => {
 
   const handlePercentageDiscount = (percent: number) => {
     setDiscountState(percent)
-    const newItems = [] as QuoteItem[]
+    let newItems = [] as QuoteItem[]
     let newSubtotal = 0
 
-    items.forEach((item: QuoteItem) => {
-      const newSellingPrice = Math.round(
-        item.listPrice * ((100 - percent) / 100)
-      )
+    if (percent === 0) {
+      if (isNewQuote) {
+        newItems = initQuoteFromOrderForm(orderFormData?.orderForm)
+      } else {
+        newItems = data.getQuote.items
+      }
+    } else {
+      quoteState.items.forEach((item: QuoteItem) => {
+        const newSellingPrice = Math.round(
+          item.listPrice * ((100 - percent) / 100)
+        )
 
-      newSubtotal += newSellingPrice * item.quantity
+        newSubtotal += newSellingPrice * item.quantity
 
-      newItems.push({ ...item, sellingPrice: newSellingPrice })
-    })
+        newItems.push({ ...item, sellingPrice: newSellingPrice })
+      })
+    }
 
     setUpdatingSubtotal(newSubtotal)
     setQuoteState({
@@ -474,20 +510,159 @@ const QuoteDetails: FunctionComponent = () => {
 
   const quoteUsable =
     permissions.includes('use-quotes') &&
+    status &&
     status !== 'expired' &&
     status !== 'declined'
 
   const quoteDeclinable =
     permissions.includes('decline-quotes') &&
+    status &&
     status !== 'expired' &&
     status !== 'declined'
+
+  const renderQuoteName = () => {
+    if (isNewQuote) {
+      return (
+        <Input
+          size="large"
+          placeholder={formatMessage(quoteMessages.placeholderName)}
+          dataAttributes={{
+            'hj-white-list': true,
+            test: 'string',
+          }}
+          label={formatMessage(quoteMessages.labelName)}
+          value={quoteState.referenceName}
+          errorMessage={formState.errorMessage}
+          onChange={(e: any) => {
+            setQuoteState({
+              ...quoteState,
+              referenceName: e.target.value,
+            })
+          }}
+        />
+      )
+    }
+
+    return <h3 className="t-heading-3 mb8">{quoteState.referenceName}</h3>
+  }
+
+  const renderPercentageDiscount = () => {
+    if (
+      updatingSubtotal &&
+      originalSubtotal &&
+      Math.round(100 - (updatingSubtotal / originalSubtotal) * 100) <=
+        maxDiscountState
+    ) {
+      return (
+        <Fragment>
+          <div className="mt5">
+            <Slider
+              onChange={([value]: [number]) => {
+                handlePercentageDiscount(value)
+              }}
+              min={0}
+              max={maxDiscountState}
+              step={1}
+              disabled={false}
+              defaultValues={[0]}
+              alwaysShowCurrentValue
+              formatValue={(a: number) => `${a}%`}
+              value={discountState}
+            />
+          </div>
+
+          <div className="mt1">
+            <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.help-text" />
+          </div>
+        </Fragment>
+      )
+    }
+
+    return (
+      <div className="mt1">
+        <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.disabled-message" />
+      </div>
+    )
+  }
+
+  const renderQuoteSaveButtons = () => {
+    if (isNewQuote) {
+      return (
+        <Fragment>
+          <span className="mr4">
+            <Button
+              variation="secondary"
+              isLoading={updatingQuoteState && !sentToSalesRep}
+              onClick={() => {
+                createQuote(false)
+              }}
+              disabled={
+                !quoteState.items?.length ||
+                !quoteState.referenceName ||
+                updatingQuoteState
+              }
+            >
+              <FormattedMessage id="store/b2b-quotes.create.button.save-for-later" />
+            </Button>
+          </span>
+          <span className="mr4">
+            <Button
+              variation="primary"
+              isLoading={updatingQuoteState && sentToSalesRep}
+              onClick={() => {
+                createQuote(!isSalesRep)
+              }}
+              disabled={
+                !quoteState.items?.length ||
+                !quoteState.referenceName ||
+                updatingQuoteState
+              }
+            >
+              {isSalesRep ? (
+                <FormattedMessage id="store/b2b-quotes.quote-details.save" />
+              ) : (
+                <FormattedMessage id="store/b2b-quotes.create.button.request-quote" />
+              )}
+            </Button>
+          </span>
+        </Fragment>
+      )
+    }
+
+    return (
+      <Fragment>
+        <span className="mr4">
+          <Button
+            variation="primary"
+            onClick={() => handleSaveQuote()}
+            isLoading={updatingQuoteState}
+            disabled={
+              quoteState.items.some((item) => item.error) ||
+              (quoteState.items.length &&
+                noteState === '' &&
+                expirationDate === quoteState.expirationDate &&
+                arrayShallowEqual(items, quoteState.items))
+            }
+          >
+            {isSalesRep ? (
+              <FormattedMessage id="store/b2b-quotes.quote-details.save" />
+            ) : (
+              <FormattedMessage id="store/b2b-quotes.quote-details.submit-to-sales-rep" />
+            )}
+          </Button>
+        </span>
+      </Fragment>
+    )
+  }
 
   if (
     !isAuthenticated ||
     !permissions?.length ||
-    !permissions.some(
-      (permission: string) => permission.indexOf('access-quotes') >= 0
-    )
+    (!isNewQuote &&
+      !permissions.some((permission: string) =>
+        permission.includes('access-quotes')
+      )) ||
+    (isNewQuote && !permissions.includes('create-quotes'))
   ) {
     return (
       <Layout fullWidth>
@@ -496,8 +671,12 @@ const QuoteDetails: FunctionComponent = () => {
             fullWidth
             pageHeader={
               <PageHeader
-                title={formatMessage(messages.pageTitle)}
-                linkLabel={formatMessage(messages.back)}
+                title={formatMessage(
+                  isNewQuote
+                    ? quoteMessages.createPageTitle
+                    : quoteMessages.updatePageTitle
+                )}
+                linkLabel={formatMessage(quoteMessages.back)}
                 onLinkClick={() => {
                   navigate({
                     page: 'store.b2b-quotes',
@@ -528,8 +707,12 @@ const QuoteDetails: FunctionComponent = () => {
           fullWidth
           pageHeader={
             <PageHeader
-              title={formatMessage(messages.pageTitle)}
-              linkLabel={formatMessage(messages.back)}
+              title={formatMessage(
+                isNewQuote
+                  ? quoteMessages.createPageTitle
+                  : quoteMessages.updatePageTitle
+              )}
+              linkLabel={formatMessage(quoteMessages.back)}
               onLinkClick={() => {
                 navigate({
                   page: 'store.b2b-quotes',
@@ -543,45 +726,58 @@ const QuoteDetails: FunctionComponent = () => {
               <Spinner />
             ) : (
               <Fragment>
+                <div className="flex flex-column ph5 ph7-ns">
+                  <div className="mb5 flex flex-column">
+                    {renderQuoteName()}
+                  </div>
+                </div>
                 <div className="pa5">
                   <Table
                     totalizers={[
                       {
-                        label: formatMessage(messages.originalSubtotal),
+                        label: formatMessage(quoteMessages.originalSubtotal),
                         value: formatPrice(originalSubtotal),
                       },
                       {
-                        label: formatMessage(messages.percentageDiscount),
-                        value: `${Math.round(
-                          100 - (quoteState.subtotal / originalSubtotal) * 100
-                        )}%`,
+                        label: formatMessage(quoteMessages.percentageDiscount),
+                        value:
+                          updatingSubtotal && originalSubtotal
+                            ? `${Math.round(
+                                100 -
+                                  (updatingSubtotal / originalSubtotal) * 100
+                              )}%`
+                            : `0%`,
                       },
                       {
-                        label: formatMessage(messages.quotedSubtotal),
+                        label: formatMessage(quoteMessages.quotedSubtotal),
                         value: formatPrice(updatingSubtotal),
                       },
-                      {
-                        label: formatMessage(messages.expiration),
-                        value: formatDate(quoteState.expirationDate, {
-                          day: 'numeric',
-                          month: 'numeric',
-                          year: 'numeric',
-                        }),
-                      },
-                      {
-                        label: formatMessage(messages.status),
-                        value: (
-                          <Tag type={labelTypeByStatusMap[quoteState.status]}>
-                            {quoteState.status}
-                          </Tag>
-                        ),
-                      },
+                      ...(quoteState.expirationDate && [
+                        {
+                          label: formatMessage(quoteMessages.expiration),
+                          value: formatDate(quoteState.expirationDate, {
+                            day: 'numeric',
+                            month: 'numeric',
+                            year: 'numeric',
+                          }),
+                        },
+                      ]),
+                      ...(quoteState.expirationDate && [
+                        {
+                          label: formatMessage(quoteMessages.status),
+                          value: (
+                            <Tag type={labelTypeByStatusMap[quoteState.status]}>
+                              {quoteState.status}
+                            </Tag>
+                          ),
+                        },
+                      ]),
                     ]}
                     fullWidth
                     schema={{
                       properties: {
                         imageUrl: {
-                          title: formatMessage(messages.image),
+                          title: formatMessage(quoteMessages.image),
                           cellRenderer: ({
                             rowData: { imageUrl, skuName },
                           }: any) =>
@@ -600,11 +796,11 @@ const QuoteDetails: FunctionComponent = () => {
                           width: 70,
                         },
                         refId: {
-                          title: formatMessage(messages.refCode),
+                          title: formatMessage(quoteMessages.refCode),
                           width: 200,
                         },
                         name: {
-                          title: formatMessage(messages.name),
+                          title: formatMessage(quoteMessages.name),
                           cellRenderer: ({ rowData }: any) => {
                             return (
                               <div>
@@ -623,7 +819,7 @@ const QuoteDetails: FunctionComponent = () => {
                           minWidth: 300,
                         },
                         listPrice: {
-                          title: formatMessage(messages.originalPrice),
+                          title: formatMessage(quoteMessages.originalPrice),
                           headerRight: true,
                           width: 120,
                           cellRenderer: ({ rowData }: any) => {
@@ -645,17 +841,23 @@ const QuoteDetails: FunctionComponent = () => {
                           },
                         },
                         sellingPrice: {
-                          title: formatMessage(messages.quotePrice),
+                          title: formatMessage(quoteMessages.quotePrice),
                           headerRight: true,
                           width: 120,
                           cellRenderer: ({
                             cellData: sellingPrice,
-                            rowData: { id: itemId, error },
+                            rowData: { id: itemId, listPrice, error },
                           }: any) => {
                             if (
                               formState.isEditable &&
                               isSalesRep &&
-                              discountState === 0
+                              discountState === 0 &&
+                              itemDiscountEligible({
+                                listPrice,
+                                sellingPrice,
+                                error,
+                                maxDiscountState,
+                              })
                             ) {
                               return (
                                 <InputCurrency
@@ -677,7 +879,7 @@ const QuoteDetails: FunctionComponent = () => {
                           },
                         },
                         quantity: {
-                          title: formatMessage(messages.quantity),
+                          title: formatMessage(quoteMessages.quantity),
                           width: 100,
                           cellRenderer: ({
                             cellData: quantity,
@@ -698,7 +900,7 @@ const QuoteDetails: FunctionComponent = () => {
                           },
                         },
                         total: {
-                          title: formatMessage(messages.total),
+                          title: formatMessage(quoteMessages.total),
                           headerRight: true,
                           cellRenderer: ({ rowData }: any) => {
                             return (
@@ -717,30 +919,15 @@ const QuoteDetails: FunctionComponent = () => {
                       },
                     }}
                     items={quoteState.items}
+                    emptyStateLabel={formatMessage(quoteMessages.emptyState)}
                   />
                   {formState.isEditable && isSalesRep && (
                     <div className="mt3">
-                      <h3 className="t-heading-4 mb8">
+                      <h3 className="t-heading-4 mb4">
                         <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.title" />
                       </h3>
                       <div className="pa5">
-                        <Slider
-                          onChange={([value]: [number]) => {
-                            handlePercentageDiscount(value)
-                          }}
-                          min={0}
-                          max={maxDiscountState}
-                          step={1}
-                          disabled={false}
-                          defaultValues={[0]}
-                          alwaysShowCurrentValue
-                          formatValue={(a: number) => `${a}%`}
-                          value={discountState}
-                        />
-
-                        <div className="mt1">
-                          <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.help-text" />
-                        </div>
+                        {renderPercentageDiscount()}
                         {maxDiscountState < 100 && (
                           <div className="mt1">
                             <FormattedMessage
@@ -753,32 +940,36 @@ const QuoteDetails: FunctionComponent = () => {
                     </div>
                   )}
 
-                  {formState.isEditable && isSalesRep && (
-                    <div className="mt3">
-                      <h3 className="t-heading-4">
-                        <FormattedMessage id="store/b2b-quotes.quote-details.expiration-date-change.title" />
-                      </h3>
-                      <div className="pa5">
-                        <DatePicker
-                          label={formatMessage(messages.expiration)}
-                          minDate={new Date()}
-                          locale="en-US"
-                          value={new Date(quoteState.expirationDate)}
-                          onChange={(date: Date) =>
-                            setQuoteState({
-                              ...quoteState,
-                              expirationDate: date.toISOString(),
-                            })
-                          }
-                        />
+                  {quoteState.expirationDate &&
+                    formState.isEditable &&
+                    isSalesRep && (
+                      <div className="mt3">
+                        <h3 className="t-heading-4">
+                          <FormattedMessage id="store/b2b-quotes.quote-details.expiration-date-change.title" />
+                        </h3>
+                        <div className="pa5">
+                          <DatePicker
+                            label={formatMessage(quoteMessages.expiration)}
+                            minDate={new Date()}
+                            locale="en-US"
+                            value={new Date(quoteState.expirationDate)}
+                            onChange={(date: Date) =>
+                              setQuoteState({
+                                ...quoteState,
+                                expirationDate: date.toISOString(),
+                              })
+                            }
+                          />
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
                   <div className="mt3">
-                    <h3 className="t-heading-4">
-                      <FormattedMessage id="store/b2b-quotes.quote-details.update-history.title" />
-                    </h3>
+                    {quoteState.updateHistory.length > 0 && (
+                      <h3 className="t-heading-4">
+                        <FormattedMessage id="store/b2b-quotes.quote-details.update-history.title" />
+                      </h3>
+                    )}
                     {quoteState.updateHistory.map((update, index) => {
                       return (
                         <div key={index} className="ph4 pv2">
@@ -822,7 +1013,7 @@ const QuoteDetails: FunctionComponent = () => {
                   {formState.isEditable && (
                     <div className="mt3 pa5">
                       <Textarea
-                        label={formatMessage(messages.addNote)}
+                        label={formatMessage(quoteMessages.addNote)}
                         value={noteState}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                           setNoteState(e.target.value)
@@ -863,26 +1054,7 @@ const QuoteDetails: FunctionComponent = () => {
                       </Button>
                     </span>
                   )}
-                  <span className="mr4">
-                    <Button
-                      variation="primary"
-                      onClick={() => handleSaveQuote()}
-                      isLoading={updatingQuoteState}
-                      disabled={
-                        quoteState.items.some((item) => item.error) ||
-                        (quoteState.items.length &&
-                          noteState === '' &&
-                          expirationDate === quoteState.expirationDate &&
-                          arrayShallowEqual(items, quoteState.items))
-                      }
-                    >
-                      {isSalesRep ? (
-                        <FormattedMessage id="store/b2b-quotes.quote-details.save" />
-                      ) : (
-                        <FormattedMessage id="store/b2b-quotes.quote-details.submit-to-sales-rep" />
-                      )}
-                    </Button>
-                  </span>
+                  {renderQuoteSaveButtons()}
                   {quoteUsable && (
                     <span className="mr4">
                       <Button
