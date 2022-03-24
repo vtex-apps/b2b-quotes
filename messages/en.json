@@ -71,5 +71,9 @@
   "store/b2b-quotes.quote-details.original-price.title": "Original Price",
   "store/b2b-quotes.quote-details.quote-price.title": "Quoted Price",
   "store/b2b-quotes.quote-details.quoted-subtotal.title": "Quoted Subtotal",
-  "store/b2b-quotes.quote-details.expiration-date-change.title": "Expiration Date Change"
+  "store/b2b-quotes.quote-details.expiration-date-change.title": "Expiration Date Change",
+  "store/b2b-quotes.quote-locking.title": "Quote in Use",
+  "store/b2b-quotes.quote-locking.message": " Your cart currently contains items from a quote and therefore cannot be modified. You may either return to checkout or clear your cart to continue browsing.",
+  "store/b2b-quotes.quote-locking.return-to-checkout": "Return to Checkout",
+  "store/b2b-quotes.quote-locking.clear-cart": "Clear Cart"
 }

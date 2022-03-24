@@ -1,0 +1,22 @@
+mutation setOrderFormCustomData(
+  $appId: String
+  $field: String
+  $value: String
+  $orderFormId: String
+) {
+  setOrderFormCustomData(
+    orderFormId: $orderFormId
+    appId: $appId
+    field: $field
+    value: $value
+  ) @context(provider: "vtex.store-graphql") {
+    orderFormId
+    customData {
+      customApps {
+        fields
+        id
+        major
+      }
+    }
+  }
+}
