@@ -5,6 +5,10 @@
   "quotes-table": {
     "component": "QuotesTable"
   },
+  "quotes-locking-modal": {
+    "component": "B2BQuotesLockingModal"
+  },
+
   "store.create-b2b-quote": {
     "required": ["quote-details"]
   },
