@@ -9,12 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-<<<<<<< HEAD
 Added a modal component that verifies if the quoteId is on the orderForm and locks by opening the modal component if the user tries to browse other pages instead of the checkout page.
-=======
-Added a modal component that verifies if the quoteId is on the orderForm and lock by opening the modal component if the user tries to browse other pages instead of checkout page
->>>>>>> modal-block-quote
-
 
 ## [0.4.0] - 2022-03-22
 
