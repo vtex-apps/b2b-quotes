@@ -75,5 +75,11 @@
   "store/b2b-quotes.quote-locking.title": "Quote in Use",
   "store/b2b-quotes.quote-locking.message": " Your cart currently contains items from a quote and therefore cannot be modified. You may either return to checkout or clear your cart to continue browsing.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "Return to Checkout",
-  "store/b2b-quotes.quote-locking.clear-cart": "Clear Cart"
+  "store/b2b-quotes.quote-locking.clear-cart": "Clear Cart",
+  "store/b2b-quotes.quote-status.ready": "Lista",
+  "store/b2b-quotes.quote-status.placed": "Hecha",
+  "store/b2b-quotes.quote-status.revised": "Revisada",
+  "store/b2b-quotes.quote-status.pending": "Pendiente",
+  "store/b2b-quotes.quote-status.expired": "Vencida",
+  "store/b2b-quotes.quote-status.declined": "Rechazada"
 }

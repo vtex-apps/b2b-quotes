@@ -2,7 +2,7 @@
 import type { FunctionComponent, ChangeEvent } from 'react'
 import React from 'react'
 import { PageBlock, Table, Tag, Checkbox, Input } from 'vtex.styleguide'
-import { useIntl } from 'react-intl'
+import { useIntl, FormattedMessage } from 'react-intl'
 import { FormattedCurrency } from 'vtex.format-currency'
 import { useRuntime } from 'vtex.render-runtime'
 
@@ -164,7 +164,9 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
       status: {
         title: formatMessage(tableMessages.status),
         cellRenderer: ({ rowData: { status } }: CellRendererProps) => (
-          <Tag type={labelTypeByStatusMap[status]}>{status}</Tag>
+          <Tag type={labelTypeByStatusMap[status]}>
+            <FormattedMessage id={`store/b2b-quotes.quote-status.${status}`} />
+          </Tag>
         ),
         sortable: true,
       },
