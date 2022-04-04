@@ -116,7 +116,7 @@ Depending on the current user’s [storefront permissions](#storefront-permissio
 
 ### Creating a quote or saved cart
 
-In order to create a quote or saved cart, it is necessary to have the **Create Quotes and Carts **[permission](#storefront-permissions). After adding products to the cart in the storefront, users with these permissions can use the contents of their cart to create a saved cart or to request a quote. They should follow the instructions below.
+In order to create a quote or saved cart, it is necessary to have the **Create Quotes and Carts** [permission](#storefront-permissions). After adding products to the cart in the storefront, users with these permissions can use the contents of their cart to create a saved cart or to request a quote. They should follow the instructions below.
 
 1. Fill in the shopping cart with the desired products.
 2. Take one of the following actions to create a quote or saved cart:
@@ -132,7 +132,7 @@ In order to create a quote or saved cart, it is necessary to have the **Create Q
     * **Percentage Discount:** percentage of the discount offered by a sales representative.
     * **Quoted Subtotal:** subtotal of the quote, including any discounts offered by sales representatives.
     * **Image:** image of the selected product.
-    * **Ref. Code: **reference code of the selected product.
+    * **Ref. Code:** reference code of the selected product.
     * **Name:** name of the product.
     * **Original Price:** original price of the product.
     * **Quoted Price:** price of the product including any discounts offered by sales representatives.
@@ -173,7 +173,7 @@ This page displays the following information about a specific quote:
 * **Expiration:** date when the quote or saved cart will expire, in the MM/DD/YYYY format.
 * **Status:** current state of the quote or saved cart, as in [My Quotes](#my-quotes).
 * **Image:** image of the selected product.
-* **Ref. Code: **reference code of the selected product.
+* **Ref. Code:** reference code of the selected product.
 * **Name:** name of the product.
 * **Original Price:** original price of the product.
 * **Quoted Price:** price of the product including any discounts offered by sales representatives.
@@ -189,7 +189,7 @@ The following actions are available, depending on the user’s storefront permis
 | [Editing a quote](#editing-a-quote) | Any of the following:<br>Edit My Cost Center's Quotes and Carts<br>Edit My Organization's Quotes and Carts<br>Edit All Quotes and Carts |
 | [Requesting additional adjustments to a quote](#requesting-additional-adjustments-to-a-quote) | Any of the following:<br>Access My Cost Center's Quotes and Carts<br>Access My Organization's Quotes and Carts<br>Access All Quotes and Carts |
 | [Declining a quote or saved cart](#declining-a-quote-or-saved-cart) |  Decline Quotes and Carts |
-| [Using a quote or saved cart to place an order](#using-a-quote-or-saved-cart) | Place Orders from Quotes and Carts |
+| [Using a quote or saved cart to place an order](#using-a-quote-or-saved-cart-to-place-an-order) | Place Orders from Quotes and Carts |
 
 
 
@@ -200,7 +200,7 @@ Users with **Edit** [permissions](#storefront-permissions) – who are typically
 * Change the price or quantity of each SKU by editing them directly in the **Quoted Price** and **Quantity** columns of the product list within the quote.
 * **Apply Percentage Discount:** apply a percentage discount to the entire quote by dragging the discount bar up to the desired percentage. This will override any changes made to individual product prices.
 * **Expiration Date Change:** change the quote’s expiration date.
-* **Add Note: **write an optional comment.
+* **Add Note:** write an optional comment.
 
 After making any of the above edits on the quote details page, the user must save the quote by clicking `Save quote`.
 
@@ -216,7 +216,7 @@ This will have the effect of setting the quote’s status to **Ready** and notif
 
 Users who lack any of the **Edit** permissions but have any of the **Access** [permissions](#storefront-permissions) can add additional notes to a quote or saved cart if its current status is **Ready**, **Pending**, or **Revised**.
 
-If a quote is **Ready**, meaning that it has been adjusted and saved by a sales user, its status will change to **Revised **when an organization user adds notes and clicks `Submit to Sales Rep`. This is intended as a way for the organization user to request additional adjustments to pricing or quantity. All users who have previously interacted with the quote will receive a notification including the contents of the notes field – check [Email templates](#email-templates) for more details on this notification.
+If a quote is **Ready**, meaning that it has been adjusted and saved by a sales user, its status will change to **Revised** when an organization user adds notes and clicks `Submit to Sales Rep`. This is intended as a way for the organization user to request additional adjustments to pricing or quantity. All users who have previously interacted with the quote will receive a notification including the contents of the notes field – check [Email templates](#email-templates) for more details on this notification.
 
 
 #### Declining a quote or saved cart
