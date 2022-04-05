@@ -1,7 +1,7 @@
 {
   "vendor": "vtex",
   "name": "b2b-quotes",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "title": "B2B Quotes & Carts",
   "description": "Allows B2B Customers to request quotes from their sales reps and/or save carts for future use",
   "builders": {
