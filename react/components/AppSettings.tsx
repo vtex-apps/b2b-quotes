@@ -42,10 +42,10 @@ const AppSettings: FC = () => {
     setSettingsState(data.getAppSettings.adminSetup)
   }, [data])
 
-  const handleSaveSettings = async () => {
+  const handleSaveSettings = () => {
     setSettingsLoading(true)
 
-    await saveSettings({
+    saveSettings({
       variables: {
         input: settingsState,
       },

@@ -243,9 +243,9 @@ To change the app’s settings, access **Account Settings** > **B2B Quotes** in 
 
 On this page, you can configure the following option:
 
-- **Default expiration date (in days) for quotes and saved carts:** this field allows you to configure the default expiration date for new quotes requested by customers in your store. The default value is 30 days. The minimum value you can set is 1, and there is no maximum value.
+- **Default expiration period (in days) for quotes and saved carts:** this field allows you to configure the default expiration date for new quotes requested by customers in your store. The default value is 30 days. The minimum value you can set is 1, and there is no maximum value.
 
-Make sure you click on `Save` after any changes.
+Make sure you click on `Save Settings` after any changes.
 
 Note that users with [storefront permissions](#storefront-permissions) to edit quotes will be able to adjust the expiration dates of individual quotes as needed.
 
