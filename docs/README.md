@@ -249,7 +249,7 @@ Make sure you click on `Save` after any changes.
 
 Note that users with [storefront permissions](#storefront-permissions) to edit quotes will be able to adjust the expiration dates of individual quotes as needed.
 
-![app-configuration](https://user-images.githubusercontent.com/77292838/161637113-790facb9-bf41-4f82-bbab-7b3bc0862bec.png)
+![app-configuration](https://user-images.githubusercontent.com/6306265/163218059-903cfbcf-0077-45d2-9457-19ee0ba4d5c8.png)
 
 <!-- DOCS-IGNORE:start -->
 
