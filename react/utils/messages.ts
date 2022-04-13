@@ -1,6 +1,7 @@
 import { defineMessages } from 'react-intl'
 
 const storePrefix = 'store/b2b-quotes.'
+const adminPrefix = 'admin/b2b-quotes.'
 
 export const quoteMessages = defineMessages({
   updateSuccess: {
@@ -164,5 +165,23 @@ export const tableMessages = defineMessages({
   },
   filtersIncludes: {
     id: `${storePrefix}quotes-table.filters.includes`,
+  },
+})
+
+export const adminMessages = defineMessages({
+  settingsPageTitle: {
+    id: `${adminPrefix}settings.title`,
+  },
+  saveSettingsFailure: {
+    id: `${adminPrefix}settings.saveSettings.failure`,
+  },
+  saveSettingsSuccess: {
+    id: `${adminPrefix}settings.saveSettings.success`,
+  },
+  cartLifeSpanLabel: {
+    id: `${adminPrefix}settings.cartLifeSpan.label`,
+  },
+  saveSettingsButtonText: {
+    id: `${adminPrefix}settings.saveSettings.buttonText`,
   },
 })

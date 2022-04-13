@@ -8,12 +8,8 @@
   "quotes-locking-modal": {
     "component": "B2BQuotesLockingModal"
   },
-
   "store.create-b2b-quote": {
     "required": ["quote-details"]
-  },
-  "create-quote": {
-    "component": "CreateQuoteLegacy"
   },
   "store.b2b-quote-details": {
     "required": ["quote-details"]

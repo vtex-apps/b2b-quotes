@@ -1,0 +1,9 @@
+[
+  {
+    "section": "accountSettings",
+    "path": "/admin/b2b-quotes/settings",
+    "icon": "extensions-ic",
+    "titleId": "admin/b2b-quotes.navigation.label",
+    "searchKeyWordsHelpers": "admin/b2b-quotes.navigation.keywords"
+  }
+]
