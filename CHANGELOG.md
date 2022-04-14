@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Admin panel for app settings
+
+### Removed
+
+- Billing options
+- `settingsSchema`
+- Legacy `CreateQuote` component
+
 ## [0.5.1] - 2022-04-05
 
 ### Added

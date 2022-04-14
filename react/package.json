@@ -5,6 +5,7 @@
     "test": "vtex-test-tools test"
   },
   "dependencies": {
+    "@vtex/admin-ui": "^0.122.2",
     "@vtex/css-handles": "^1.0.0",
     "graphql": "^14.5.8",
     "react": "^16.9.2",
