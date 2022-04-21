@@ -911,8 +911,11 @@ const QuoteDetails: FunctionComponent = () => {
                               <span className="tr w-100">
                                 <FormattedCurrency
                                   value={
-                                    (rowData.sellingPrice * rowData.quantity) /
-                                    100
+                                    rowData.sellingPrice
+                                      ? (rowData.sellingPrice *
+                                          rowData.quantity) /
+                                        100
+                                      : 0
                                   }
                                 />
                               </span>
