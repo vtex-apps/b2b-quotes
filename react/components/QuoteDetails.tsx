@@ -454,11 +454,22 @@ const QuoteDetails: FunctionComponent = () => {
     let newSubtotal = 0
     const newItems = quoteState.items.map((item: QuoteItem) => {
       if (item.id === itemId) {
-        newSubtotal += item.sellingPrice * +event.target.value
+        let quantity =
+          !new RegExp(/[^\d]/g).test(event.target.value) && event.target.value
+            ? parseInt(event.target.value, 10)
+            : 1
+
+        if (quantity <= 0) {
+          quantity = 1
+        } else if (quantity > 50) {
+          quantity = 50
+        }
+
+        newSubtotal += item.sellingPrice * quantity
 
         return {
           ...item,
-          quantity: +event.target.value,
+          quantity,
         }
       }
 
