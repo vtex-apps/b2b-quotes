@@ -198,7 +198,7 @@ const QuoteDetails: FunctionComponent = () => {
   const {
     data: orderFormData,
     refetch: refetchOrderForm,
-  } = useQuery(GET_ORDERFORM, { ssr: false })
+  } = useQuery(GET_ORDERFORM, { ssr: false, fetchPolicy: 'network-only' })
 
   const { data: orderAuthData } = useQuery(GET_AUTH_RULES, { ssr: false })
   const {
