@@ -423,7 +423,11 @@ const QuoteDetails: FunctionComponent = () => {
   ) => ChangeEventHandler<HTMLInputElement> = (itemId) => (event) => {
     const newItems = quoteState.items.map((item: QuoteItem) => {
       if (item.id === itemId) {
-        const newPrice = ((event.target.value as unknown) as number) * 100
+        let newPrice = ((event.target.value as unknown) as number) * 100
+
+        if (newPrice > item.listPrice) {
+          newPrice = item.listPrice
+        }
 
         return {
           ...item,
