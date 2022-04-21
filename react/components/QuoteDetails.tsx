@@ -45,6 +45,7 @@ import CLEAR_CART from '../graphql/clearCartMutation.graphql'
 import storageFactory from '../utils/storage'
 
 const localStore = storageFactory(() => localStorage)
+const MAX_DISCOUNT_PERCENTAGE = 80
 
 let isAuthenticated =
   JSON.parse(String(localStore.getItem('b2bquotes_isAuthenticated'))) ?? false
@@ -122,7 +123,10 @@ const QuoteDetails: FunctionComponent = () => {
 
   const [orderFormState, setOrderFormState] = useState('')
   const [noteState, setNoteState] = useState('')
-  const [maxDiscountState, setMaxDiscountState] = useState(100)
+  const [maxDiscountState, setMaxDiscountState] = useState(
+    MAX_DISCOUNT_PERCENTAGE
+  )
+
   const [discountState, setDiscountState] = useState(0)
   const [updatingQuoteState, setUpdatingQuoteState] = useState(false)
   const [usingQuoteState, setUsingQuoteState] = useState(false)
@@ -190,7 +194,7 @@ const QuoteDetails: FunctionComponent = () => {
       ruleCollection.find(
         (collection: any) =>
           collection?.trigger?.effect?.description === 'DenyEffect'
-      )?.trigger?.condition?.greatherThan ?? 100
+      )?.trigger?.condition?.greatherThan ?? MAX_DISCOUNT_PERCENTAGE
 
     setMaxDiscountState(maxDiscountPercentage)
   }, [orderAuthData])
@@ -433,7 +437,8 @@ const QuoteDetails: FunctionComponent = () => {
           ...item,
           sellingPrice: newPrice,
           error:
-            !newPrice || newPrice / item.listPrice < maxDiscountState / 100
+            !newPrice ||
+            newPrice / item.listPrice < (100 - maxDiscountState) / 100
               ? true
               : undefined, // setting error to false will cause create/update mutation to error
         }
