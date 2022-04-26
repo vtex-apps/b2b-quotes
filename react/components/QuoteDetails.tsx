@@ -45,7 +45,7 @@ import CLEAR_CART from '../graphql/clearCartMutation.graphql'
 import storageFactory from '../utils/storage'
 
 const localStore = storageFactory(() => localStorage)
-const MAX_DISCOUNT_PERCENTAGE = 80
+const MAX_DISCOUNT_PERCENTAGE = 99
 
 let isAuthenticated =
   JSON.parse(String(localStore.getItem('b2bquotes_isAuthenticated'))) ?? false
