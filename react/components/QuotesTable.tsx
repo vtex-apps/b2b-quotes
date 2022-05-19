@@ -255,43 +255,6 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
     )
   }
 
-  // const simpleInputObject = ({
-  //   value,
-  //   onChange,
-  // }: {
-  //   value: string
-  //   onChange: any
-  // }) => {
-  //   return (
-  //     <Input
-  //       value={value || ''}
-  //       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-  //         onChange(e.target.value)
-  //       }
-  //     />
-  //   )
-  // }
-
-  // const simpleInputVerbsAndLabel = () => {
-  //   return {
-  //     renderFilterLabel: (st: any) => {
-  //       if (!st || !st.object) {
-  //         // you should treat empty object cases only for alwaysVisibleFilters
-  //         return formatMessage(tableMessages.any)
-  //       }
-
-  //       return `${formatMessage(tableMessages.is)} ${st.object}`
-  //     },
-  //     verbs: [
-  //       {
-  //         label: formatMessage(tableMessages.is),
-  //         value: '=',
-  //         object: simpleInputObject,
-  //       },
-  //     ],
-  //   }
-  // }
-
   const organizationFilter = ({
     value,
     onChange,
