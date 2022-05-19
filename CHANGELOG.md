@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.1] - 2022-04-26
+
+### Fixed
+
+- fix on discounts negative
+- NaN total when quoted price is empty
+- fix on handling quantity
+- fix on difference between input and slider discount
+- fix on slider discount bar
+- fix on orderform graphql query by adding "network-only"
+
+## [1.0.0] - 2022-04-14
+
+### Added
+
+- Admin panel for app settings
+
+### Removed
+
+- Billing options
+- `settingsSchema`
+- Legacy `CreateQuote` component
+
+## [0.5.1] - 2022-04-05
+
+### Added
+
+- Documentation
+
 ## [0.5.0] - 2022-03-24
 
 ### Added

@@ -1,0 +1,13 @@
+{
+  "admin.app.b2b-quotes": {
+    "path": "/admin/app/b2b-quotes/*",
+    "around": ["layout"]
+  },
+  "admin.app.b2b-quotes.settings": {
+    "component": "AppSettings",
+    "path": "/admin/app/b2b-quotes/settings"
+  },
+  "layout": {
+    "component": "B2BQuotesAdminLayout"
+  }
+}

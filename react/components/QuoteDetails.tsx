@@ -45,6 +45,7 @@ import CLEAR_CART from '../graphql/clearCartMutation.graphql'
 import storageFactory from '../utils/storage'
 
 const localStore = storageFactory(() => localStorage)
+const MAX_DISCOUNT_PERCENTAGE = 99
 
 let isAuthenticated =
   JSON.parse(String(localStore.getItem('b2bquotes_isAuthenticated'))) ?? false
@@ -67,6 +68,52 @@ const initialState = {
   updateHistory: [],
   viewedByCustomer: false,
   viewedBySales: false,
+}
+
+const PercentageDiscount = ({
+  updatingSubtotal,
+  originalSubtotal,
+  maxDiscountState,
+  discountState,
+  handlePercentageDiscount,
+}: any) => {
+  if (
+    discountState === 0 ||
+    (updatingSubtotal !== undefined &&
+      originalSubtotal !== undefined &&
+      Math.round(100 - (updatingSubtotal / originalSubtotal) * 100) <=
+        maxDiscountState)
+  ) {
+    return (
+      <Fragment>
+        <div className="mt5">
+          <Slider
+            onChange={([value]: [number]) => {
+              handlePercentageDiscount(value)
+            }}
+            min={0}
+            max={maxDiscountState}
+            step={1}
+            disabled={false}
+            defaultValues={[0]}
+            alwaysShowCurrentValue
+            formatValue={(a: number) => `${a}%`}
+            value={discountState}
+          />
+        </div>
+
+        <div className="mt1">
+          <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.help-text" />
+        </div>
+      </Fragment>
+    )
+  }
+
+  return (
+    <div className="mt1">
+      <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.disabled-message" />
+    </div>
+  )
 }
 
 const QuoteDetails: FunctionComponent = () => {
@@ -122,7 +169,10 @@ const QuoteDetails: FunctionComponent = () => {
 
   const [orderFormState, setOrderFormState] = useState('')
   const [noteState, setNoteState] = useState('')
-  const [maxDiscountState, setMaxDiscountState] = useState(100)
+  const [maxDiscountState, setMaxDiscountState] = useState(
+    MAX_DISCOUNT_PERCENTAGE
+  )
+
   const [discountState, setDiscountState] = useState(0)
   const [updatingQuoteState, setUpdatingQuoteState] = useState(false)
   const [usingQuoteState, setUsingQuoteState] = useState(false)
@@ -148,7 +198,7 @@ const QuoteDetails: FunctionComponent = () => {
   const {
     data: orderFormData,
     refetch: refetchOrderForm,
-  } = useQuery(GET_ORDERFORM, { ssr: false })
+  } = useQuery(GET_ORDERFORM, { ssr: false, fetchPolicy: 'network-only' })
 
   const { data: orderAuthData } = useQuery(GET_AUTH_RULES, { ssr: false })
   const {
@@ -190,7 +240,7 @@ const QuoteDetails: FunctionComponent = () => {
       ruleCollection.find(
         (collection: any) =>
           collection?.trigger?.effect?.description === 'DenyEffect'
-      )?.trigger?.condition?.greatherThan ?? 100
+      )?.trigger?.condition?.greatherThan ?? MAX_DISCOUNT_PERCENTAGE
 
     setMaxDiscountState(maxDiscountPercentage)
   }, [orderAuthData])
@@ -423,13 +473,18 @@ const QuoteDetails: FunctionComponent = () => {
   ) => ChangeEventHandler<HTMLInputElement> = (itemId) => (event) => {
     const newItems = quoteState.items.map((item: QuoteItem) => {
       if (item.id === itemId) {
-        const newPrice = ((event.target.value as unknown) as number) * 100
+        let newPrice = ((event.target.value as unknown) as number) * 100
+
+        if (newPrice > item.listPrice) {
+          newPrice = item.listPrice
+        }
 
         return {
           ...item,
           sellingPrice: newPrice,
           error:
-            !newPrice || newPrice / item.listPrice < maxDiscountState / 100
+            !newPrice ||
+            newPrice / item.listPrice < (100 - maxDiscountState) / 100
               ? true
               : undefined, // setting error to false will cause create/update mutation to error
         }
@@ -450,11 +505,22 @@ const QuoteDetails: FunctionComponent = () => {
     let newSubtotal = 0
     const newItems = quoteState.items.map((item: QuoteItem) => {
       if (item.id === itemId) {
-        newSubtotal += item.sellingPrice * +event.target.value
+        let quantity =
+          !new RegExp(/[^\d]/g).test(event.target.value) && event.target.value
+            ? parseInt(event.target.value, 10)
+            : 1
+
+        if (quantity <= 0) {
+          quantity = 1
+        } else if (quantity > 50) {
+          quantity = 50
+        }
+
+        newSubtotal += item.sellingPrice * quantity
 
         return {
           ...item,
-          quantity: +event.target.value,
+          quantity,
         }
       }
 
@@ -544,45 +610,6 @@ const QuoteDetails: FunctionComponent = () => {
     }
 
     return <h3 className="t-heading-3 mb8">{quoteState.referenceName}</h3>
-  }
-
-  const renderPercentageDiscount = () => {
-    if (
-      updatingSubtotal &&
-      originalSubtotal &&
-      Math.round(100 - (updatingSubtotal / originalSubtotal) * 100) <=
-        maxDiscountState
-    ) {
-      return (
-        <Fragment>
-          <div className="mt5">
-            <Slider
-              onChange={([value]: [number]) => {
-                handlePercentageDiscount(value)
-              }}
-              min={0}
-              max={maxDiscountState}
-              step={1}
-              disabled={false}
-              defaultValues={[0]}
-              alwaysShowCurrentValue
-              formatValue={(a: number) => `${a}%`}
-              value={discountState}
-            />
-          </div>
-
-          <div className="mt1">
-            <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.help-text" />
-          </div>
-        </Fragment>
-      )
-    }
-
-    return (
-      <div className="mt1">
-        <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.disabled-message" />
-      </div>
-    )
   }
 
   const renderQuoteSaveButtons = () => {
@@ -913,8 +940,11 @@ const QuoteDetails: FunctionComponent = () => {
                               <span className="tr w-100">
                                 <FormattedCurrency
                                   value={
-                                    (rowData.sellingPrice * rowData.quantity) /
-                                    100
+                                    rowData.sellingPrice
+                                      ? (rowData.sellingPrice *
+                                          rowData.quantity) /
+                                        100
+                                      : 0
                                   }
                                 />
                               </span>
@@ -933,7 +963,13 @@ const QuoteDetails: FunctionComponent = () => {
                         <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.title" />
                       </h3>
                       <div className="pa5">
-                        {renderPercentageDiscount()}
+                        <PercentageDiscount
+                          updatingSubtotal={updatingSubtotal}
+                          originalSubtotal={originalSubtotal}
+                          maxDiscountState={maxDiscountState}
+                          discountState={discountState}
+                          handlePercentageDiscount={handlePercentageDiscount}
+                        />
                         {maxDiscountState < 100 && (
                           <div className="mt1">
                             <FormattedMessage
