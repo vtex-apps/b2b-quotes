@@ -61,6 +61,7 @@ const QuotesTableContainer: FunctionComponent = () => {
 
   const { data, loading, refetch } = useQuery(GET_QUOTES, {
     fetchPolicy: 'network-only',
+    notifyOnNetworkStatusChange: true,
     ssr: false,
   })
 
@@ -151,17 +152,17 @@ const QuotesTableContainer: FunctionComponent = () => {
           break
         }
 
-        case 'organization': {
-          if (!object || typeof object !== 'string') return
+        case 'organizationAndCostCenter': {
+          if (!object || typeof object !== 'object') return
 
-          organizations.push(object)
-          break
-        }
+          if (object.organizationId) {
+            organizations.push(object.organizationId as string)
+          }
 
-        case 'costCenter': {
-          if (!object || typeof object !== 'string') return
+          if (object.costCenterId) {
+            costCenters.push(object.costCenterId as string)
+          }
 
-          costCenters.push(object)
           break
         }
 
