@@ -25,7 +25,7 @@ import { formatCurrency, FormattedCurrency } from 'vtex.format-currency'
 import { useCheckoutURL } from 'vtex.checkout-resources/Utils'
 import { OrderForm } from 'vtex.order-manager'
 
-import { quoteMessages } from '../utils/messages'
+import { quoteMessages, statusMessages } from '../utils/messages'
 import { arrayShallowEqual } from '../utils/shallowEquals'
 import {
   useSessionResponse,
@@ -767,7 +767,13 @@ const QuoteDetails: FunctionComponent = () => {
                           label: formatMessage(quoteMessages.status),
                           value: (
                             <Tag type={labelTypeByStatusMap[quoteState.status]}>
-                              <FormattedMessage id={`store/b2b-quotes.quote-status.${quoteState.status}`} />
+                              <FormattedMessage
+                                id={
+                                  statusMessages[
+                                    quoteState.status as keyof typeof statusMessages
+                                  ].id
+                                }
+                              />
                             </Tag>
                           ),
                         },
@@ -989,7 +995,13 @@ const QuoteDetails: FunctionComponent = () => {
                                     <Tag
                                       type={labelTypeByStatusMap[update.status]}
                                     >
-                                      <FormattedMessage id={`store/b2b-quotes.quote-status.${update.status}`} />
+                                      <FormattedMessage
+                                        id={
+                                          statusMessages[
+                                            update.status as keyof typeof statusMessages
+                                          ].id
+                                        }
+                                      />
                                     </Tag>
                                   ),
                                   index,

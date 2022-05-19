@@ -6,7 +6,7 @@ import { useIntl, FormattedMessage } from 'react-intl'
 import { FormattedCurrency } from 'vtex.format-currency'
 import { useRuntime } from 'vtex.render-runtime'
 
-import { tableMessages } from '../utils/messages'
+import { tableMessages, statusMessages } from '../utils/messages'
 
 interface QuotesTableProps {
   permissions: string[]
@@ -165,7 +165,9 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
         title: formatMessage(tableMessages.status),
         cellRenderer: ({ rowData: { status } }: CellRendererProps) => (
           <Tag type={labelTypeByStatusMap[status]}>
-            <FormattedMessage id={`store/b2b-quotes.quote-status.${status}`} />
+            <FormattedMessage
+              id={statusMessages[status as keyof typeof statusMessages].id}
+            />
           </Tag>
         ),
         sortable: true,
