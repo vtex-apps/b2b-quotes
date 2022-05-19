@@ -61,6 +61,7 @@ const QuotesTableContainer: FunctionComponent = () => {
 
   const { data, loading, refetch } = useQuery(GET_QUOTES, {
     fetchPolicy: 'network-only',
+    notifyOnNetworkStatusChange: true,
     ssr: false,
   })
 
