@@ -1,7 +1,7 @@
 {
   "admin/b2b-quotes.navigation.label": "Cotações B2B",
   "admin/b2b-quotes.navigation.keywords": "b2b, quote, quotes, cart, carts, expiration, cotação, cotações",
-  "admin/b2b-quotes.settings.title": "B2B Quotes - Configurações",
+  "admin/b2b-quotes.settings.title": "Configurações das Cotações B2B",
   "admin/b2b-quotes.settings.saveSettings.failure": "Falha ao salvar configurações",
   "admin/b2b-quotes.settings.saveSettings.success": "Configurações salvas",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "Prazo de validade padrão (em dias) para cotações e carrinhos salvos",
