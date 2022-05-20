@@ -121,6 +121,15 @@ export const tableMessages = defineMessages({
   costCenter: {
     id: `${storePrefix}quotes-table.costCenter.title`,
   },
+  organizationAndCostCenter: {
+    id: `${storePrefix}quotes-table.orgAndCostCenter.title`,
+  },
+  searchOrganization: {
+    id: `${storePrefix}quotes-table.searchOrganization.title`,
+  },
+  searchCostCenter: {
+    id: `${storePrefix}quotes-table.searchCostCenter.title`,
+  },
   any: {
     id: `${storePrefix}quotes-table.filters.any`,
   },

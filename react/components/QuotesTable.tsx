@@ -1,12 +1,14 @@
 /* eslint-disable react/display-name */
 import type { FunctionComponent, ChangeEvent } from 'react'
 import React from 'react'
-import { PageBlock, Table, Tag, Checkbox, Input } from 'vtex.styleguide'
+import { PageBlock, Table, Tag, Checkbox } from 'vtex.styleguide'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { FormattedCurrency } from 'vtex.format-currency'
 import { useRuntime } from 'vtex.render-runtime'
 
 import { tableMessages, statusMessages } from '../utils/messages'
+import OrganizationAndCostCenterFilter from './OrganizationAndCostCenterFilter'
+import type { OrgAndCC } from './OrganizationAndCostCenterFilter'
 
 interface QuotesTableProps {
   permissions: string[]
@@ -224,12 +226,10 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
     } as Record<string, unknown>
 
     const toggleValueByKey = (key: string) => {
-      const newValue = {
+      return {
         ...(value || initialValue),
         [key]: value ? !value[key] : false,
       }
-
-      return newValue
     }
 
     return (
@@ -259,41 +259,29 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
     )
   }
 
-  const simpleInputObject = ({
+  const organizationFilter = ({
     value,
     onChange,
   }: {
-    value: string
+    value: OrgAndCC
     onChange: any
   }) => {
+    let orgId = value?.organizationId || ''
+
+    if (!showOrganizationFilter) {
+      orgId = quotes[0].organization
+    }
+
     return (
-      <Input
-        value={value || ''}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          onChange(e.target.value)
+      <OrganizationAndCostCenterFilter
+        showOrganizationFilter={showOrganizationFilter}
+        organizationId={orgId}
+        costCenterId={value?.costCenterId || ''}
+        onChange={({ organizationId, costCenterId }: OrgAndCC) =>
+          onChange({ organizationId, costCenterId })
         }
       />
     )
-  }
-
-  const simpleInputVerbsAndLabel = () => {
-    return {
-      renderFilterLabel: (st: any) => {
-        if (!st || !st.object) {
-          // you should treat empty object cases only for alwaysVisibleFilters
-          return formatMessage(tableMessages.any)
-        }
-
-        return `${formatMessage(tableMessages.is)} ${st.object}`
-      },
-      verbs: [
-        {
-          label: formatMessage(tableMessages.is),
-          value: '=',
-          object: simpleInputObject,
-        },
-      ],
-    }
   }
 
   return (
@@ -349,7 +337,10 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
         }}
         onSort={handleSort}
         filters={{
-          alwaysVisibleFilters: ['status'],
+          alwaysVisibleFilters: [
+            'status',
+            ...(showCostCenterFilter ? ['organizationAndCostCenter'] : []),
+          ],
           statements: filterStatements,
           onChangeStatements: handleFiltersChange,
           clearAllFiltersButtonLabel: formatMessage(tableMessages.clearFilters),
@@ -375,13 +366,15 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
                   }`
                 })
 
-                return `${
-                  isAllTrue
-                    ? formatMessage(tableMessages.filtersAll)
-                    : isAllFalse
-                    ? formatMessage(tableMessages.filtersNone)
-                    : `${trueKeysLabel}`
-                }`
+                if (isAllTrue) {
+                  return formatMessage(tableMessages.filtersAll)
+                }
+
+                if (isAllFalse) {
+                  return formatMessage(tableMessages.filtersNone)
+                }
+
+                return `${trueKeysLabel}`
               },
               verbs: [
                 {
@@ -391,16 +384,24 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
                 },
               ],
             },
-            ...(showOrganizationFilter && {
-              organization: {
-                label: formatMessage(tableMessages.organization),
-                ...simpleInputVerbsAndLabel(),
-              },
-            }),
             ...(showCostCenterFilter && {
-              costCenter: {
-                label: formatMessage(tableMessages.costCenter),
-                ...simpleInputVerbsAndLabel(),
+              organizationAndCostCenter: {
+                label: formatMessage(tableMessages.organizationAndCostCenter),
+                renderFilterLabel: (st: any) => {
+                  if (!st || !st.object) {
+                    // you should treat empty object cases only for alwaysVisibleFilters
+                    return formatMessage(tableMessages.filtersAll)
+                  }
+
+                  return '...'
+                },
+                verbs: [
+                  {
+                    label: '',
+                    value: '=',
+                    object: organizationFilter,
+                  },
+                ],
               },
             }),
           },
