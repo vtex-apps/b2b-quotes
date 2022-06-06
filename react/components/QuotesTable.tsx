@@ -12,6 +12,7 @@ import type { OrgAndCC } from './OrganizationAndCostCenterFilter'
 
 interface QuotesTableProps {
   permissions: string[]
+  mainOrganizationId: string
   quotes: QuoteSimple[]
   page: number
   pageSize: number
@@ -55,6 +56,7 @@ export const labelTypeByStatusMap: Record<string, string> = {
 
 const QuotesTable: FunctionComponent<QuotesTableProps> = ({
   permissions,
+  mainOrganizationId,
   quotes,
   page,
   pageSize,
@@ -262,12 +264,10 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
     value: OrgAndCC
     onChange: any
   }) => {
-    if (!quotes.length) return null
-
     let orgId = value?.organizationId || ''
 
     if (!showOrganizationFilter) {
-      orgId = quotes[0].organization
+      orgId = mainOrganizationId
     }
 
     return (
