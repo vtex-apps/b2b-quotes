@@ -287,10 +287,10 @@ const QuotesTableContainer: FunctionComponent = () => {
       (permission: string) => permission.indexOf('access-quotes') >= 0
     )
   ) {
-    const message = !isAuthenticated ? (
-      <FormattedMessage id="store/b2b-quotes.error.notAuthenticated" />
-    ) : (
+    const message = isAuthenticated ? (
       <FormattedMessage id="store/b2b-quotes.error.notPermitted" />
+    ) : (
+      <FormattedMessage id="store/b2b-quotes.error.notAuthenticated" />
     )
 
     return (
