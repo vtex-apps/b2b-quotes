@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Filter error if no quotes have been created yet
+
 ## [1.1.0] - 2022-05-19
 
 ### Added
