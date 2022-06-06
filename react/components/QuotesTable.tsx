@@ -262,6 +262,8 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
     value: OrgAndCC
     onChange: any
   }) => {
+    if (!quotes.length) return null
+
     let orgId = value?.organizationId || ''
 
     if (!showOrganizationFilter) {
