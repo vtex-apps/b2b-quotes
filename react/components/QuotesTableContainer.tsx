@@ -8,13 +8,14 @@ import { Layout, PageHeader, PageBlock, Spinner } from 'vtex.styleguide'
 import { useSessionResponse } from '../utils/helpers'
 import QuotesTable from './QuotesTable'
 import GET_QUOTES from '../graphql/getQuotes.graphql'
+import GET_MAIN_ORGANIZATION from '../graphql/getMainOrganization.graphql'
 import GET_PERMISSIONS from '../graphql/getPermissions.graphql'
 import storageFactory from '../utils/storage'
 
 const localStore = storageFactory(() => localStorage)
 
 let isAuthenticated =
-  JSON.parse(String(localStore.getItem('orderquote_isAuthenticated'))) ?? false
+  JSON.parse(String(localStore.getItem('b2bquotes_isAuthenticated'))) ?? false
 
 const QuotesTableContainer: FunctionComponent = () => {
   const { navigate, rootPath } = useRuntime()
@@ -46,7 +47,7 @@ const QuotesTableContainer: FunctionComponent = () => {
       sessionResponse?.namespaces?.profile?.isAuthenticated?.value === 'true'
 
     localStore.setItem(
-      'orderquote_isAuthenticated',
+      'b2bquotes_isAuthenticated',
       JSON.stringify(isAuthenticated)
     )
   }
@@ -59,8 +60,16 @@ const QuotesTableContainer: FunctionComponent = () => {
     }
   )
 
+  const {
+    data: mainOrganizationData,
+    loading: mainOrganizationLoading,
+  } = useQuery(GET_MAIN_ORGANIZATION, {
+    ssr: false,
+  })
+
   const { data, loading, refetch } = useQuery(GET_QUOTES, {
     fetchPolicy: 'network-only',
+    notifyOnNetworkStatusChange: true,
     ssr: false,
   })
 
@@ -151,17 +160,17 @@ const QuotesTableContainer: FunctionComponent = () => {
           break
         }
 
-        case 'organization': {
-          if (!object || typeof object !== 'string') return
+        case 'organizationAndCostCenter': {
+          if (!object || typeof object !== 'object') return
 
-          organizations.push(object)
-          break
-        }
+          if (object.organizationId) {
+            organizations.push(object.organizationId as string)
+          }
 
-        case 'costCenter': {
-          if (!object || typeof object !== 'string') return
+          if (object.costCenterId) {
+            costCenters.push(object.costCenterId as string)
+          }
 
-          costCenters.push(object)
           break
         }
 
@@ -278,19 +287,17 @@ const QuotesTableContainer: FunctionComponent = () => {
       (permission: string) => permission.indexOf('access-quotes') >= 0
     )
   ) {
+    const message = isAuthenticated ? (
+      <FormattedMessage id="store/b2b-quotes.error.notPermitted" />
+    ) : (
+      <FormattedMessage id="store/b2b-quotes.error.notAuthenticated" />
+    )
+
     return (
       <Layout fullWidth>
         <div className="mw9 center">
           <Layout fullWidth pageHeader={<QuotesTablePageHeader />}>
-            <PageBlock>
-              {permissionsLoading ? (
-                <Spinner />
-              ) : !isAuthenticated ? (
-                <FormattedMessage id="store/b2b-quotes.error.notAuthenticated" />
-              ) : (
-                <FormattedMessage id="store/b2b-quotes.error.notPermitted" />
-              )}
-            </PageBlock>
+            <PageBlock>{permissionsLoading ? <Spinner /> : message}</PageBlock>
           </Layout>
         </div>
       </Layout>
@@ -303,11 +310,14 @@ const QuotesTableContainer: FunctionComponent = () => {
         <Layout fullWidth pageHeader={<QuotesTablePageHeader />}>
           <QuotesTable
             quotes={data?.getQuotes?.data ?? []}
+            mainOrganizationId={
+              mainOrganizationData?.getOrganizationByIdStorefront?.id
+            }
             permissions={permissionsData.checkUserPermission.permissions}
             page={paginationState.page}
             pageSize={paginationState.pageSize}
             total={data?.getQuotes?.pagination?.total ?? 0}
-            loading={loading}
+            loading={loading || permissionsLoading || mainOrganizationLoading}
             handlePrevClick={handlePrevClick}
             handleNextClick={handleNextClick}
             filterStatements={filterState.filterStatements}

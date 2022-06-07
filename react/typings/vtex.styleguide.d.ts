@@ -49,6 +49,7 @@ declare module 'vtex.styleguide' {
   export const ModalDialog
   export const PageBlock
   export const Slider
+  export const AutocompleteInput
   // eslint-disable-next-line @typescript-eslint/naming-convention
   export const EXPERIMENTAL_Modal
 }
