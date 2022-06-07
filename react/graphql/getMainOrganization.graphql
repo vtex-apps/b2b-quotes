@@ -1,0 +1,6 @@
+query GetMainOrganization {
+  getOrganizationByIdStorefront
+    @context(provider: "vtex.b2b-organizations-graphql") {
+    id
+  }
+}
