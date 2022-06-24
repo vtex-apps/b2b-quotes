@@ -1,3 +1,3 @@
-import QuoteDetails from './components/QuoteDetails'
+import QuoteDetails from './components/QuoteDetails/QuoteDetails'
 
 export default QuoteDetails
