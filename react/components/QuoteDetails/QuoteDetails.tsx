@@ -667,12 +667,8 @@ const QuoteDetails: FunctionComponent = () => {
                     formState={formState}
                     maxDiscountState={maxDiscountState}
                     discountState={discountState}
-                    onUpdateSellingPrice={(itemId: string) =>
-                      handleUpdateSellingPrice(itemId)
-                    }
-                    onUpdateQuantity={(itemId: string) =>
-                      handleUpdateQuantity(itemId)
-                    }
+                    onUpdateSellingPrice={handleUpdateSellingPrice}
+                    onUpdateQuantity={handleUpdateQuantity}
                   />
                   {formState.isEditable && isSalesRep && (
                     <div className="mt3">

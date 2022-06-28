@@ -158,9 +158,7 @@ const QuoteTable = ({
                   <InputCurrency
                     name="price"
                     value={sellingPrice / 100}
-                    onChange={() => {
-                      onUpdateSellingPrice(itemId)
-                    }}
+                    onChange={onUpdateSellingPrice(itemId)}
                     currencyCode={currencyCode}
                     locale={locale}
                     error={error}
@@ -188,9 +186,7 @@ const QuoteTable = ({
                     id={itemId}
                     name="quantity"
                     value={quantity}
-                    onChange={() => {
-                      onUpdateQuantity(itemId)
-                    }}
+                    onChange={onUpdateQuantity(itemId)}
                   />
                 )
               }
