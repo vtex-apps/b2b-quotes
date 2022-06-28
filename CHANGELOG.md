@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- UX adjustments on Alert messages and action buttons positions.
+- It was reorganized the code and split components into small pieces.
+
+
 ## [1.1.1] - 2022-06-06
 
 ### Fixed
