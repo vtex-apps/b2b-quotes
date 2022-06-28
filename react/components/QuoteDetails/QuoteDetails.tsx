@@ -249,7 +249,7 @@ const QuoteDetails: FunctionComponent = () => {
       expirationDate: _expirationDate,
     } = quoteState
 
-    const itemsChanged = !arrayShallowEqual(data.getQuote.items, items)
+    const itemsChanged = !arrayShallowEqual(data.getQuote.items, _items)
 
     updateQuote({
       variables: {
