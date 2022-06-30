@@ -9,6 +9,7 @@ import { useRuntime } from 'vtex.render-runtime'
 import { tableMessages, statusMessages } from '../utils/messages'
 import OrganizationAndCostCenterFilter from './OrganizationAndCostCenterFilter'
 import type { OrgAndCC } from './OrganizationAndCostCenterFilter'
+import { LabelByStatusMap } from '../utils/status'
 
 interface QuotesTableProps {
   permissions: string[]
@@ -43,15 +44,6 @@ interface CellRendererProps {
   cellData: unknown
   rowData: QuoteSimple
   updateCellMeasurements: () => void
-}
-
-export const labelTypeByStatusMap: Record<string, string> = {
-  ready: 'success',
-  placed: 'neutral',
-  declined: 'error',
-  expired: 'error',
-  pending: 'warning',
-  revised: 'warning',
 }
 
 const QuotesTable: FunctionComponent<QuotesTableProps> = ({
@@ -168,7 +160,7 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
       status: {
         title: formatMessage(tableMessages.status),
         cellRenderer: ({ rowData: { status } }: CellRendererProps) => (
-          <Tag type={labelTypeByStatusMap[status]}>
+          <Tag type={LabelByStatusMap[status]}>
             <FormattedMessage
               id={statusMessages[status as keyof typeof statusMessages].id}
             />
