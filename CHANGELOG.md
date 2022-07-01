@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix missing seller when creating new quotes
+
 ## [1.2.1] - 2022-07-04
 
 ### Added
@@ -19,7 +23,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - UX adjustments on Alert messages and action buttons positions.
 - It was reorganized the code and split components into small pieces.
-
 
 ## [1.1.1] - 2022-06-06
 
