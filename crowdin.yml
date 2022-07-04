@@ -1,11 +1,6 @@
----
-files:
-  -
-    source: "/order-quote/public/metadata/messages/pt-BR.json"
-    translation: "/order-quote/public/metadata/messages/%locale%.json"
-    type: "json"
-  -
-    source: "/order-quote/public/metadata/licenses/pt-BR.md"
-    translation: "/order-quote/public/metadata/licenses/%locale%.md"
-    type: "md"
-    
+"files": [
+  {
+    "source" : "/messages/en.json",
+    "translation" : "/%original_path%/%two_letters_code%.%file_extension%",
+  }
+]
