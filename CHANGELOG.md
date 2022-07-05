@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Complete Portuguese translations
 - A mechanism to translate quote status into multiple languages
 
+## [1.2.1] - 2022-07-04
+
+### Added
+
+- Initial Crowdin integration
+
 ## [1.2.0] - 2022-06-28
 
 ### Added
