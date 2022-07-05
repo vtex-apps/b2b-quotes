@@ -1,7 +1,8 @@
+import React from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Card, Tag } from 'vtex.styleguide'
-import React from 'react'
 
+import { statusMessages } from '../../utils/messages'
 import { LabelByStatusMap } from '../../utils/status'
 
 const QuoteUpdateHistory = ({ updateHistory }: any) => {
@@ -31,7 +32,13 @@ const QuoteUpdateHistory = ({ updateHistory }: any) => {
                     role: update.role,
                     status: (
                       <Tag type={LabelByStatusMap[update.status]}>
-                        {update.status}
+                        <FormattedMessage
+                          id={
+                            statusMessages[
+                              update.status as keyof typeof statusMessages
+                            ].id
+                          }
+                        />
                       </Tag>
                     ),
                     index,
