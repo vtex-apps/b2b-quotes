@@ -32,6 +32,7 @@ query GetOrderForm {
       price
       quantity
       sellingPrice
+      seller
     }
     shippingData {
       address {
