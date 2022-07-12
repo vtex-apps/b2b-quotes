@@ -98,6 +98,18 @@ strategy:
       - cypress-shared/integration/b2b/2.1.1*
       - cypress-shared/integration/b2b/2.1.2*
       - cypress-shared/integration/b2b/2.1.3*
+  multiOrg:
+    enabled: true
+    sendDashboard: true
+    hardTries: 1
+    stopOnFail: false
+    parallel: true
+    specs:
+      - cypress-shared/integration/b2b/2.1.4*
+    dependency:
+      - cypress-shared/integration/b2b/2.1.1*
+      - cypress-shared/integration/b2b/2.1.2*
+      - cypress-shared/integration/b2b/2.1.3*
   multiOrgAndOrgAUsers:
     enabled: true
     sendDashboard: true
@@ -106,12 +118,12 @@ strategy:
     parallel: true
     specs:
       - cypress-shared/integration/b2b/2.2*
-      - cypress-shared/integration/b2b/2.1.4*
+      - cypress-shared/integration/b2b/2.3*
     dependency:
       - cypress-shared/integration/b2b/2.1.1*
       - cypress-shared/integration/b2b/2.1.2*
       - cypress-shared/integration/b2b/2.1.3*
-  addOrgASalesUsersAndOrgBUsers:
+  addSalesUsers:
     enabled: true
     sendDashboard: true
     hardTries: 1
@@ -119,10 +131,9 @@ strategy:
     parallel: false
     specs:
       - cypress-shared/integration/b2b/2.4*
-      - cypress-shared/integration/b2b/2.3*
     dependency:
       - cypress-shared/integration/b2b/2.2*
-      - cypress-shared/integration/b2b/2.1.4*
+      - cypress-shared/integration/b2b/2.3*
   organizationABBuyersTestCases:
     enabled: true
     sendDashboard: true
@@ -140,7 +151,7 @@ strategy:
   organizationABApproversTestCases:
     enabled: true
     sendDashboard: true
-    hardTries: 1
+    hardTries: 2
     stopOnFail: false
     parallel: true
     specs:
