@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Translations for all Storefront languages.
+
+### Fixed
+
+- English, Portuguese and Romanian translations.
+
 ## [1.2.2] - 2022-07-06
 
 ### Fixed
