@@ -2,9 +2,10 @@
 name: '[TST] Quality Engineering'
 
 on:
-  push:
-    branches: 
-      - test-only-en
+  pull_request:
+    types: 
+    - labeled
+      
 
 jobs:
   quality-engineering:
