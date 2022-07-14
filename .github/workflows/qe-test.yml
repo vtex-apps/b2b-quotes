@@ -1,0 +1,23 @@
+
+name: '[TST] Quality Engineering'
+
+on:
+  push:
+    branches: 
+      - test-only-en
+
+jobs:
+  quality-engineering:
+    name: QE
+    uses: vtex-apps/usqa/.github/workflows/quality-engineering.yml@v1.0.0
+    with:
+      nodeLint: true
+      nodeTest: false
+      nodeSonar: false
+      nodeSonarProjectKey: vtex-apps_b2b-quotes
+      nodeSonarOrganization: vtex-apps
+      cypress: true
+    secrets:
+      githubToken: ${{ secrets.GITHUB_TOKEN }}
+      sonarToken: ${{ secrets.SONAR_TOKEN }}
+      cypressJson: 'nothing'
