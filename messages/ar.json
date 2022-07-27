@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "عرض الأسعار قيد الاستخدام",
   "store/b2b-quotes.quote-locking.message": " عربة التسوق الخاصة بك تحتوي حاليًا على عناصر من عرض الأسعار ولا يمكن تعديلها. يمكنك إما العودة إلى صفحة الخروج أو حذف عربة التسوق الخاصة بك لمتابعة التصفح.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "الرجوع إلي الدفع",
-  "store/b2b-quotes.quote-locking.clear-cart": "حذف عربة التسوق"
+  "store/b2b-quotes.quote-locking.clear-cart": "حذف عربة التسوق",
+  "store/b2b-quotes.quote-status.ready": "جاهز",
+  "store/b2b-quotes.quote-status.placed": "تم",
+  "store/b2b-quotes.quote-status.revised": "تمت مراجعته",
+  "store/b2b-quotes.quote-status.pending": "مُعلَقة",
+  "store/b2b-quotes.quote-status.expired": "منتهية الصلاحية",
+  "store/b2b-quotes.quote-status.declined": "مرفوض"
 }

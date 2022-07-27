@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "Tarjous käytössä",
   "store/b2b-quotes.quote-locking.message": " Ostoskorisi sisältää tällä hetkellä tuotteita tarjouksesta, eikä sitä voi muokata. Voit joko palata kassasivulle tai tyhjentää ostoskorin, jos haluat jatkaa selaamista.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "Palaa kassalle",
-  "store/b2b-quotes.quote-locking.clear-cart": "Tyhjennä ostoskori"
+  "store/b2b-quotes.quote-locking.clear-cart": "Tyhjennä ostoskori",
+  "store/b2b-quotes.quote-status.ready": "valmis",
+  "store/b2b-quotes.quote-status.placed": "asetettu",
+  "store/b2b-quotes.quote-status.revised": "tarkistettu",
+  "store/b2b-quotes.quote-status.pending": "odottaa",
+  "store/b2b-quotes.quote-status.expired": "vanhentunut",
+  "store/b2b-quotes.quote-status.declined": "hylätty"
 }

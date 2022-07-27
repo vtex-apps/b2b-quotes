@@ -86,10 +86,10 @@
   "store/b2b-quotes.quote-locking.message": " Seu carrinho contém itens de uma cotação e não pode ser modificado. Você pode retornar à página de checkout ou limpar o carrinho para continuar navegando.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "Voltar para o checkout",
   "store/b2b-quotes.quote-locking.clear-cart": "Limpar carrinho",
-  "store/b2b-quotes.quote-status.ready": "pronto",
-  "store/b2b-quotes.quote-status.placed": "realizado",
-  "store/b2b-quotes.quote-status.revised": "revisado",
+  "store/b2b-quotes.quote-status.ready": "pronta",
+  "store/b2b-quotes.quote-status.placed": "efetuada",
+  "store/b2b-quotes.quote-status.revised": "revisada",
   "store/b2b-quotes.quote-status.pending": "pendente",
-  "store/b2b-quotes.quote-status.expired": "expirado",
-  "store/b2b-quotes.quote-status.declined": "recusado"
+  "store/b2b-quotes.quote-status.expired": "expirada",
+  "store/b2b-quotes.quote-status.declined": "recusada"
 }

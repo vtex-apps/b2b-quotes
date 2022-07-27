@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "Προσφορά σε χρήση",
   "store/b2b-quotes.quote-locking.message": " Το καρότσι σας περιέχει προϊόντα από μια προσφορά και δεν μπορεί να τροποποιηθεί. Μπορείτε είτε να κάνετε επιστροφή στη σελίδα ολοκλήρωσης αγοράς ή να καθαρίσετε το καρότσι σας για να συνεχίσετε την περιήγηση.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "Επιστροφή στην Ολοκλήρωση της αγοράς",
-  "store/b2b-quotes.quote-locking.clear-cart": "Καθαρισμός καροτσιού"
+  "store/b2b-quotes.quote-locking.clear-cart": "Καθαρισμός καροτσιού",
+  "store/b2b-quotes.quote-status.ready": "έτοιμο",
+  "store/b2b-quotes.quote-status.placed": "τοποθετήθηκε",
+  "store/b2b-quotes.quote-status.revised": "αναθεωρήθηκε",
+  "store/b2b-quotes.quote-status.pending": "εκκρεμεί",
+  "store/b2b-quotes.quote-status.expired": "έληξε",
+  "store/b2b-quotes.quote-status.declined": "απορρίφθηκε"
 }

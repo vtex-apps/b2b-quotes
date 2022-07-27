@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "Devis utilisé",
   "store/b2b-quotes.quote-locking.message": " Votre panier contient actuellement les articles d’un devis ne pouvant être modifié. Vous pouvez soit retourner à la page de paiement ou vider votre panier pour continuer à naviguer.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "Retour au checkout",
-  "store/b2b-quotes.quote-locking.clear-cart": "Vider le panier"
+  "store/b2b-quotes.quote-locking.clear-cart": "Vider le panier",
+  "store/b2b-quotes.quote-status.ready": "prêt",
+  "store/b2b-quotes.quote-status.placed": "placé",
+  "store/b2b-quotes.quote-status.revised": "révisé",
+  "store/b2b-quotes.quote-status.pending": "en attente",
+  "store/b2b-quotes.quote-status.expired": "expiré",
+  "store/b2b-quotes.quote-status.declined": "décliné"
 }
