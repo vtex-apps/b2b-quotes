@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "Використовувані розцінки",
   "store/b2b-quotes.quote-locking.message": " Ваш кошик містить товари, вказані в розцінках, тому його можна змінити. Ви можете повернутися на сторінку оформлення замовлення або очистити вміст кошика та продовжити пошук товарів.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "Повернутися до оформлення замовлення",
-  "store/b2b-quotes.quote-locking.clear-cart": "Очистити кошик"
+  "store/b2b-quotes.quote-locking.clear-cart": "Очистити кошик",
+  "store/b2b-quotes.quote-status.ready": "готово",
+  "store/b2b-quotes.quote-status.placed": "розміщено",
+  "store/b2b-quotes.quote-status.revised": "виправлено",
+  "store/b2b-quotes.quote-status.pending": "на розгляді",
+  "store/b2b-quotes.quote-status.expired": "прострочені",
+  "store/b2b-quotes.quote-status.declined": "відхилено"
 }

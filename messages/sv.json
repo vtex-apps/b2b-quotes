@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "Offert i bruk",
   "store/b2b-quotes.quote-locking.message": " Din varukorg innehåller för närvarande artiklar från en offert och kan inte ändras. Du kan antingen återvända till kassan eller rensa din kundvagn för att fortsätta surfa.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "Gå tillbaka till kassan",
-  "store/b2b-quotes.quote-locking.clear-cart": "Töm varukorgen"
+  "store/b2b-quotes.quote-locking.clear-cart": "Töm varukorgen",
+  "store/b2b-quotes.quote-status.ready": "klar",
+  "store/b2b-quotes.quote-status.placed": "placerad",
+  "store/b2b-quotes.quote-status.revised": "reviderad",
+  "store/b2b-quotes.quote-status.pending": "väntande",
+  "store/b2b-quotes.quote-status.expired": "utgått",
+  "store/b2b-quotes.quote-status.declined": "avböjt"
 }

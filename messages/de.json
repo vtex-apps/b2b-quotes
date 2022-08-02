@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "Angebot in Verwendung",
   "store/b2b-quotes.quote-locking.message": " Ihr Warenkorb enthält derzeit Artikel aus einem Angebot und kann nicht geändert werden. Sie können entweder zur Kasse zurückkehren oder Ihren Warenkorb leeren, um weiter zu stöbern.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "Zurück zur Kasse",
-  "store/b2b-quotes.quote-locking.clear-cart": "Warenkorb leeren"
+  "store/b2b-quotes.quote-locking.clear-cart": "Warenkorb leeren",
+  "store/b2b-quotes.quote-status.ready": "bereit",
+  "store/b2b-quotes.quote-status.placed": "eingestellt",
+  "store/b2b-quotes.quote-status.revised": "überarbeitet",
+  "store/b2b-quotes.quote-status.pending": "in behandeling",
+  "store/b2b-quotes.quote-status.expired": "abgelaufen",
+  "store/b2b-quotes.quote-status.declined": "abgelehnt"
 }
