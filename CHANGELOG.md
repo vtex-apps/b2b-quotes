@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Bug fixed on decline quote
 
+## [1.3.1] - 2022-08-02
+
+### Fixed
+
+- English translation.
+
 ## [1.3.0] - 2022-07-21
 
 ### Added
