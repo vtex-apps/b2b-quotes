@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.3] - 2022-08-03
+
 ### Added
 
 - Added the feature that the b2b quote link will hide for b2c users
