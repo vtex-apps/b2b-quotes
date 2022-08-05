@@ -33,6 +33,8 @@ const QuoteTable = ({
       value: value / 100,
     })
 
+  quoteState.expirationDate = quoteState.expirationDate || ''
+
   return (
     <Table
       totalizers={[
@@ -63,7 +65,7 @@ const QuoteTable = ({
             }),
           },
         ]),
-        ...(quoteState.expirationDate && [
+        ...(quoteState.status && [
           {
             label: formatMessage(quoteMessages.status),
             value: (

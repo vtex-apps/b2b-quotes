@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.3] - 2022-08-03
+
+### Added
+
+- Added the feature that the b2b quote link will hide for b2c users
+
+## [1.3.2] - 2022-08-03
+
+### Fixed
+
+- Bug fixed on decline quote
+
+## [1.3.1] - 2022-08-02
+
 ### Fixed
 
 - English translation.
