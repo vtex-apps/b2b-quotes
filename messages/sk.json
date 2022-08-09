@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "Cenová ponuka sa používa",
   "store/b2b-quotes.quote-locking.message": " Váš košík momentálne obsahuje položky z cenovej ponuky a nie je možné ho upraviť. Môžete sa vrátiť na stránku pokladne alebo vymazať košík a pokračovať v prehliadaní.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "Späť do pokladne",
-  "store/b2b-quotes.quote-locking.clear-cart": "Vyprázdniť košík"
+  "store/b2b-quotes.quote-locking.clear-cart": "Vyprázdniť košík",
+  "store/b2b-quotes.quote-status.ready": "pripravené",
+  "store/b2b-quotes.quote-status.placed": "odoslané",
+  "store/b2b-quotes.quote-status.revised": "posúdené",
+  "store/b2b-quotes.quote-status.pending": "čakajúce",
+  "store/b2b-quotes.quote-status.expired": "po splatnosti",
+  "store/b2b-quotes.quote-status.declined": "odmietnuté"
 }

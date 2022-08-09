@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "Используемые расценки",
   "store/b2b-quotes.quote-locking.message": " Ваша корзина содержит товары, указанные в расценках, и не может быть изменена. Вы можете вернуться на страницу оформления заказа или очистить содержимое корзины и продолжить поиск товаров.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "Вернуться к оформлению заказа",
-  "store/b2b-quotes.quote-locking.clear-cart": "Очистить корзину"
+  "store/b2b-quotes.quote-locking.clear-cart": "Очистить корзину",
+  "store/b2b-quotes.quote-status.ready": "готово",
+  "store/b2b-quotes.quote-status.placed": "размещено",
+  "store/b2b-quotes.quote-status.revised": "пересмотрено",
+  "store/b2b-quotes.quote-status.pending": "на рассмотрении",
+  "store/b2b-quotes.quote-status.expired": "просроченные",
+  "store/b2b-quotes.quote-status.declined": "отклонено"
 }

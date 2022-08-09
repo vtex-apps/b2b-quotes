@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "使用中の見積り",
   "store/b2b-quotes.quote-locking.message": " 現在カートに見積りの項目が含まれているため、変更できません。チェックアウトページに戻るか、またはカートを空にし、ブラウジングを続けてください。",
   "store/b2b-quotes.quote-locking.return-to-checkout": "チェックアウトへ戻る",
-  "store/b2b-quotes.quote-locking.clear-cart": "カートを空にする"
+  "store/b2b-quotes.quote-locking.clear-cart": "カートを空にする",
+  "store/b2b-quotes.quote-status.ready": "準備完了",
+  "store/b2b-quotes.quote-status.placed": "送信済み",
+  "store/b2b-quotes.quote-status.revised": "訂正済み",
+  "store/b2b-quotes.quote-status.pending": "保留中",
+  "store/b2b-quotes.quote-status.expired": "期限切れ",
+  "store/b2b-quotes.quote-status.declined": "却下済み"
 }

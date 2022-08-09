@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "Ponudba v uporabi",
   "store/b2b-quotes.quote-locking.message": " Vaša košarica trenutno vsebuje artikle iz ponudbe in je ni mogoče spreminjati. Za nadaljevanje brskanja se lahko vrnete na stran za dokončanje nakupa ali počistite košarico.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "Nazaj na blagajno",
-  "store/b2b-quotes.quote-locking.clear-cart": "Počistite košarico"
+  "store/b2b-quotes.quote-locking.clear-cart": "Počistite košarico",
+  "store/b2b-quotes.quote-status.ready": "pripravljeno",
+  "store/b2b-quotes.quote-status.placed": "oddana",
+  "store/b2b-quotes.quote-status.revised": "pregledano",
+  "store/b2b-quotes.quote-status.pending": "v čakanju",
+  "store/b2b-quotes.quote-status.expired": "poteklo",
+  "store/b2b-quotes.quote-status.declined": "zavrnil"
 }

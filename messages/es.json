@@ -86,10 +86,10 @@
   "store/b2b-quotes.quote-locking.message": " Actualmente, tu carrito contiene ítems de una cotización y no puede ser modificado. Puedes volver a la página de checkout o limpiar el carrito para continuar navegando.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "Volver al checkout",
   "store/b2b-quotes.quote-locking.clear-cart": "Limpiar carrito",
-  "store/b2b-quotes.quote-status.ready": "listo",
-  "store/b2b-quotes.quote-status.placed": "logrado",
-  "store/b2b-quotes.quote-status.revised": "revisado",
+  "store/b2b-quotes.quote-status.ready": "lista",
+  "store/b2b-quotes.quote-status.placed": "realizada",
+  "store/b2b-quotes.quote-status.revised": "revisada",
   "store/b2b-quotes.quote-status.pending": "pendiente",
-  "store/b2b-quotes.quote-status.expired": "vencido",
-  "store/b2b-quotes.quote-status.declined": "rechazado"
+  "store/b2b-quotes.quote-status.expired": "vencida",
+  "store/b2b-quotes.quote-status.declined": "rechazada"
 }

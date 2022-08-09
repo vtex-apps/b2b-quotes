@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "Офертата се използва",
   "store/b2b-quotes.quote-locking.message": " Количката ви в момента съдържа артикули от оферта и не може да бъде променена. За да продължите да пазарувате, можете или да се върнете на страницата за финализиране, или да изчистите количката си.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "Връщане към финализирането",
-  "store/b2b-quotes.quote-locking.clear-cart": "Изчистване на количката"
+  "store/b2b-quotes.quote-locking.clear-cart": "Изчистване на количката",
+  "store/b2b-quotes.quote-status.ready": "готов",
+  "store/b2b-quotes.quote-status.placed": "направена",
+  "store/b2b-quotes.quote-status.revised": "редактирано",
+  "store/b2b-quotes.quote-status.pending": "изчакващ",
+  "store/b2b-quotes.quote-status.expired": "просрочен",
+  "store/b2b-quotes.quote-status.declined": "отхвърлен"
 }

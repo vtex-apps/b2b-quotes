@@ -9,7 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Complete Portuguese translations
 - A mechanism to translate quote status into multiple languages
+
+### Fixed
+
+- Arabic, Bulgarian, Catalan, Czech, Danish, Dutch, German, Greek, English, Finnish, French, Italian, Japanese, Korean, Norwegian, Polish, Portuguese, Romanian, Russian, Slovak, Slovenian, Spanish, Swedish, Thai and Ukrainian.
 
 ## [1.3.3] - 2022-08-03
 
