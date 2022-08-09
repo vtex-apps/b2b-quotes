@@ -9,8 +9,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Complete Portuguese translations
 - A mechanism to translate quote status into multiple languages
+
+## [1.3.3] - 2022-08-03
+
+### Added
+
+- Added the feature that the b2b quote link will hide for b2c users
+
+## [1.3.2] - 2022-08-03
+
+### Fixed
+
+- Bug fixed on decline quote
+
+## [1.3.1] - 2022-08-02
+
+### Fixed
+
+- English translation.
+
+## [1.3.0] - 2022-07-21
+
+### Added
+
+- Translations for all Storefront languages.
+
+### Fixed
+
+- English, Portuguese and Romanian translations.
+
+## [1.2.2] - 2022-07-06
+
+### Fixed
+
+- Fix missing seller when creating new quotes
+
+## [1.2.1] - 2022-07-04
+
+### Added
+
+- Initial Crowdin integration
 
 ## [1.2.0] - 2022-06-28
 
@@ -18,7 +57,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - UX adjustments on Alert messages and action buttons positions.
 - It was reorganized the code and split components into small pieces.
-
 
 ## [1.1.1] - 2022-06-06
 

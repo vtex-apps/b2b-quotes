@@ -1,5 +1,10 @@
 import type { FunctionComponent, ReactElement } from 'react'
+import { useEffect, useState } from 'react'
 import { defineMessages, useIntl } from 'react-intl'
+import { useQuery } from 'react-apollo'
+
+import { useSessionResponse } from './utils/helpers'
+import CHECK_PERMISSIONS from './graphql/checkPermissions.graphql'
 
 const messages = defineMessages({
   myQuotes: {
@@ -9,13 +14,31 @@ const messages = defineMessages({
 
 const B2BQuotesLink: FunctionComponent<Props> = ({ render }) => {
   const { formatMessage } = useIntl()
+  const sessionResponse: any = useSessionResponse()
+  const userEmail = sessionResponse?.namespaces?.profile?.email?.value
 
-  return render([
-    {
-      name: formatMessage(messages.myQuotes),
-      path: `/b2b-quotes`,
-    },
-  ])
+  const [show, setShow] = useState(false)
+
+  const { data } = useQuery(CHECK_PERMISSIONS, {
+    variables: { email: userEmail },
+  })
+
+  useEffect(() => {
+    if (!data) {
+      return
+    }
+
+    if (data.getUserByEmail[0]?.id) {
+      setShow(true)
+    }
+  }, [data, userEmail, sessionResponse])
+
+  const parameter = {
+    name: formatMessage(messages.myQuotes),
+    path: `/b2b-quotes`,
+  }
+
+  return show ? render([parameter]) : null
 }
 
 type Props = {

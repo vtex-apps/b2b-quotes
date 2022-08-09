@@ -1,0 +1,12 @@
+query CheckPermissions($email: String!) {
+  getUserByEmail(email: $email)
+    @context(provider: "vtex.storefront-permissions") {
+    id
+    roleId
+    userId
+    clId
+    orgId
+    costId
+    canImpersonate
+  }
+}
