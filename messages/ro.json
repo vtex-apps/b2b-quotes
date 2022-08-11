@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "Ofertă în uz",
   "store/b2b-quotes.quote-locking.message": " Coșul tău de cumpărături conține elemente dintr-o ofertă și nu poate fi modificat. Poți reveni la pagina de finalizare a comenzii sau ștergi coșul tău pentru a continua navigarea.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "Înapoi la finalizarea comenzii",
-  "store/b2b-quotes.quote-locking.clear-cart": "Golește coșul"
+  "store/b2b-quotes.quote-locking.clear-cart": "Golește coșul",
+  "store/b2b-quotes.quote-status.ready": "gata",
+  "store/b2b-quotes.quote-status.placed": "efectuat",
+  "store/b2b-quotes.quote-status.revised": "revizuit",
+  "store/b2b-quotes.quote-status.pending": "în așteptare",
+  "store/b2b-quotes.quote-status.expired": "expirat",
+  "store/b2b-quotes.quote-status.declined": "refuzat"
 }

@@ -177,6 +177,27 @@ export const tableMessages = defineMessages({
   },
 })
 
+export const statusMessages = defineMessages({
+  ready: {
+    id: `${storePrefix}quote-status.ready`,
+  },
+  placed: {
+    id: `${storePrefix}quote-status.placed`,
+  },
+  declined: {
+    id: `${storePrefix}quote-status.declined`,
+  },
+  expired: {
+    id: `${storePrefix}quote-status.expired`,
+  },
+  pending: {
+    id: `${storePrefix}quote-status.pending`,
+  },
+  revised: {
+    id: `${storePrefix}quote-status.revised`,
+  },
+})
+
 export const adminMessages = defineMessages({
   settingsPageTitle: {
     id: `${adminPrefix}settings.title`,

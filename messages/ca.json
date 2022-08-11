@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "Pressupost en ús",
   "store/b2b-quotes.quote-locking.message": " Actualment, el carretó conté articles d'un pressupost i no es pot modificar. Podeu tornar a la pàgina del procés de pagament o buidar el carretó per continuar explorant.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "Torna al procés de pagament",
-  "store/b2b-quotes.quote-locking.clear-cart": "Buida el carretó"
+  "store/b2b-quotes.quote-locking.clear-cart": "Buida el carretó",
+  "store/b2b-quotes.quote-status.ready": "a punt",
+  "store/b2b-quotes.quote-status.placed": "col·locat",
+  "store/b2b-quotes.quote-status.revised": "revisat",
+  "store/b2b-quotes.quote-status.pending": "pendent",
+  "store/b2b-quotes.quote-status.expired": "caducat",
+  "store/b2b-quotes.quote-status.declined": "rebutjat"
 }

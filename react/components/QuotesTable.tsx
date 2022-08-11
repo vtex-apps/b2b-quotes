@@ -2,11 +2,11 @@
 import type { FunctionComponent, ChangeEvent } from 'react'
 import React from 'react'
 import { PageBlock, Table, Tag, Checkbox } from 'vtex.styleguide'
-import { useIntl } from 'react-intl'
+import { useIntl, FormattedMessage } from 'react-intl'
 import { FormattedCurrency } from 'vtex.format-currency'
 import { useRuntime } from 'vtex.render-runtime'
 
-import { tableMessages } from '../utils/messages'
+import { tableMessages, statusMessages } from '../utils/messages'
 import OrganizationAndCostCenterFilter from './OrganizationAndCostCenterFilter'
 import type { OrgAndCC } from './OrganizationAndCostCenterFilter'
 import { LabelByStatusMap } from '../utils/status'
@@ -160,7 +160,11 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
       status: {
         title: formatMessage(tableMessages.status),
         cellRenderer: ({ rowData: { status } }: CellRendererProps) => (
-          <Tag type={LabelByStatusMap[status]}>{status}</Tag>
+          <Tag type={LabelByStatusMap[status]}>
+            <FormattedMessage
+              id={statusMessages[status as keyof typeof statusMessages].id}
+            />
+          </Tag>
         ),
         sortable: true,
       },

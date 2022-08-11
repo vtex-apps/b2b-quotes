@@ -1,11 +1,11 @@
 import { Input, InputCurrency, Table, Tag } from 'vtex.styleguide'
 import React, { Fragment } from 'react'
 import { formatCurrency, FormattedCurrency } from 'vtex.format-currency'
-import { useIntl } from 'react-intl'
+import { useIntl, FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
 
 import { itemDiscountEligible } from '../../utils/helpers'
-import { quoteMessages } from '../../utils/messages'
+import { quoteMessages, statusMessages } from '../../utils/messages'
 import { LabelByStatusMap } from '../../utils/status'
 
 const QuoteTable = ({
@@ -70,7 +70,13 @@ const QuoteTable = ({
             label: formatMessage(quoteMessages.status),
             value: (
               <Tag type={LabelByStatusMap[quoteState.status]}>
-                {quoteState.status}
+                <FormattedMessage
+                  id={
+                    statusMessages[
+                      quoteState.status as keyof typeof statusMessages
+                    ].id
+                  }
+                />
               </Tag>
             ),
           },

@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "กำลังใช้การเสนอราคา",
   "store/b2b-quotes.quote-locking.message": " ตอนนี้ล้อเข็นของคุณมีสินค้าจากการเสนอราคาและไม่สามารถเปลี่ยนแปลงได้ คุณสามารถกลับไปยังหน้าเช็คเอาต์หรือเคลียร์ล้อเข็นเพื่อทำรายการต่อ",
   "store/b2b-quotes.quote-locking.return-to-checkout": "กลับไปยังเช็คเอาต์",
-  "store/b2b-quotes.quote-locking.clear-cart": "เคลียร์ล้อเข็น"
+  "store/b2b-quotes.quote-locking.clear-cart": "เคลียร์ล้อเข็น",
+  "store/b2b-quotes.quote-status.ready": "พร้อมแล้ว",
+  "store/b2b-quotes.quote-status.placed": "วางแล้ว",
+  "store/b2b-quotes.quote-status.revised": "ตรวจแก้แล้ว",
+  "store/b2b-quotes.quote-status.pending": "รอดำเนินการ",
+  "store/b2b-quotes.quote-status.expired": "หมดอายุ",
+  "store/b2b-quotes.quote-status.declined": "ปฏิเสธ"
 }

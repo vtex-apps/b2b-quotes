@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "Tilbud i bruk",
   "store/b2b-quotes.quote-locking.message": " Handlekurven din inneholder for øyeblikket varer fra et tilbud og kan ikke endres. Du kan enten gå tilbake til betalingssiden eller tømme handlekurven for å fortsette å surfe.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "Tilbake til kassen",
-  "store/b2b-quotes.quote-locking.clear-cart": "Tøm handlekurv"
+  "store/b2b-quotes.quote-locking.clear-cart": "Tøm handlekurv",
+  "store/b2b-quotes.quote-status.ready": "klar",
+  "store/b2b-quotes.quote-status.placed": "bestilt",
+  "store/b2b-quotes.quote-status.revised": "revidert",
+  "store/b2b-quotes.quote-status.pending": "ventende",
+  "store/b2b-quotes.quote-status.expired": "utløpt",
+  "store/b2b-quotes.quote-status.declined": "avvist"
 }
