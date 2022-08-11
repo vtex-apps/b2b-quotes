@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "Offerte in gebruik",
   "store/b2b-quotes.quote-locking.message": " Uw winkelwagen bevat momenteel artikelen van een prijsopgave en kan niet worden gewijzigd. U kunt terug naar de afrekenpagina of uw winkelwagen wissen om door te gaan met bladeren.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "Terug naar afrekenen",
-  "store/b2b-quotes.quote-locking.clear-cart": "Winkelwagen leeg maken"
+  "store/b2b-quotes.quote-locking.clear-cart": "Winkelwagen leeg maken",
+  "store/b2b-quotes.quote-status.ready": "klaar",
+  "store/b2b-quotes.quote-status.placed": "geplaatst",
+  "store/b2b-quotes.quote-status.revised": "herzien",
+  "store/b2b-quotes.quote-status.pending": "in afwachting",
+  "store/b2b-quotes.quote-status.expired": "vervallen",
+  "store/b2b-quotes.quote-status.declined": "geweigerd"
 }

@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "Wycena w użyciu",
   "store/b2b-quotes.quote-locking.message": " Twój koszyk zawiera obecnie produkty z oferty i nie może być zmodyfikowany. Możesz wrócić do strony zamówienia lub wyczyścić koszyk, aby kontynuować przeglądanie.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "Powrót do kasy",
-  "store/b2b-quotes.quote-locking.clear-cart": "Wyczyść koszyk"
+  "store/b2b-quotes.quote-locking.clear-cart": "Wyczyść koszyk",
+  "store/b2b-quotes.quote-status.ready": "gotowe",
+  "store/b2b-quotes.quote-status.placed": "złożone",
+  "store/b2b-quotes.quote-status.revised": "poprawione",
+  "store/b2b-quotes.quote-status.pending": "oczekujące",
+  "store/b2b-quotes.quote-status.expired": "przeterminowane",
+  "store/b2b-quotes.quote-status.declined": "odrzucone"
 }

@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "사용 견적",
   "store/b2b-quotes.quote-locking.message": " 장바구니에 현재 견적의 항목이 포함되어 있으며 수정할 수 없습니다. 검색을 계속하려면 결제 페이지로 돌아가거나 장바구니를 비울 수 있습니다.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "체크아웃으로 돌아가기",
-  "store/b2b-quotes.quote-locking.clear-cart": "장바구니 지우기"
+  "store/b2b-quotes.quote-locking.clear-cart": "장바구니 지우기",
+  "store/b2b-quotes.quote-status.ready": "준비",
+  "store/b2b-quotes.quote-status.placed": "완료",
+  "store/b2b-quotes.quote-status.revised": "수정되었다",
+  "store/b2b-quotes.quote-status.pending": "보류 중",
+  "store/b2b-quotes.quote-status.expired": "만료됨",
+  "store/b2b-quotes.quote-status.declined": "거절함"
 }

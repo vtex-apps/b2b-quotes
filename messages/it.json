@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "Preventivo in uso",
   "store/b2b-quotes.quote-locking.message": " Il tuo carrello attualmente contiene articoli da un preventivo e non può essere modificato. È possibile tornare alla pagina del checkout o cancellare il carrello per continuare la navigazione.",
   "store/b2b-quotes.quote-locking.return-to-checkout": "Torna al checkout",
-  "store/b2b-quotes.quote-locking.clear-cart": "Svuota carrello"
+  "store/b2b-quotes.quote-locking.clear-cart": "Svuota carrello",
+  "store/b2b-quotes.quote-status.ready": "pronto",
+  "store/b2b-quotes.quote-status.placed": "realizzato",
+  "store/b2b-quotes.quote-status.revised": "rivisto",
+  "store/b2b-quotes.quote-status.pending": "in sospeso",
+  "store/b2b-quotes.quote-status.expired": "scaduto",
+  "store/b2b-quotes.quote-status.declined": "rifiutato"
 }
