@@ -3,7 +3,7 @@ import React from 'react'
 import { createSystem, ToastProvider } from '@vtex/admin-ui'
 
 const B2BQuotesAdminLayout: FunctionComponent = ({ children }) => {
-  const [SystemProvider] = createSystem({ key: 'btob-quotes' })
+  const [SystemProvider] = createSystem()
 
   return (
     <SystemProvider>
