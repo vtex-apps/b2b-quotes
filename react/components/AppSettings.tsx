@@ -5,13 +5,12 @@ import { useIntl } from 'react-intl'
 import {
   Page,
   PageHeader,
-  PageTitle,
+  PageHeaderTop,
+  PageHeaderTitle,
   PageContent,
   Box,
   Button,
-  Heading,
-  Label,
-  NumericStepper,
+  NumberInput,
   Skeleton,
   useToast,
 } from '@vtex/admin-ui'
@@ -70,22 +69,23 @@ const AppSettings: FC = () => {
   return (
     <Page>
       <PageHeader>
-        <PageTitle>{formatMessage(adminMessages.settingsPageTitle)}</PageTitle>
+        <PageHeaderTop>
+          <PageHeaderTitle>
+            {formatMessage(adminMessages.settingsPageTitle)}
+          </PageHeaderTitle>
+        </PageHeaderTop>
       </PageHeader>
       {loading && <Skeleton shape="rect" />}
       {data?.getAppSettings?.adminSetup && (
-        <PageContent csx={{ padding: 5 }}>
+        <PageContent
+          csx={{ padding: 5, display: 'table-cell', verticalAlign: 'middle' }}
+        >
           <Box as="section" csx={{ paddingBottom: 5 }}>
-            <Heading as="h2">
-              <Label htmlFor="numeric-stepper">
-                {formatMessage(adminMessages.cartLifeSpanLabel)}
-              </Label>
-            </Heading>
-            <NumericStepper
+            <NumberInput
               value={settingsState.cartLifeSpan}
-              label="numeric-stepper"
-              minValue={1}
-              onChange={(event) =>
+              label={formatMessage(adminMessages.cartLifeSpanLabel)}
+              min={1}
+              onChange={(event: any) =>
                 setSettingsState({
                   ...settingsState,
                   cartLifeSpan: event.value,
