@@ -25,6 +25,19 @@
       "roles": ["customer-admin", "sales-manager"]
     },
     {
+      "label": "Access All Sales Channels' Quotes and Carts",
+      "value": "access-quotes-all-saleschannel",
+      "roles": [
+        "store-admin",
+        "sales-admin",
+        "sales-manager",
+        "sales-representative",
+        "customer-admin",
+        "customer-approver",
+        "customer-buyer"
+      ]
+    },
+    {
       "label": "Access All Quotes and Carts",
       "value": "access-quotes-all",
       "roles": ["store-admin", "sales-admin"]
