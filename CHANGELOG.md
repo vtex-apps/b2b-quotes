@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 2022-08-25
+
+### Added
+
+- Permission to `Access All Sales Channels' Quotes and Carts` option for roles
+
+## [1.4.1] - 2022-08-19
+
+### Fixed
+
+- Updated admin-ui packages, NumericStepper is now NumberInput
+
 ## [1.4.0] - 2022-08-11
 
 ### Added
