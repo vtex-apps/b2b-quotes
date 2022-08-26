@@ -85,5 +85,11 @@
   "store/b2b-quotes.quote-locking.title": "使用的報價",
   "store/b2b-quotes.quote-locking.message": " 您的購物車目前包含來自報價的商品，且不能修改。您可以返回到結帳頁面或清空您的購物車，以繼續瀏覽。",
   "store/b2b-quotes.quote-locking.return-to-checkout": "返回結賬",
-  "store/b2b-quotes.quote-locking.clear-cart": "清空購物車"
+  "store/b2b-quotes.quote-locking.clear-cart": "清空購物車",
+  "store/b2b-quotes.quote-status.ready": "就緒",
+  "store/b2b-quotes.quote-status.placed": "已創建",
+  "store/b2b-quotes.quote-status.revised": "已修改",
+  "store/b2b-quotes.quote-status.pending": "待處理",
+  "store/b2b-quotes.quote-status.expired": "已過期",
+  "store/b2b-quotes.quote-status.declined": "已拒絕"
 }
