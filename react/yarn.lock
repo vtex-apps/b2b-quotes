@@ -1942,13 +1942,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/graphql@^14.5.0":
-  version "14.5.0"
-  resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-14.5.0.tgz#a545fb3bc8013a3547cf2f07f5e13a33642b75d6"
-  integrity sha512-MOkzsEp1Jk5bXuAsHsUi6BVv0zCO+7/2PTiZMXWDSsMXvNU6w/PLMQT2vHn8hy2i0JqojPz1Sz6rsFjHtsU0lA==
-  dependencies:
-    graphql "*"
-
 "@types/hoist-non-react-statics@^3.3.1":
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz#1124aafe5118cb591977aeb1ceaaed1070eb039f"
@@ -2202,10 +2195,10 @@
   dependencies:
     tiny-invariant "^1.1.0"
 
-"@vtex/test-tools@^3.1.0":
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/@vtex/test-tools/-/test-tools-3.4.2.tgz#557d47620182bfecbe5c9e47de69c5dfa1898bf2"
-  integrity sha512-+zhUHnX9RFKmM5vaSDkU+SbLc9UkBtkbxN2nquSyMfSidwimRVC0yImQuBW2vnT6qNxbJOMmr+Invm5X/tEang==
+"@vtex/test-tools@^3.4.3":
+  version "3.4.3"
+  resolved "https://registry.yarnpkg.com/@vtex/test-tools/-/test-tools-3.4.3.tgz#d0cc34c445410050b9b56f804236c7c07a242489"
+  integrity sha512-sBGnr9lIv2dFiZnkUWBdiuiE/GRcu7jSKYqcYQ7fD1o0VlacMIMxHQmz8Gv1NIic37QRgntbSBDrvUUNo94Iwg==
   dependencies:
     "@babel/core" "^7.11.1"
     "@babel/plugin-proposal-class-properties" "^7.10.4"
@@ -2216,7 +2209,6 @@
     "@testing-library/jest-dom" "^5.11.2"
     "@testing-library/react" "^10.4.7"
     "@testing-library/react-hooks" "^3.4.1"
-    "@types/graphql" "^14.5.0"
     "@types/jest" "^26.0.8"
     "@types/node" "^14.0.27"
     "@types/react" "^16.9.44"
@@ -3458,11 +3450,6 @@ graphql-tag@^2.11.0:
   dependencies:
     tslib "^2.1.0"
 
-graphql@*:
-  version "15.6.1"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.6.1.tgz#9125bdf057553525da251e19e96dab3d3855ddfc"
-  integrity sha512-3i5lu0z6dRvJ48QP9kFxBkJ7h4Kso7PS8eahyTFz5Jm6CvQfLtNIE8LX9N6JLnXTuwR+sIYnXzaWp6anOg0QQw==
-
 graphql@^14.0.0, graphql@^14.5.8:
   version "14.7.0"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.7.0.tgz#7fa79a80a69be4a31c27dda824dc04dac2035a72"
@@ -4561,9 +4548,9 @@ minimatch@^3.0.4:
     brace-expansion "^1.1.7"
 
 minimist@^1.1.1, minimist@^1.2.0, minimist@^1.2.5:
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
-  integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.7.tgz#daa1c4d91f507390437c6a8bc01078e7000c4d18"
+  integrity sha512-bzfL1YUZsP41gmu/qjrEk0Q6i2ix/cVeAhbCbqH9u3zYutS1cLg00qhrD0M2MVdCcx4Sc0UpP2eBWo9rotpq6g==
 
 mixin-deep@^1.2.0:
   version "1.3.2"
