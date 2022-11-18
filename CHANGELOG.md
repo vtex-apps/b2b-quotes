@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.1] - 2022-11-08
+
+### Changed
+- Upgrade minimist package due a prototype pollution security vulnerability
+
+### Changed
+
+- Split bindings testcase into two files
+
+### Changed
+
+- Update GitHub reusable workflow to version 2
+
 ## [1.5.0] - 2022-08-25
 
 ### Added
