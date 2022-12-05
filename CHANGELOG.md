@@ -7,9 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.2] - 2022-12-02
+
+### Fixed
+
+- Fixed org & cost center filter in my quotes
+
 ## [1.5.1] - 2022-11-08
 
 ### Changed
+
 - Upgrade minimist package due a prototype pollution security vulnerability
 
 ### Changed

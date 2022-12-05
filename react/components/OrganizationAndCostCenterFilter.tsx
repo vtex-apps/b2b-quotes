@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useCallback } from 'react'
 import { useQuery } from 'react-apollo'
 import { useIntl } from 'react-intl'
@@ -177,7 +178,7 @@ const CostCentersAutocomplete = ({
 
     setTerm(name)
     onChange(id)
-  }, [costCenter, onChange])
+  }, [costCenter])
 
   useEffect(() => {
     if (data?.getCostCentersByOrganizationId?.data) {
@@ -199,7 +200,7 @@ const CostCentersAutocomplete = ({
     } else if (term === '') {
       onClear()
     }
-  }, [term, onClear, organizationId, refetch])
+  }, [term, organizationId, refetch])
 
   const input = {
     onChange: (_term: string) => {
