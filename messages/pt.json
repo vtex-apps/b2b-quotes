@@ -7,7 +7,7 @@
   "admin/b2b-quotes.settings.cartLifeSpan.label": "Período de expiração padrão (em dias) para cotações e carrinhos salvos",
   "admin/b2b-quotes.settings.saveSettings.buttonText": "Salvar configurações",
   "store/b2b-quotes.myAccountLink": "Cotações e carrinhos salvos",
-  "store/b2b-quotes.create.title": "Crie uma cotação",
+  "store/b2b-quotes.create.title": "Criar uma cotação",
   "store/b2b-quotes.create.nameLabel": "Nome",
   "store/b2b-quotes.create.descriptionLabel": "Observações",
   "store/b2b-quotes.create.success": "Cotação salva com sucesso",
