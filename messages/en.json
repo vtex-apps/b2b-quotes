@@ -88,7 +88,7 @@
   "store/b2b-quotes.quote-locking.clear-cart": "Clear Cart",
   "store/b2b-quotes.quote-status.ready": "ready",
   "store/b2b-quotes.quote-status.placed": "placed",
-  "store/b2b-quotes.quote-status.revised": "reviewed",
+  "store/b2b-quotes.quote-status.revised": "revised",
   "store/b2b-quotes.quote-status.pending": "pending",
   "store/b2b-quotes.quote-status.expired": "expired",
   "store/b2b-quotes.quote-status.declined": "declined"
