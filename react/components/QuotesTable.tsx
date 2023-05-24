@@ -233,7 +233,9 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
             <div className="mb3" key={`status-select-object-${opt}-${index}`}>
               <Checkbox
                 checked={value ? value[opt] : initialValue[opt]}
-                label={opt}
+                label={formatMessage(
+                  statusMessages[opt as keyof typeof statusMessages]
+                )}
                 name="status-checkbox-group"
                 onChange={() => {
                   const newValue = toggleValueByKey(`${opt}`)
@@ -343,7 +345,7 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
             status: {
               label: formatMessage(tableMessages.statusFilter),
               renderFilterLabel: (st: any) => {
-                if (!st || !st.object) {
+                if (!st?.object) {
                   // you should treat empty object cases only for alwaysVisibleFilters
                   return formatMessage(tableMessages.filtersAll)
                 }
@@ -382,7 +384,7 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
               organizationAndCostCenter: {
                 label: formatMessage(tableMessages.organizationAndCostCenter),
                 renderFilterLabel: (st: any) => {
-                  if (!st || !st.object) {
+                  if (!st?.object) {
                     // you should treat empty object cases only for alwaysVisibleFilters
                     return formatMessage(tableMessages.filtersAll)
                   }
