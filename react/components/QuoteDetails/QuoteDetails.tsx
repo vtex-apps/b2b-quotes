@@ -402,9 +402,7 @@ const QuoteDetails: FunctionComponent = () => {
       }
     } else {
       quoteState.items.forEach((item: QuoteItem) => {
-        const newSellingPrice = Math.round(
-          item.listPrice * ((100 - percent) / 100)
-        )
+        const newSellingPrice = Math.round(item.price * ((100 - percent) / 100))
 
         newSubtotal += newSellingPrice * item.quantity
 
