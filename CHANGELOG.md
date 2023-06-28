@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fix subtotal price in quote details and price used in discount calculation
+- Change to use price instead of list price in quote features(view, discount and update selling price)
 
 ## [1.5.4] - 2023-05-08
 
