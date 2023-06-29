@@ -1,25 +1,25 @@
 /* eslint-disable react/display-name */
-import type { FunctionComponent, ChangeEventHandler } from 'react'
-import React, { useState, useEffect, useContext, Fragment } from 'react'
-import { useIntl, FormattedMessage } from 'react-intl'
-import { useQuery, useMutation } from 'react-apollo'
+import type { ChangeEventHandler, FunctionComponent } from 'react'
+import React, { Fragment, useContext, useEffect, useState } from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
+import { useMutation, useQuery } from 'react-apollo'
 import { useRuntime } from 'vtex.render-runtime'
 import {
-  Layout,
-  PageHeader,
-  PageBlock,
-  Spinner,
   Button,
+  DatePicker,
+  Layout,
+  PageBlock,
+  PageHeader,
+  Spinner,
   Textarea,
   ToastContext,
-  DatePicker,
 } from 'vtex.styleguide'
 import { useCheckoutURL } from 'vtex.checkout-resources/Utils'
 import { OrderForm } from 'vtex.order-manager'
 
 import { quoteMessages } from '../../utils/messages'
 import { arrayShallowEqual } from '../../utils/shallowEquals'
-import { useSessionResponse, initQuoteFromOrderForm } from '../../utils/helpers'
+import { initQuoteFromOrderForm, useSessionResponse } from '../../utils/helpers'
 import useCheckout from '../../modules/checkoutHook'
 import GET_PERMISSIONS from '../../graphql/getPermissions.graphql'
 import GET_QUOTE from '../../graphql/getQuote.graphql'
@@ -327,16 +327,15 @@ const QuoteDetails: FunctionComponent = () => {
       if (item.id === itemId) {
         let newPrice = ((event.target.value as unknown) as number) * 100
 
-        if (newPrice > item.listPrice) {
-          newPrice = item.listPrice
+        if (newPrice > item.price) {
+          newPrice = item.price
         }
 
         return {
           ...item,
           sellingPrice: newPrice,
           error:
-            !newPrice ||
-            newPrice / item.listPrice < (100 - maxDiscountState) / 100
+            !newPrice || newPrice / item.price < (100 - maxDiscountState) / 100
               ? true
               : undefined, // setting error to false will cause create/update mutation to error
         }
@@ -402,9 +401,7 @@ const QuoteDetails: FunctionComponent = () => {
       }
     } else {
       quoteState.items.forEach((item: QuoteItem) => {
-        const newSellingPrice = Math.round(
-          item.listPrice * ((100 - percent) / 100)
-        )
+        const newSellingPrice = Math.round(item.price * ((100 - percent) / 100))
 
         newSubtotal += newSellingPrice * item.quantity
 
@@ -434,7 +431,7 @@ const QuoteDetails: FunctionComponent = () => {
     }
 
     const price = quoteState.items.reduce(
-      (sum: number, item: QuoteItem) => sum + item.listPrice * item.quantity,
+      (sum: number, item: QuoteItem) => sum + item.price * item.quantity,
       0
     )
 

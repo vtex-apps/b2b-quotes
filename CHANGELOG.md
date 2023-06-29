@@ -7,12 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Change to use price instead of list price in quote features(view, discount and update selling price)
+
 ## [1.5.4] - 2023-05-08
 
 ### Fixed
+
 - Fixed status filter locale in my quotes page
 
 ### Removed
+
 - [ENGINEERS-1247] - Disable cypress tests in PR level
 
 ### Changed
