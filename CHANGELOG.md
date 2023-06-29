@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.5] - 2023-06-29
+
 ### Fixed
 
 - Change to use price instead of list price in quote features(view, discount and update selling price)
