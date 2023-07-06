@@ -38,6 +38,8 @@ import AlertMessage from './AlertMessage'
 import QuoteTable from './QuoteTable'
 import QuoteUpdateHistory from './QuoteUpdateHistory'
 import { Status } from '../../utils/status'
+import type { SessionProfile } from '../../utils/metrics'
+import { sendMetric } from '../../utils/metrics'
 
 const localStore = storageFactory(() => localStorage)
 const MAX_DISCOUNT_PERCENTAGE = 99
@@ -178,7 +180,10 @@ const QuoteDetails: FunctionComponent = () => {
     })
   }
 
-  const handleCreateQuote = (sendToSalesRep: boolean) => {
+  const handleCreateQuote = (
+    sendToSalesRep: boolean,
+    sessionProfile: SessionProfile
+  ) => {
     const { orderForm } = orderFormData
 
     setUpdatingQuoteState(true)
@@ -196,6 +201,8 @@ const QuoteDetails: FunctionComponent = () => {
     })
       .then((result: any) => {
         if (result.data.createQuote) {
+          sendMetric(sessionProfile, result.data.createQuote)
+
           toastMessage(quoteMessages.createSuccess)
           handleClearCart(orderForm.orderFormId).then(() => {
             setQuoteState(initialState)
@@ -229,7 +236,10 @@ const QuoteDetails: FunctionComponent = () => {
       })
   }
 
-  const createQuote = (sendToSalesRep: boolean) => {
+  const createQuote = (
+    sendToSalesRep: boolean,
+    sessionProfile: SessionProfile
+  ) => {
     setSentToSalesRep(sendToSalesRep)
     if (!quoteState.referenceName) {
       setFormState({
@@ -237,7 +247,7 @@ const QuoteDetails: FunctionComponent = () => {
         errorMessage: formatMessage(quoteMessages.required),
       })
     } else {
-      handleCreateQuote(sendToSalesRep)
+      handleCreateQuote(sendToSalesRep, sessionProfile)
     }
   }
 
@@ -613,11 +623,17 @@ const QuoteDetails: FunctionComponent = () => {
                         sentToSalesRep={sentToSalesRep}
                         quoteState={quoteState}
                         onSaveForLater={() => {
-                          createQuote(false)
+                          createQuote(
+                            false,
+                            sessionResponse?.namespaces?.profile
+                          )
                         }}
                         onSaveQuote={() => {
                           if (isNewQuote) {
-                            createQuote(!isSalesRep)
+                            createQuote(
+                              !isSalesRep,
+                              sessionResponse?.namespaces?.profile
+                            )
                           } else {
                             handleSaveQuote()
                           }
