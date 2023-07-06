@@ -343,6 +343,18 @@
   resolved "https://registry.yarnpkg.com/@vtex/prettier-config/-/prettier-config-0.3.6.tgz#31762608d9a59b815b6d4e963e439b12f1a12279"
   integrity sha512-nXE3BcMODomFK3EowfK+Hdj2qQRqB8JcdRv8yTREXnN9xq8DYKmH/dWB+RY/Hn3KozFLbygpZRbqYsiA6HDINQ==
 
+"@vtex/raccoon-next@^0.5.0":
+  version "0.5.12"
+  resolved "https://registry.yarnpkg.com/@vtex/raccoon-next/-/raccoon-next-0.5.12.tgz#53f8674cf9dfdda59aed212b0ce8f370c99fa16f"
+  integrity sha512-pCyCon/QHbKB0lg8oWbdNK1cdWJQhAhzcaBQazi4+MCstT1fx23Gmv7BRIePtfZ6ovJWesEreripxBDssMzszw==
+  dependencies:
+    "@vtex/raccoon-shared-types" "^0.2.12"
+
+"@vtex/raccoon-shared-types@^0.2.12":
+  version "0.2.12"
+  resolved "https://registry.yarnpkg.com/@vtex/raccoon-shared-types/-/raccoon-shared-types-0.2.12.tgz#29992bbb71c5c5842e965271e44394298ca2cdcc"
+  integrity sha512-vNgPRRH3O3vGziCJC+iY+nYSH10/5GYIC+UwVzfjWm3DT6w/GAh6WPgYXGzQpGeEhbDhPuYdeESR0eZrFt3FbQ==
+
 "@wry/equality@^0.1.9":
   version "0.1.11"
   resolved "https://registry.yarnpkg.com/@wry/equality/-/equality-0.1.11.tgz#35cb156e4a96695aa81a9ecc4d03787bc17f1790"

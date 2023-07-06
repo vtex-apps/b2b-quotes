@@ -38,7 +38,7 @@ import AlertMessage from './AlertMessage'
 import QuoteTable from './QuoteTable'
 import QuoteUpdateHistory from './QuoteUpdateHistory'
 import { Status } from '../../utils/status'
-import type { SessionProfile } from '../../utils/metrics'
+import type { SessionProfile, QuoteData } from '../../utils/metrics'
 import { sendMetric } from '../../utils/metrics'
 
 const localStore = storageFactory(() => localStorage)
@@ -201,7 +201,10 @@ const QuoteDetails: FunctionComponent = () => {
     })
       .then((result: any) => {
         if (result.data.createQuote) {
-          sendMetric(sessionProfile, result.data.createQuote)
+          console.error(
+            `--------------------------------------------DATA:${data}`
+          )
+          sendMetric(sendToSalesRep, sessionProfile, result.data.createQuote)
 
           toastMessage(quoteMessages.createSuccess)
           handleClearCart(orderForm.orderFormId).then(() => {

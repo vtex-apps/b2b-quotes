@@ -25,7 +25,8 @@
     "axios": "1.4.0",
     "react": "^18.2.0",
     "react-apollo": "^3.1.5",
-    "react-intl": "^6.4.4"
+    "react-intl": "^6.4.4",
+    "@vtex/raccoon-next": "^0.5.0"
   },
   "devDependencies": {
     "@types/node": "12.12.21",
