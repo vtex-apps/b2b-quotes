@@ -29,6 +29,9 @@ import UPDATE_QUOTE from '../../graphql/updateQuote.graphql'
 import USE_QUOTE from '../../graphql/useQuote.graphql'
 import GET_AUTH_RULES from '../../graphql/getDimension.graphql'
 import CLEAR_CART from '../../graphql/clearCartMutation.graphql'
+import CHECK_PERMISSIONS from '../../graphql/checkPermissions.graphql'
+import GET_COSTCENTER_BY_ID from '../../graphql/getCostCenter.graphql'
+import GET_ORGANIZATION_BY_ID from '../../graphql/getOrganization.graphql'
 import storageFactory from '../../utils/storage'
 import PercentageDiscount from './PercentageDiscount'
 import QuoteName from './QuoteName'
@@ -38,7 +41,7 @@ import AlertMessage from './AlertMessage'
 import QuoteTable from './QuoteTable'
 import QuoteUpdateHistory from './QuoteUpdateHistory'
 import { Status } from '../../utils/status'
-import type { SessionProfile, QuoteData } from '../../utils/metrics'
+import type { SessionProfile } from '../../utils/metrics'
 import { sendMetric } from '../../utils/metrics'
 
 const localStore = storageFactory(() => localStorage)
@@ -114,6 +117,21 @@ const QuoteDetails: FunctionComponent = () => {
   /**
    * GraphQL Queries
    */
+  const userEmail = sessionResponse?.namespaces?.profile?.email?.value
+  const { data: userData } = useQuery(CHECK_PERMISSIONS, {
+    variables: { email: userEmail },
+  })
+
+  const costCenterId: string = userData?.getUserByEmail?.[0]?.costId
+  const { data: costCenterData } = useQuery(GET_COSTCENTER_BY_ID, {
+    variables: { id: costCenterId },
+  })
+
+  const orgId: string = userData?.getUserByEmail?.[0]?.orgId
+  const { data: organizationData } = useQuery(GET_ORGANIZATION_BY_ID, {
+    variables: { id: orgId },
+  })
+
   const { data, loading, refetch } = useQuery(GET_QUOTE, {
     variables: { id: params?.id },
     ssr: false,
@@ -180,10 +198,7 @@ const QuoteDetails: FunctionComponent = () => {
     })
   }
 
-  const handleCreateQuote = (
-    sendToSalesRep: boolean,
-    sessionProfile: SessionProfile
-  ) => {
+  const handleCreateQuote = (sendToSalesRep: boolean) => {
     const { orderForm } = orderFormData
 
     setUpdatingQuoteState(true)
@@ -201,10 +216,19 @@ const QuoteDetails: FunctionComponent = () => {
     })
       .then((result: any) => {
         if (result.data.createQuote) {
-          console.error(
-            `--------------------------------------------DATA:${data}`
-          )
-          sendMetric(sendToSalesRep, sessionProfile, result.data.createQuote)
+          const metricsParam = {
+            sessionProfile: sessionResponse?.namespaces
+              ?.profile as SessionProfile,
+            accountName: sessionResponse?.namespaces?.account?.accountName
+              ?.value as string,
+            userData: userData?.getUserByEmail?.[0],
+            costCenterName: costCenterData?.getCostCenterById?.name,
+            buyOrgName: organizationData?.getOrganizationById?.name,
+            quoteId: result.data.createQuote,
+            quoteReferenceName: quoteState.referenceName,
+          }
+
+          sendMetric(sendToSalesRep, metricsParam)
 
           toastMessage(quoteMessages.createSuccess)
           handleClearCart(orderForm.orderFormId).then(() => {
@@ -239,10 +263,7 @@ const QuoteDetails: FunctionComponent = () => {
       })
   }
 
-  const createQuote = (
-    sendToSalesRep: boolean,
-    sessionProfile: SessionProfile
-  ) => {
+  const createQuote = (sendToSalesRep: boolean) => {
     setSentToSalesRep(sendToSalesRep)
     if (!quoteState.referenceName) {
       setFormState({
@@ -250,7 +271,7 @@ const QuoteDetails: FunctionComponent = () => {
         errorMessage: formatMessage(quoteMessages.required),
       })
     } else {
-      handleCreateQuote(sendToSalesRep, sessionProfile)
+      handleCreateQuote(sendToSalesRep)
     }
   }
 
@@ -626,17 +647,11 @@ const QuoteDetails: FunctionComponent = () => {
                         sentToSalesRep={sentToSalesRep}
                         quoteState={quoteState}
                         onSaveForLater={() => {
-                          createQuote(
-                            false,
-                            sessionResponse?.namespaces?.profile
-                          )
+                          createQuote(false)
                         }}
                         onSaveQuote={() => {
                           if (isNewQuote) {
-                            createQuote(
-                              !isSalesRep,
-                              sessionResponse?.namespaces?.profile
-                            )
+                            createQuote(!isSalesRep)
                           } else {
                             handleSaveQuote()
                           }
