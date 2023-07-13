@@ -29,24 +29,24 @@ type Metric = {
 }
 
 type QuoteFieldsMetric = {
-  orgId: string
-  costCenterId: string
-  costCenterName: string
-  buyOrgId: string
-  buyOrgName: string
-  memberId: string
-  memberEmail: string
-  memberName: string
+  org_id: string
+  cost_center_id: string
+  cost_center_name: string
+  buy_org_id: string
+  buy_org_name: string
+  member_id: string
+  member_email: string
   role: string
-  creationDate: string
-  quoteId: string
-  quoteReferenceName: string
-  sendToSalesRep: boolean
+  creation_date: string
+  quote_id: string
+  quote_reference_name: string
+  send_to_sales_rep: boolean
 }
 
 export type SessionProfile = {
-  id: string
-  email: string
+  id: { value: string }
+  email: { value: string }
+
   firstName?: string
   lastName?: string
 }
@@ -63,19 +63,18 @@ export const buildQuoteMetric = (
     description: 'Create Quotation Action - UI',
     account: metricsParam.accountName,
     fields: {
-      orgId: metricsParam.userData?.orgId,
-      costCenterId: metricsParam.userData?.costId,
-      costCenterName: metricsParam.costCenterName,
-      buyOrgId: metricsParam.userData.orgId,
-      buyOrgName: metricsParam.buyOrgName,
-      memberId: metricsParam.sessionProfile?.id,
-      memberEmail: metricsParam.sessionProfile?.email,
-      memberName: `${metricsParam.sessionProfile.firstName} ${metricsParam.sessionProfile.lastName}`,
+      org_id: metricsParam.userData?.orgId,
+      cost_center_id: metricsParam.userData?.costId,
+      cost_center_name: metricsParam.costCenterName,
+      buy_org_id: metricsParam.userData.orgId,
+      buy_org_name: metricsParam.buyOrgName,
+      member_id: metricsParam.sessionProfile?.id?.value,
+      member_email: metricsParam.sessionProfile?.email.value,
       role: metricsParam.userData?.roleId,
-      creationDate: new Date().toISOString(),
-      quoteId: metricsParam.quoteId,
-      quoteReferenceName: metricsParam.quoteReferenceName,
-      sendToSalesRep,
+      creation_date: new Date().toISOString(),
+      quote_id: metricsParam.quoteId,
+      quote_reference_name: metricsParam.quoteReferenceName,
+      send_to_sales_rep: sendToSalesRep,
     },
   }
 
