@@ -251,41 +251,6 @@ Note that users with [storefront permissions](#storefront-permissions) to edit q
 
 ![app-configuration](https://user-images.githubusercontent.com/6306265/163218059-903cfbcf-0077-45d2-9457-19ee0ba4d5c8.png)
 
-## **Metrics**
-List of business metrics are sent do [Analytics Redshift](https://internal-docs.vtex.com/Analytics/VTEX-Data-Platform/data-ingestion-API/).
-
-Data are saved into `"vtex"."schemaless"."b2b_suite_buyerorg_data_raw"` with `payload.name = 'b2b-suite-buyerorg-data'``
-
-**Quotation Created**
-
-Event sent every time a new quotation is created. 
-
-Data Type:
-```
-type Metric = {
-  name: 'b2b-suite-buyerorg-data'
-  kind: 'create-quote-ui-event'
-  description: 'Create Quotation Action - UI'
-  account: string
-}
-
-type QuoteFieldsMetric = {
-  org_id: string
-  cost_center_id: string
-  cost_center_name: string
-  buy_org_id: string
-  buy_org_name: string
-  member_id: string
-  member_email: string
-  role: string
-  creation_date: string
-  quote_id: string
-  quote_reference_name: string
-  send_to_sales_rep: boolean
-}
-
-type QuoteMetric = Metric & { fields: QuoteFieldsMetric }
-```
 ---
 
 <!-- DOCS-IGNORE:start -->
