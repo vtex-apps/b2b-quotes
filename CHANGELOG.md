@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
++ ### Added
++ - Quotation created metrics sent to Analytics Redshift
+
 ## [1.5.5] - 2023-06-29
 
 ### Fixed
