@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const ANALYTICS_URL = 'https://rc.vtex.com/api/analytics/schemaless-events'
 
-export type UserData = {
+type UserData = {
   id: string
   canImpersonate: boolean
   orgId: string
@@ -11,7 +11,7 @@ export type UserData = {
   roleId: string
 }
 
-export type MetricsParam = {
+type MetricsParam = {
   sessionProfile: SessionProfile
   accountName: string
   userData: UserData
@@ -51,9 +51,9 @@ export type SessionProfile = {
   lastName?: string
 }
 
-export type QuoteMetric = Metric & { fields: QuoteFieldsMetric }
+type QuoteMetric = Metric & { fields: QuoteFieldsMetric }
 
-export const buildQuoteMetric = (
+const buildQuoteMetric = (
   sendToSalesRep: boolean,
   metricsParam: MetricsParam
 ): QuoteMetric => {
