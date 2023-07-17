@@ -251,8 +251,6 @@ Note that users with [storefront permissions](#storefront-permissions) to edit q
 
 ![app-configuration](https://user-images.githubusercontent.com/6306265/163218059-903cfbcf-0077-45d2-9457-19ee0ba4d5c8.png)
 
----
-
 <!-- DOCS-IGNORE:start -->
 
 ## Contributors ✨
