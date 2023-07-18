@@ -141,7 +141,7 @@ export const sendMetric = async (metricsParam: MetricsParam) => {
   try {
     const metric = await buildQuoteMetric(metricsParam)
 
-    axios.post(ANALYTICS_URL, metric)
+    await axios.post(ANALYTICS_URL, metric)
   } catch (error) {
     console.warn('Unable to log metrics', error)
   }
