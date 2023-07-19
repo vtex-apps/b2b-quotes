@@ -105,7 +105,7 @@ const buildQuoteMetric = async (
     name: 'b2b-suite-buyerorg-data',
     kind: 'create-quote-ui-event',
     description: 'Create Quotation Action - UI',
-    account: metricsParam.workspace,
+    account: metricsParam.account,
     fields: {
       buy_org_id: metricsData.organization,
       buy_org_name: metricsData.organizationName,
