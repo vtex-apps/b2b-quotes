@@ -74,6 +74,7 @@ const QuoteDetails: FunctionComponent = () => {
     route: { params },
     navigate,
     workspace,
+    account,
   } = useRuntime()
 
   const isNewQuote = !params?.id
@@ -203,6 +204,7 @@ const QuoteDetails: FunctionComponent = () => {
             sessionResponse,
             workspace,
             sendToSalesRep,
+            account,
           }
 
           sendMetric(metricsParam)

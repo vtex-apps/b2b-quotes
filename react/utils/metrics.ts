@@ -39,9 +39,6 @@ export type SessionProfile = {
 type SessionResponse = {
   namespaces: {
     profile: SessionProfile
-    account: {
-      accountName: { value: string }
-    }
   }
 }
 
@@ -49,6 +46,7 @@ type MetricsParam = {
   quoteId: string
   sessionResponse: SessionResponse
   workspace: string
+  account: string
   sendToSalesRep: boolean
 }
 
@@ -71,7 +69,7 @@ const fetchMetricsData = async (
         creationDate
       },
       getUserByEmail(email: $email) @context(provider: "vtex.storefront-permissions") {
-      costId
+        costId
     }
   }`,
     variables: { id: quoteId, email: userEmail },
@@ -94,11 +92,10 @@ const buildQuoteMetric = async (
   metricsParam: MetricsParam
 ): Promise<QuoteMetric> => {
   const { namespaces } = metricsParam.sessionResponse
-  const accountName = namespaces.account.accountName.value
-  const userEmail = namespaces.profile.email.value
+  const userEmail = namespaces?.profile?.email?.value
 
   const metricsData = await fetchMetricsData(
-    accountName,
+    metricsParam.account,
     metricsParam.workspace,
     metricsParam.quoteId,
     userEmail
@@ -108,7 +105,7 @@ const buildQuoteMetric = async (
     name: 'b2b-suite-buyerorg-data',
     kind: 'create-quote-ui-event',
     description: 'Create Quotation Action - UI',
-    account: accountName,
+    account: metricsParam.workspace,
     fields: {
       buy_org_id: metricsData.organization,
       buy_org_name: metricsData.organizationName,
