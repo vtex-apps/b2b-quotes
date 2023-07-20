@@ -85,7 +85,7 @@ const fetchMetricsData = async (
   }
 
   const quoteResult = data?.getQuote as Omit<QuoteMetricsData, 'costId'>
-  const costId = data?.getUserByEmail?.[0].costId as string
+  const costId = (data?.getUserByEmail?.[0].costId ?? '') as string
 
   return {
     ...quoteResult,
