@@ -75,12 +75,17 @@ const fetchMetricsData = async (
     variables: { id: quoteId, email: userEmail },
   })
 
-  const { data } = (
+  const { data, errors } = (
     await axios.post(GRAPHQL_URL(accountName, workspace), query)
   ).data
 
-  const quoteResult = data.getQuote as Omit<QuoteMetricsData, 'costId'>
-  const costId = data.getUserByEmail?.[0].costId as string
+  if (errors) {
+    console.error('Graphql errors', errors)
+    throw new Error('Graphql Errors when trying get quote and user data')
+  }
+
+  const quoteResult = data?.getQuote as Omit<QuoteMetricsData, 'costId'>
+  const costId = data?.getUserByEmail?.[0].costId as string
 
   return {
     ...quoteResult,
