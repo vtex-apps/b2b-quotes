@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const ANALYTICS_URL = 'https://rc.vtex.com/api/analytics/schemaless-events'
+import type { Metric, SessionResponse } from './metrics'
+import { sendMetric } from './metrics'
 
 const GRAPHQL_URL = (accountName: string, workspace?: string) => {
   if (workspace) {
@@ -10,14 +11,7 @@ const GRAPHQL_URL = (accountName: string, workspace?: string) => {
   return `https://${accountName}.myvtex.com/_v/private/graphql/v1`
 }
 
-type Metric = {
-  name: 'b2b-suite-buyerorg-data'
-  kind: 'create-quote-ui-event'
-  description: 'Create Quotation Action - UI'
-  account: string
-}
-
-type QuoteFieldsMetric = {
+type CreateQuoteFieldsMetric = {
   cost_center_id: string
   cost_center_name: string
   buy_org_id: string
@@ -31,18 +25,7 @@ type QuoteFieldsMetric = {
   send_to_sales_rep: boolean
 }
 
-export type SessionProfile = {
-  id: { value: string }
-  email: { value: string }
-}
-
-type SessionResponse = {
-  namespaces: {
-    profile: SessionProfile
-  }
-}
-
-type MetricsParam = {
+type CreateQuoteMetricsParam = {
   quoteId: string
   sessionResponse: SessionResponse
   workspace: string
@@ -50,7 +33,7 @@ type MetricsParam = {
   sendToSalesRep: boolean
 }
 
-type QuoteMetric = Metric & { fields: QuoteFieldsMetric }
+type CreateQuoteMetric = Metric & { fields: CreateQuoteFieldsMetric }
 
 const fetchMetricsData = async (
   accountName: string,
@@ -93,9 +76,9 @@ const fetchMetricsData = async (
   }
 }
 
-const buildQuoteMetric = async (
-  metricsParam: MetricsParam
-): Promise<QuoteMetric> => {
+const buildCreateQuoteMetric = async (
+  metricsParam: CreateQuoteMetricsParam
+): Promise<CreateQuoteMetric> => {
   const { namespaces } = metricsParam.sessionResponse
   const userEmail = namespaces?.profile?.email?.value
 
@@ -106,7 +89,7 @@ const buildQuoteMetric = async (
     userEmail
   )
 
-  const metric: QuoteMetric = {
+  const metric: CreateQuoteMetric = {
     name: 'b2b-suite-buyerorg-data',
     kind: 'create-quote-ui-event',
     description: 'Create Quotation Action - UI',
@@ -139,11 +122,13 @@ type QuoteMetricsData = {
   creationDate: string
 }
 
-export const sendMetric = async (metricsParam: MetricsParam) => {
+export const sendCreateQuoteMetric = async (
+  metricsParam: CreateQuoteMetricsParam
+) => {
   try {
-    const metric = await buildQuoteMetric(metricsParam)
+    const metric = await buildCreateQuoteMetric(metricsParam)
 
-    await axios.post(ANALYTICS_URL, metric)
+    await sendMetric(metric)
   } catch (error) {
     console.warn('Unable to log metrics', error)
   }
