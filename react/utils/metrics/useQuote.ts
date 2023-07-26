@@ -24,9 +24,9 @@ export type UseQuoteMetricsParams = {
   sessionResponse: SessionResponse
 }
 
-const buildUseQuoteMetric = async (
+const buildUseQuoteMetric = (
   metricsParam: UseQuoteMetricsParams
-): Promise<UseQuoteMetric> => {
+): UseQuoteMetric => {
   const { quoteState, orderFormId, account, sessionResponse } = metricsParam
 
   const metric: UseQuoteMetric = {
@@ -56,9 +56,9 @@ export const sendUseQuoteMetric = async (
   metricsParam: UseQuoteMetricsParams
 ) => {
   try {
-    const metric = await buildUseQuoteMetric(metricsParam)
+    const metric = buildUseQuoteMetric(metricsParam)
 
-    sendMetric(metric)
+    await sendMetric(metric)
   } catch (error) {
     console.warn('Unable to log metrics', error)
   }
