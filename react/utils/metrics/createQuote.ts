@@ -14,8 +14,8 @@ const GRAPHQL_URL = (accountName: string, workspace?: string) => {
 type CreateQuoteFieldsMetric = {
   cost_center_id: string
   cost_center_name: string
-  buy_org_id: string
-  buy_org_name: string
+  buyer_org_id: string
+  buyer_org_name: string
   member_id: string
   member_email: string
   role: string
@@ -95,8 +95,8 @@ const buildCreateQuoteMetric = async (
     description: 'Create Quotation Action - UI',
     account: metricsParam.account,
     fields: {
-      buy_org_id: metricsData.organization,
-      buy_org_name: metricsData.organizationName,
+      buyer_org_id: metricsData.organization,
+      buyer_org_name: metricsData.organizationName,
       cost_center_id: metricsData.costId,
       cost_center_name: metricsData.costCenterName,
       member_id: namespaces?.profile?.id?.value,

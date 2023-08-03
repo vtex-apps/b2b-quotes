@@ -10,8 +10,8 @@ type UseQuoteFieldsMetric = {
   creator_email: string
   user_email: string
   cost_center_name: string
-  buy_org_id: string
-  buy_org_name: string
+  buyer_org_id: string
+  buyer_org_name: string
   quote_last_update: string
 }
 
@@ -35,8 +35,8 @@ const buildUseQuoteMetric = (
     description: 'Use Quotation Action - UI',
     account,
     fields: {
-      buy_org_id: quoteState.organization,
-      buy_org_name: quoteState.organizationName,
+      buyer_org_id: quoteState.organization,
+      buyer_org_name: quoteState.organizationName,
       cost_center_name: quoteState.costCenterName,
       quote_id: quoteState.id,
       quote_reference_name: quoteState.referenceName,
