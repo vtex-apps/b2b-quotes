@@ -38,6 +38,9 @@ import AlertMessage from './AlertMessage'
 import QuoteTable from './QuoteTable'
 import QuoteUpdateHistory from './QuoteUpdateHistory'
 import { Status } from '../../utils/status'
+import { sendCreateQuoteMetric } from '../../utils/metrics/createQuote'
+import type { UseQuoteMetricsParams } from '../../utils/metrics/useQuote'
+import { sendUseQuoteMetric } from '../../utils/metrics/useQuote'
 
 const localStore = storageFactory(() => localStorage)
 const MAX_DISCOUNT_PERCENTAGE = 99
@@ -72,6 +75,8 @@ const QuoteDetails: FunctionComponent = () => {
   const {
     route: { params },
     navigate,
+    workspace,
+    account,
   } = useRuntime()
 
   const isNewQuote = !params?.id
@@ -196,6 +201,16 @@ const QuoteDetails: FunctionComponent = () => {
     })
       .then((result: any) => {
         if (result.data.createQuote) {
+          const metricsParam = {
+            quoteId: result.data.createQuote,
+            sessionResponse,
+            workspace,
+            sendToSalesRep,
+            account,
+          }
+
+          sendCreateQuoteMetric(metricsParam)
+
           toastMessage(quoteMessages.createSuccess)
           handleClearCart(orderForm.orderFormId).then(() => {
             setQuoteState(initialState)
@@ -292,6 +307,14 @@ const QuoteDetails: FunctionComponent = () => {
         setUsingQuoteState(false)
       })
       .then(() => {
+        const metricsParam: UseQuoteMetricsParams = {
+          quoteState,
+          orderFormId: variables.orderFormId,
+          account,
+          sessionResponse,
+        }
+
+        sendUseQuoteMetric(metricsParam)
         goToCheckout(checkoutUrl)
         setUsingQuoteState(false)
       })
