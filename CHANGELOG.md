@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Fix sonar code smell
+
 + ### Added
 + - Quotation created metrics sent to Analytics Redshift
 + - Use quote metrics sent to Analytics Redshift
