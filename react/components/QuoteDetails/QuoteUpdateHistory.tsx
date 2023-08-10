@@ -17,7 +17,7 @@ const QuoteUpdateHistory = ({ updateHistory }: any) => {
       )}
       {updateHistory.map((update: any, index: number) => {
         return (
-          <div key={index} className="ph4 pv2">
+          <div key={update.date} className="ph4 pv2">
             <Card>
               <div>
                 <FormattedMessage
