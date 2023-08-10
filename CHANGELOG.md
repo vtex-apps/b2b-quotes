@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fix sonar code smell
+  
+## [1.6.0] - 2023-08-10
 
 + ### Added
 + - Quotation created metrics sent to Analytics Redshift
