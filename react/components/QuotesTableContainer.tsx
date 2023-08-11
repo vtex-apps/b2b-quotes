@@ -142,42 +142,43 @@ const QuotesTableContainer: FunctionComponent = () => {
     const costCenters = [] as string[]
     const statuses = [] as string[]
 
-    statements.forEach((statement) => {
-      if (!statement?.object) return
-      const { subject, object } = statement
+    statements
+      .filter(
+        (statement) => statement?.object && typeof statement.object === 'object'
+      )
+      .forEach((statement) => {
+        const { subject } = statement
+        const object = statement.object as Record<string, unknown> // guarantee by filter
 
-      switch (subject) {
-        case 'status': {
-          if (!object || typeof object !== 'object') return
-          const keys = Object.keys(object)
-          const isAllTrue = !keys.some((key) => !object[key])
-          const isAllFalse = !keys.some((key) => object[key])
-          const trueKeys = keys.filter((key) => object[key])
+        switch (subject) {
+          case 'status': {
+            const keys = Object.keys(object)
+            const isAllTrue = !keys.some((key) => !object[key])
+            const isAllFalse = !keys.some((key) => object[key])
+            const trueKeys = keys.filter((key) => object[key])
 
-          if (isAllTrue) break
-          if (isAllFalse) statuses.push('none')
-          statuses.push(...trueKeys)
-          break
-        }
-
-        case 'organizationAndCostCenter': {
-          if (!object || typeof object !== 'object') return
-
-          if (object.organizationId) {
-            organizations.push(object.organizationId as string)
+            if (isAllTrue) break
+            if (isAllFalse) statuses.push('none')
+            statuses.push(...trueKeys)
+            break
           }
 
-          if (object.costCenterId) {
-            costCenters.push(object.costCenterId as string)
+          case 'organizationAndCostCenter': {
+            if (object.organizationId) {
+              organizations.push(object.organizationId as string)
+            }
+
+            if (object.costCenterId) {
+              costCenters.push(object.costCenterId as string)
+            }
+
+            break
           }
 
-          break
+          default:
+            break
         }
-
-        default:
-          break
-      }
-    })
+      })
 
     setFilterState({
       status: statuses,
