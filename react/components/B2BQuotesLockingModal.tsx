@@ -100,7 +100,7 @@ const B2BQuotesLockingModal = () => {
     const { orderForm } = orderFormData
     const { customData, items } = orderForm
 
-    if (!customData?.customApps) {
+    if (!customData?.customApps || customData?.customApps.findIndex( (item: any) => item.id === 'b2b-quotes-graphql' ) === -1) {
       return
     }
 
