@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.1] - 2024-06-20
+
 ### Fixed
 
 - Fixed that if there is another custom application in the custom data, the "B2BQuotesLockingModal.tsx" component would break on its own.
