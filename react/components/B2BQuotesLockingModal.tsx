@@ -100,12 +100,7 @@ const B2BQuotesLockingModal = () => {
     const { orderForm } = orderFormData
     const { customData, items } = orderForm
 
-    if (
-      !customData?.customApps ||
-      !customData?.customApps.some(
-        (item: any) => item.id === 'b2b-quotes-graphql'
-      )
-    ) {
+    if (!customData?.customApps) {
       return
     }
 
