@@ -50,7 +50,7 @@ const fetchMetricsData = async (
         creationDate
       }
     }`,
-    variables: { id: quoteId},
+    variables: { id: quoteId },
   })
 
   const { data, errors } = (
