@@ -62,11 +62,7 @@ const fetchMetricsData = async (
     throw new Error('Graphql Errors when trying get quote and user data')
   }
 
-  const quoteResult = data?.getQuote as QuoteMetricsData
-
-  return {
-    ...quoteResult,
-  }
+  return data?.getQuote as QuoteMetricsData
 }
 
 const buildCreateQuoteMetric = async (
