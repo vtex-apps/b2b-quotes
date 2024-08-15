@@ -12,7 +12,6 @@ const GRAPHQL_URL = (accountName: string, workspace?: string) => {
 }
 
 type CreateQuoteFieldsMetric = {
-  cost_center_id: string
   cost_center_name: string
   buyer_org_id: string
   buyer_org_name: string
@@ -38,11 +37,10 @@ type CreateQuoteMetric = Metric & { fields: CreateQuoteFieldsMetric }
 const fetchMetricsData = async (
   accountName: string,
   workspace: string,
-  quoteId: string,
-  userEmail: string
+  quoteId: string
 ) => {
   const query = JSON.stringify({
-    query: `query GetMetricsData($id: String, $email: String!) {
+    query: `query GetMetricsData($id: String) {
       getQuote(id: $id) @context(provider: "vtex.b2b-quotes-graphql") {
         organization
         organizationName
@@ -50,12 +48,9 @@ const fetchMetricsData = async (
         referenceName
         creatorRole
         creationDate
-      },
-      getUserByEmail(email: $email) @context(provider: "vtex.storefront-permissions") {
-        costId
-    }
-  }`,
-    variables: { id: quoteId, email: userEmail },
+      }
+    }`,
+    variables: { id: quoteId },
   })
 
   const { data, errors } = (
@@ -67,13 +62,7 @@ const fetchMetricsData = async (
     throw new Error('Graphql Errors when trying get quote and user data')
   }
 
-  const quoteResult = data?.getQuote as Omit<QuoteMetricsData, 'costId'>
-  const costId = (data?.getUserByEmail?.[0].costId ?? '') as string
-
-  return {
-    ...quoteResult,
-    costId,
-  }
+  return data?.getQuote as QuoteMetricsData
 }
 
 const buildCreateQuoteMetric = async (
@@ -85,8 +74,7 @@ const buildCreateQuoteMetric = async (
   const metricsData = await fetchMetricsData(
     metricsParam.account,
     metricsParam.workspace,
-    metricsParam.quoteId,
-    userEmail
+    metricsParam.quoteId
   )
 
   const metric: CreateQuoteMetric = {
@@ -97,7 +85,6 @@ const buildCreateQuoteMetric = async (
     fields: {
       buyer_org_id: metricsData.organization,
       buyer_org_name: metricsData.organizationName,
-      cost_center_id: metricsData.costId,
       cost_center_name: metricsData.costCenterName,
       member_id: namespaces?.profile?.id?.value,
       member_email: userEmail,
@@ -115,7 +102,6 @@ const buildCreateQuoteMetric = async (
 type QuoteMetricsData = {
   organization: string // organizationId
   organizationName: string
-  costId: string
   costCenterName: string
   referenceName: string // quote reference name
   creatorRole: string
