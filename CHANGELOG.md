@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Translations for all Storefront languages.
+
 ## [1.6.2] - 2024-08-15
 
 ### Removed
