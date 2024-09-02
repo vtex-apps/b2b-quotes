@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Use getQuotesEnabledForUser instead of getUserByEmail to define "My Quotes" button visibility
+
 ## [1.6.2] - 2024-08-15
 
 ### Removed
