@@ -1,6 +1,6 @@
 {
   "name": "vtex.b2b-quotes",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "scripts": {
     "test": "vtex-test-tools test"
   },
