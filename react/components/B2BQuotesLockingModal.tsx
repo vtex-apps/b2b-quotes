@@ -159,7 +159,7 @@ const B2BQuotesLockingModal = () => {
           }
         >
           <div>
-            <h1>{formatMessage(messages.title)}</h1>
+            {/* <h1>{formatMessage(messages.title)}</h1> */}
             <p>{formatMessage(messages.message)}</p>
           </div>
         </Modal>
