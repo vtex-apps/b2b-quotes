@@ -30,7 +30,7 @@ const SaveButtons = ({
               updatingQuoteState
             }
           >
-            fdsdf
+            <FormattedMessage id="store/b2b-quotes.create.button.save-for-later" />
           </Button>
         </span>
         <span className="mr4">
