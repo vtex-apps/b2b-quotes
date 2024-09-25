@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 
-- Fixed the change of expiration date inserted in the input
+- Fix validation and submit on lifespan settings for quotes
 
 ## [1.6.4] - 2024-09-05
 
