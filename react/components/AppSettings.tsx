@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from 'react-apollo'
 import { useIntl } from 'react-intl'
 import type { NumberInputValue } from '@vtex/admin-ui'
+import { RadioGroup } from 'vtex.styleguide'
 import {
   Page,
   PageHeader,
@@ -26,6 +27,10 @@ const AppSettings: FC = () => {
 
   const [settingsState, setSettingsState] = useState({
     cartLifeSpan: 30,
+  })
+
+  const [state, setState] = useState({
+    value: 'marketplace',
   })
 
   const [settingsLoading, setSettingsLoading] = useState(false)
@@ -85,9 +90,20 @@ const AppSettings: FC = () => {
       {loading && <Skeleton shape="rect" />}
       {data?.getAppSettings?.adminSetup && (
         <PageContent
-          csx={{ padding: 5, display: 'table-cell', verticalAlign: 'middle' }}
+          csx={{
+            padding: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            maxWidth: '720px',
+            width: '100%',
+          }}
         >
-          <Box as="section" csx={{ paddingBottom: 5 }}>
+          <Box>
+            <h3 style={{ fontSize: '1rem', fontWeight: 600 }}>
+              Expiration Period for Quotes and Saved Carts
+            </h3>
+          </Box>
+          <Box as="section" csx={{ marginBottom: 32 }}>
             <NumberInput
               value={settingsState.cartLifeSpan}
               label={formatMessage(adminMessages.cartLifeSpanLabel)}
@@ -108,7 +124,61 @@ const AppSettings: FC = () => {
               }}
             />
           </Box>
-          <Box as="section">
+          <Box as="section" csx={{ marginBottom: 16 }}>
+            <h3 style={{ fontSize: '1rem', fontWeight: 600 }}>
+              Quote Management for Marketplace
+            </h3>
+            <p style={{ fontSize: '0.875rem' }} className="c-muted-1 mt1">
+              Configure how quotes are managed in the marketplace.
+            </p>
+            <p style={{ fontSize: '0.875rem' }} className="c-muted-1 mt6 mb4">
+              Who is responsible for managing quotes?
+            </p>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <RadioGroup
+                hideBorder
+                name="paymentMethods"
+                options={[
+                  {
+                    value: 'marketplace',
+                    label: (
+                      <div>
+                        <span style={{ fontSize: '0.875rem' }}>
+                          Marketplace
+                        </span>
+                        <p
+                          style={{ fontSize: '0.75rem' }}
+                          className="c-muted-1"
+                        >
+                          Only the main marketplace manages quotes.
+                        </p>
+                      </div>
+                    ),
+                  },
+                  {
+                    value: 'sellers',
+                    label: (
+                      <div>
+                        <span style={{ fontSize: '0.875rem' }}>Sellers</span>
+                        <p
+                          style={{ fontSize: '0.75rem' }}
+                          className="c-muted-1"
+                        >
+                          Sellers manage quotes for their own products and can
+                          choose not to account quotes
+                        </p>
+                      </div>
+                    ),
+                  },
+                ]}
+                value={state.value}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setState({ value: e.currentTarget.value })
+                }
+              />
+            </div>
+          </Box>
+          <Box csx={{ marginTop: 16 }}>
             <Button
               disabled={settingsState.cartLifeSpan < 1}
               variant="primary"
