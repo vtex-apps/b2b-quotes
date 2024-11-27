@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "Erro ao salvar configurações",
   "admin/b2b-quotes.settings.saveSettings.success": "Configurações salvas com sucesso",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "Período de expiração padrão (em dias) para cotações e carrinhos salvos",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "Gerenciamento de Cotações para o Marketplace",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "Configure como as cotações são gerenciadas no marketplace.",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "Quem é responsável pelo gerenciamento das cotações?",

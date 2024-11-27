@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "Не удалось сохранить настройки",
   "admin/b2b-quotes.settings.saveSettings.success": "Настройки сохранены",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "Стандартный срок истечения (дней) для расценок и сохранённых корзин",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "Управление предложениями для маркетплейса",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "Настройте, как управляются предложения на маркетплейсе.",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "Кто отвечает за управление предложениями?",

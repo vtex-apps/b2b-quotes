@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "Échec de la sauvegarde des paramètres",
   "admin/b2b-quotes.settings.saveSettings.success": "Paramètres enregistrés avec succès",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "Période d’expiration par défaut (en jours) pour les devis et les paniers enregistrés",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "Gestion des devis pour le marché",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "Configurez la gestion des devis sur le marché.",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "Qui est responsable de la gestion des devis ?",

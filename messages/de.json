@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "Speichern der Einstellungen fehlgeschlagen",
   "admin/b2b-quotes.settings.saveSettings.success": "Einstellungen erfolgreich gespeichert",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "Standard Ablauffrist (in Tagen) für Angebote und gespeicherte Warenkörbe",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "Angebotsverwaltung für den Marktplatz",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "Konfigurieren Sie, wie Angebote auf dem Marktplatz verwaltet werden.",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "Wer ist für die Verwaltung der Angebote verantwortlich?",

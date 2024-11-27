@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "Uložení nastavení se nezdařilo",
   "admin/b2b-quotes.settings.saveSettings.success": "Nastavení bylo úspěšně uloženo",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "Výchozí doba platnosti (v dnech) pro nabídky a uložené košíky",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "Správa nabídek pro tržiště",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "Konfigurujte, jak jsou nabídky spravovány na tržišti.",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "Kdo je zodpovědný za správu nabídek?",

@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "Αποτυχία αποθήκευσης ρυθμίσεων",
   "admin/b2b-quotes.settings.saveSettings.success": "Οι ρυθμίσεις αποθηκεύτηκαν επιτυχώς",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "Προεπιλεγμένη περίοδος λήξης (σε ημέρες) για προσφορές και αποθηκευμένα καρότσια",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "Διαχείριση προσφορών για την αγορά",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "Ρυθμίστε πώς διαχειρίζονται οι προσφορές στην αγορά.",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "Ποιος είναι υπεύθυνος για τη διαχείριση των προσφορών;",

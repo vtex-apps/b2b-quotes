@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "No se pudo guardar la configuración",
   "admin/b2b-quotes.settings.saveSettings.success": "Configuración guardada con éxito",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "Periodo de vencimiento predeterminado (en días) para cotizaciones y carritos guardados",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "Gestión de cotizaciones para el mercado",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "Configura cómo se gestionan las cotizaciones en el mercado.",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "¿Quién es responsable de gestionar las cotizaciones?",

@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "Kunne ikke lagre innstillinger",
   "admin/b2b-quotes.settings.saveSettings.success": "Innstillinger lagret",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "Standard utløpsperiode (i dager) for tilbud og lagrede handlekurver",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "Tilbudsadministrasjon for markedsplassen",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "Konfigurer hvordan tilbud administreres på markedsplassen.",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "Hvem er ansvarlig for å administrere tilbud?",

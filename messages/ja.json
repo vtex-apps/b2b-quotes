@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "設定を保存できませんでした",
   "admin/b2b-quotes.settings.saveSettings.success": "設定の保存が完了しました",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "見積りと保存したカートの既定の有効期限（日数）",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "マーケットプレイスの見積管理",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "マーケットプレイスで見積の管理方法を設定します。",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "誰が見積の管理を担当しますか？",

@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "설정을 저장하지 못했습니다.",
   "admin/b2b-quotes.settings.saveSettings.success": "설정이 성공적으로 저장되었습니다.",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "견적 및 저장된 장바구니의 기본 만료 기간(일)",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "마켓플레이스를 위한 견적 관리",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "마켓플레이스에서 견적이 관리되는 방식을 구성합니다.",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "누가 견적 관리를 담당합니까?",

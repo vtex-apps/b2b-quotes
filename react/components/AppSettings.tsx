@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from 'react-apollo'
-import { useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import type { NumberInputValue } from '@vtex/admin-ui'
 import { RadioGroup } from 'vtex.styleguide'
 import {
@@ -29,8 +29,8 @@ const AppSettings: FC = () => {
     cartLifeSpan: 30,
   })
 
-  const [state, setState] = useState({
-    value: 'marketplace',
+  const [quotesManagedValue, setQuotesManagedValue] = useState({
+    value: 'MARKETPLACE',
   })
 
   const [settingsLoading, setSettingsLoading] = useState(false)
@@ -40,6 +40,9 @@ const AppSettings: FC = () => {
     onCompleted: (insideData) => {
       if (insideData?.getAppSettings?.adminSetup) {
         setSettingsState(insideData.getAppSettings.adminSetup)
+        setQuotesManagedValue({
+          value: insideData.getAppSettings.adminSetup.quotesManagedBy,
+        })
       }
     },
   })
@@ -57,7 +60,10 @@ const AppSettings: FC = () => {
 
     saveSettings({
       variables: {
-        input: settingsState,
+        input: {
+          cartLifeSpan: settingsState.cartLifeSpan,
+          quotesManagedBy: quotesManagedValue.value,
+        },
       },
     })
       .then(() => {
@@ -126,13 +132,13 @@ const AppSettings: FC = () => {
           </Box>
           <Box as="section" csx={{ marginBottom: 16 }}>
             <h3 style={{ fontSize: '1rem', fontWeight: 600 }}>
-              Quote Management for Marketplace
+              <FormattedMessage id="admin/b2b-quotes.settings.saveSettings.management.quotes.title" />
             </h3>
             <p style={{ fontSize: '0.875rem' }} className="c-muted-1 mt1">
-              Configure how quotes are managed in the marketplace.
+              <FormattedMessage id="admin/b2b-quotes.settings.saveSettings.management.quotes.description" />
             </p>
             <p style={{ fontSize: '0.875rem' }} className="c-muted-1 mt6 mb4">
-              Who is responsible for managing quotes?
+              <FormattedMessage id="admin/b2b-quotes.settings.saveSettings.management.quotes.info" />
             </p>
             <div style={{ display: 'flex', gap: 8 }}>
               <RadioGroup
@@ -140,40 +146,41 @@ const AppSettings: FC = () => {
                 name="paymentMethods"
                 options={[
                   {
-                    value: 'marketplace',
+                    value: 'MARKETPLACE',
                     label: (
                       <div>
                         <span style={{ fontSize: '0.875rem' }}>
-                          Marketplace
+                          <FormattedMessage id="admin/b2b-quotes.settings.saveSettings.management.quotes.option.one" />
                         </span>
                         <p
                           style={{ fontSize: '0.75rem' }}
                           className="c-muted-1"
                         >
-                          Only the main marketplace manages quotes.
+                          <FormattedMessage id="admin/b2b-quotes.settings.saveSettings.management.quotes.option.one.describe" />
                         </p>
                       </div>
                     ),
                   },
                   {
-                    value: 'sellers',
+                    value: 'SELLER',
                     label: (
                       <div>
-                        <span style={{ fontSize: '0.875rem' }}>Sellers</span>
+                        <span style={{ fontSize: '0.875rem' }}>
+                          <FormattedMessage id="admin/b2b-quotes.settings.saveSettings.management.quotes.option.two" />
+                        </span>
                         <p
                           style={{ fontSize: '0.75rem' }}
                           className="c-muted-1"
                         >
-                          Sellers manage quotes for their own products and can
-                          choose not to account quotes
+                          <FormattedMessage id="admin/b2b-quotes.settings.saveSettings.management.quotes.option.two.describe" />
                         </p>
                       </div>
                     ),
                   },
                 ]}
-                value={state.value}
+                value={quotesManagedValue.value}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setState({ value: e.currentTarget.value })
+                  setQuotesManagedValue({ value: e.currentTarget.value })
                 }
               />
             </div>

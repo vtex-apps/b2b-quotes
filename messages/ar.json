@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "فشل في حفظ الإعدادات",
   "admin/b2b-quotes.settings.saveSettings.success": "تم حفظ الإعدادات بنجاح",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "فترة انتهاء الصلاحية الافتراضية (بالأيام) للأسعار والعربات المسجلة",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "إدارة العروض للسوق",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "قم بتكوين كيفية إدارة العروض في السوق.",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "من المسؤول عن إدارة العروض؟",

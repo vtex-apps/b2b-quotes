@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "Kunne ikke gemme indstillinger",
   "admin/b2b-quotes.settings.saveSettings.success": "Indstillinger blev gemt",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "Standard udløbsperiode (i dage) for tilbud og gemte kurve",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "Tilbudsadministration for markedspladsen",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "Konfigurer, hvordan tilbud håndteres på markedspladsen.",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "Hvem er ansvarlig for at administrere tilbud?",

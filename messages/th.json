@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "บันทึกการตั้งค่าไม่สำเร็จ",
   "admin/b2b-quotes.settings.saveSettings.success": "บันทึกการตั้งค่าเรียบร้อยแล้ว",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "ค่าเริ่มต้นระยะเวลาหมดอายุ (วัน) สำหรับการเสนอราคาและล้อเข็นที่บันทึกไว้",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "การจัดการใบเสนอราคาสำหรับตลาด",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "กำหนดวิธีจัดการใบเสนอราคาในตลาด",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "ใครรับผิดชอบในการจัดการใบเสนอราคา?",

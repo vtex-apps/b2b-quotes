@@ -6,6 +6,7 @@
   "admin/b2b-quotes.settings.saveSettings.success": "Setările au fost salvate cu succes",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "Perioada implicită de expirare (în zile) pentru oferte și coșuri salvate",
   "admin/b2b-quotes.settings.saveSettings.buttonText": "Salvare setări",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "Managementul ofertelor pentru piață",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "Configurează modul în care sunt gestionate ofertele pe piață.",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "Cine este responsabil pentru gestionarea ofertelor?",

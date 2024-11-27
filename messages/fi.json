@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "Asetusten tallennus epäonnistui",
   "admin/b2b-quotes.settings.saveSettings.success": "Asetukset tallennettu",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "Oletusvanhenemisaika (päivinä) tarjouksille ja tallennetuille ostoskoreille",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "Tarjousten hallinta markkinapaikalle",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "Määritä, kuinka tarjouksia hallitaan markkinapaikalla.",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "Kuka on vastuussa tarjousten hallinnasta?",

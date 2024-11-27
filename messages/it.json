@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "Impossibile salvare le impostazioni",
   "admin/b2b-quotes.settings.saveSettings.success": "Impostazioni salvate correttamente",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "Periodo di scadenza predefinito (in giorni) per preventivi e carrelli salvati",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "Gestione delle offerte per il marketplace",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "Configura come gestire le offerte nel marketplace.",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "Chi è responsabile della gestione delle offerte?",

@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "Неуспешно запазване на настройките",
   "admin/b2b-quotes.settings.saveSettings.success": "Настройките са запазени успешно",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "Период на изтичане по подразбиране (в дни) за оферти и запазени колички",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "Управление на оферти за пазара",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "Конфигурирайте как се управляват офертите на пазара.",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "Кой е отговорен за управлението на офертите?",

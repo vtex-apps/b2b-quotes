@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "Не вдалося зберегти налаштування",
   "admin/b2b-quotes.settings.saveSettings.success": "Налаштування збережено",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "Стандартний строк дії (у днях) розцінок і збережених кошиків",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "Управління пропозиціями для маркетплейсу",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "Налаштуйте, як пропозиції керуються на маркетплейсі.",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "Хто відповідає за управління пропозиціями?",

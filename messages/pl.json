@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "Nie udało się zapisać ustawień",
   "admin/b2b-quotes.settings.saveSettings.success": "Ustawienia zapisane pomyślnie",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "Domyślny okres ważności (w dniach) dla wycen i zapisanych koszyków",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "Zarządzanie ofertami dla rynku",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "Skonfiguruj, jak oferty są zarządzane na rynku.",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "Kto jest odpowiedzialny za zarządzanie ofertami?",

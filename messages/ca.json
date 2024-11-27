@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "No s'ha pogut desar la configuració",
   "admin/b2b-quotes.settings.saveSettings.success": "S'ha desat correctament la configuració",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "Període de venciment predeterminat (en dies) per a pressuposts i carretons desats",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "Gestió d'ofertes per al mercat",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "Configura com es gestionen les ofertes al mercat.",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "Qui és responsable de gestionar les ofertes?",

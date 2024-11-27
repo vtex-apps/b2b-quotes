@@ -5,6 +5,7 @@
   "admin/b2b-quotes.settings.saveSettings.failure": "Instellingen opslaan mislukt",
   "admin/b2b-quotes.settings.saveSettings.success": "Instellingen succesvol opgeslagen",
   "admin/b2b-quotes.settings.cartLifeSpan.label": "Standaard vervalperiode (in dagen) voor offertes en opgeslagen winkelwagens",
+  "admin/b2b-quotes.settings.saveSettings.management.quotes.experiration.data": "Expiration Period for Quotes and Saved Carts",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.title": "Offertebeheer voor de marktplaats",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.description": "Configureer hoe offertes op de marktplaats worden beheerd.",
   "admin/b2b-quotes.settings.saveSettings.management.quotes.info": "Wie is verantwoordelijk voor het beheren van offertes?",
