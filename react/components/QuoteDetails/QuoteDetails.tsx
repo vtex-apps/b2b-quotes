@@ -1,6 +1,12 @@
 /* eslint-disable react/display-name */
 import type { ChangeEventHandler, FunctionComponent } from 'react'
-import React, { Fragment, useContext, useEffect, useState } from 'react'
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useMutation, useQuery } from 'react-apollo'
 import { useRuntime } from 'vtex.render-runtime'
@@ -127,6 +133,15 @@ const QuoteDetails: FunctionComponent = () => {
     data: orderFormData,
     refetch: refetchOrderForm,
   } = useQuery(GET_ORDERFORM, { ssr: false, fetchPolicy: 'network-only' })
+
+  const hasDifferentSeller = useMemo(() => {
+    if (!orderFormData?.orderForm?.items) return false
+
+    const { items } = orderFormData.orderForm
+    const firstSeller = items[0]?.seller as string
+
+    return items.some((item: { seller: string }) => item.seller !== firstSeller)
+  }, [orderFormData])
 
   const { data: orderAuthData } = useQuery(GET_AUTH_RULES, { ssr: false })
   const {
@@ -743,7 +758,7 @@ const QuoteDetails: FunctionComponent = () => {
                     updateHistory={quoteState.updateHistory}
                   />
 
-                  {formState.isEditable && (
+                  {formState.isEditable && !hasDifferentSeller && (
                     <div className="mt3 pa5">
                       <Textarea
                         label={formatMessage(quoteMessages.addNote)}
