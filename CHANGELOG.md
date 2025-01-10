@@ -11,6 +11,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Display quotes table page with seller quotes if the quote was splitted
 
+## [1.6.6] - 2025-01-06
+### Fixed
+- Fix Request Quote message in Quotes Details
+
+## [1.6.5] - 2024-09-26
+### Fixed
+
+- Fix validation and submit on lifespan settings for quotes
+
+## [1.6.4] - 2024-09-05
+
+### Fixed
+- Use getQuotesEnabledForUser instead of getUserByEmail to define "My Quotes" button visibility
+
+## [1.6.3] - 2024-09-04
+
+### Fixed
+
+- Translations for all Storefront languages.
+
+## [1.6.2] - 2024-08-15
+
+### Removed
+- Removed cost center id from metrics
+
+## [1.6.1] - 2024-06-20
+
+### Fixed
+
+- Fixed that if there is another custom application in the custom data, the "B2BQuotesLockingModal.tsx" component would break on its own.
+
 ## [1.6.0] - 2023-08-10
 
 + ### Added

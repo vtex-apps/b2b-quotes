@@ -28,7 +28,7 @@ const B2BQuotesLink: FunctionComponent<Props> = ({ render }) => {
       return
     }
 
-    if (data.getUserByEmail[0]?.id) {
+    if (data.getQuoteEnabledForUser) {
       setShow(true)
     }
   }, [data, userEmail, sessionResponse])

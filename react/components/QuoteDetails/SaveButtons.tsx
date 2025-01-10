@@ -44,11 +44,7 @@ const SaveButtons = ({
               updatingQuoteState
             }
           >
-            {isSalesRep ? (
-              <FormattedMessage id="store/b2b-quotes.quote-details.save" />
-            ) : (
-              <FormattedMessage id="store/b2b-quotes.create.button.request-quote" />
-            )}
+            <FormattedMessage id="store/b2b-quotes.create.button.request-quote" />
           </Button>
         </span>
       </Fragment>

@@ -2,6 +2,7 @@ import type { FC } from 'react'
 import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from 'react-apollo'
 import { useIntl } from 'react-intl'
+import type { NumberInputValue } from '@vtex/admin-ui'
 import {
   Page,
   PageHeader,
@@ -31,6 +32,11 @@ const AppSettings: FC = () => {
 
   const { data, loading } = useQuery(APP_SETTINGS, {
     ssr: false,
+    onCompleted: (insideData) => {
+      if (insideData?.getAppSettings?.adminSetup) {
+        setSettingsState(insideData.getAppSettings.adminSetup)
+      }
+    },
   })
 
   const [saveSettings] = useMutation(SAVE_APP_SETTINGS)
@@ -49,18 +55,19 @@ const AppSettings: FC = () => {
         input: settingsState,
       },
     })
+      .then(() => {
+        showToast({
+          message: formatMessage(adminMessages.saveSettingsSuccess),
+          duration: 5000,
+        })
+        setSettingsLoading(false)
+      })
       .catch((err) => {
         console.error(err)
         showToast({
           message: formatMessage(adminMessages.saveSettingsFailure),
           duration: 5000,
-        })
-        setSettingsLoading(false)
-      })
-      .then(() => {
-        showToast({
-          message: formatMessage(adminMessages.saveSettingsSuccess),
-          duration: 5000,
+          tone: 'critical',
         })
         setSettingsLoading(false)
       })
@@ -85,16 +92,25 @@ const AppSettings: FC = () => {
               value={settingsState.cartLifeSpan}
               label={formatMessage(adminMessages.cartLifeSpanLabel)}
               min={1}
-              onChange={(event: any) =>
+              onBlur={() => {
+                if (settingsState.cartLifeSpan < 1) {
+                  setSettingsState({
+                    ...settingsState,
+                    cartLifeSpan: 1,
+                  })
+                }
+              }}
+              onChange={(value: NumberInputValue) => {
                 setSettingsState({
                   ...settingsState,
-                  cartLifeSpan: event.value,
+                  cartLifeSpan: Number(value),
                 })
-              }
+              }}
             />
           </Box>
           <Box as="section">
             <Button
+              disabled={settingsState.cartLifeSpan < 1}
               variant="primary"
               onClick={() => handleSaveSettings()}
               loading={settingsLoading}
