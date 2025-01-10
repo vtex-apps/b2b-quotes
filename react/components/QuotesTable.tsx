@@ -1,15 +1,17 @@
 /* eslint-disable react/display-name */
 import type { FunctionComponent, ChangeEvent } from 'react'
 import React from 'react'
-import { PageBlock, Table, Tag, Checkbox } from 'vtex.styleguide'
+import { PageBlock, Table, Tag, Checkbox, Spinner } from 'vtex.styleguide'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { FormattedCurrency } from 'vtex.format-currency'
 import { useRuntime } from 'vtex.render-runtime'
 
 import { tableMessages, statusMessages } from '../utils/messages'
+import ChildrenQuotesColumn from './ChildrenQuotesColumn'
 import OrganizationAndCostCenterFilter from './OrganizationAndCostCenterFilter'
 import type { OrgAndCC } from './OrganizationAndCostCenterFilter'
 import { LabelByStatusMap } from '../utils/status'
+import { getEmptySimpleQuote } from '../utils/helpers'
 
 interface QuotesTableProps {
   permissions: string[]
@@ -49,7 +51,7 @@ interface CellRendererProps {
 const QuotesTable: FunctionComponent<QuotesTableProps> = ({
   permissions,
   mainOrganizationId,
-  quotes,
+  quotes: mainQuotes,
   page,
   pageSize,
   total,
@@ -73,6 +75,36 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
     (permission) => permission.indexOf('edit-quotes') >= 0
   )
 
+  const [expandedQuotes, setExpandedQuotes] = React.useState<string[]>([])
+  const [childrenQuotes, setChildrenQuotes] = React.useState<
+    Record<string, [QuoteSimple]>
+  >({})
+
+  const quotes: QuoteSimple[] = []
+
+  for (const quote of mainQuotes) {
+    quotes.push(quote)
+
+    if (quote.hasChildren && expandedQuotes.includes(quote.id)) {
+      if (childrenQuotes[quote.id]) {
+        quotes.push(
+          ...childrenQuotes[quote.id].map((child) => ({
+            ...child,
+            referenceName: child.seller ?? child.referenceName,
+          }))
+        )
+      } else {
+        quotes.push(getEmptySimpleQuote(quote.id))
+      }
+    }
+  }
+
+  const cleanChildrenStates = () => {
+    setExpandedQuotes([])
+    setChildrenQuotes({})
+  }
+
+  const someHasChildren = quotes.some((quote) => quote.hasChildren)
   const showOrganizationFilter = permissions.includes('access-quotes-all')
   const showCostCenterFilter =
     showOrganizationFilter || permissions.includes('access-quotes-organization')
@@ -97,13 +129,36 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
 
   const getSchema = () => ({
     properties: {
+      ...(someHasChildren && {
+        hasChildren: {
+          title: ' ',
+          width: 25,
+          cellRenderer: ({ rowData }: CellRendererProps) => {
+            return (
+              <ChildrenQuotesColumn
+                quote={rowData}
+                childrenQuotes={childrenQuotes}
+                setChildrenQuotes={setChildrenQuotes}
+                expandedQuotes={expandedQuotes}
+                setExpandedQuotes={setExpandedQuotes}
+              />
+            )
+          },
+        },
+      }),
       referenceName: {
         title: formatMessage(tableMessages.refName),
         width: 200,
         cellRenderer: ({
-          rowData: { viewedByCustomer, viewedBySales, referenceName },
+          rowData: {
+            viewedByCustomer,
+            viewedBySales,
+            referenceName,
+            parentQuote,
+            rowLoading,
+          },
         }: CellRendererProps) => {
-          let renderedName = <>{referenceName}</>
+          let renderedName = <>{rowLoading ? <Spinner /> : referenceName}</>
 
           if (
             (isSalesRep && !viewedBySales) ||
@@ -112,24 +167,47 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
             renderedName = <strong>{referenceName}</strong>
           }
 
-          return renderedName
+          return (
+            <div {...(!!parentQuote && { className: 'pl7' })}>
+              {renderedName}
+            </div>
+          )
         },
       },
       subtotal: {
         title: formatMessage(tableMessages.subtotal),
         headerRight: true,
-        cellRenderer: ({ rowData: { subtotal } }: CellRendererProps) => (
-          <div className="w-100 tr">
-            <FormattedCurrency value={subtotal / 100} />
-          </div>
-        ),
+        cellRenderer: ({
+          rowData: { subtotal, rowLoading },
+        }: CellRendererProps) => {
+          return (
+            <div className="w-100 tr">
+              {rowLoading ? (
+                '---'
+              ) : (
+                <FormattedCurrency value={subtotal / 100} />
+              )}
+            </div>
+          )
+        },
       },
       creatorEmail: {
         title: formatMessage(tableMessages.email),
+        cellRenderer: ({
+          rowData: { creatorEmail, rowLoading },
+        }: CellRendererProps) => {
+          if (rowLoading) return '---'
+
+          return <>{creatorEmail}</>
+        },
       },
       creationDate: {
         title: formatMessage(tableMessages.creationDate),
-        cellRenderer: ({ rowData: { creationDate } }: CellRendererProps) => {
+        cellRenderer: ({
+          rowData: { creationDate, rowLoading },
+        }: CellRendererProps) => {
+          if (rowLoading) return '---'
+
           return (
             <>
               {formatDate(creationDate, {
@@ -144,7 +222,11 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
       },
       expirationDate: {
         title: formatMessage(tableMessages.expirationDate),
-        cellRenderer: ({ rowData: { expirationDate } }: CellRendererProps) => {
+        cellRenderer: ({
+          rowData: { expirationDate, rowLoading },
+        }: CellRendererProps) => {
+          if (!expirationDate || rowLoading) return '---'
+
           return (
             <>
               {formatDate(expirationDate, {
@@ -159,18 +241,28 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
       },
       status: {
         title: formatMessage(tableMessages.status),
-        cellRenderer: ({ rowData: { status } }: CellRendererProps) => (
-          <Tag type={LabelByStatusMap[status]}>
-            <FormattedMessage
-              id={statusMessages[status as keyof typeof statusMessages].id}
-            />
-          </Tag>
-        ),
+        cellRenderer: ({
+          rowData: { status, rowLoading },
+        }: CellRendererProps) => {
+          if (rowLoading) return '---'
+
+          return (
+            <Tag type={LabelByStatusMap[status]}>
+              <FormattedMessage
+                id={statusMessages[status as keyof typeof statusMessages].id}
+              />
+            </Tag>
+          )
+        },
         sortable: true,
       },
       lastUpdate: {
         title: formatMessage(tableMessages.lastUpdate),
-        cellRenderer: ({ rowData: { lastUpdate } }: CellRendererProps) => {
+        cellRenderer: ({
+          rowData: { lastUpdate, rowLoading },
+        }: CellRendererProps) => {
+          if (rowLoading) return '---'
+
           return (
             <>
               {formatDate(lastUpdate, {
@@ -187,15 +279,21 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
         title: formatMessage(tableMessages.organization),
         sortable: true,
         cellRenderer: ({
-          rowData: { organizationName },
+          rowData: { organizationName, rowLoading },
         }: CellRendererProps) => {
+          if (rowLoading) return '---'
+
           return <>{organizationName}</>
         },
       },
       costCenter: {
         title: formatMessage(tableMessages.costCenter),
         sortable: true,
-        cellRenderer: ({ rowData: { costCenterName } }: CellRendererProps) => {
+        cellRenderer: ({
+          rowData: { costCenterName, rowLoading },
+        }: CellRendererProps) => {
+          if (rowLoading) return '---'
+
           return <>{costCenterName}</>
         },
       },
@@ -283,6 +381,7 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
   return (
     <PageBlock>
       <Table
+        density="low"
         fullWidth
         items={quotes}
         loading={loading}
@@ -296,12 +395,20 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
             params: { id },
           })
         }}
-        fixFirstColumn
         emptyStateLabel={formatMessage(tableMessages.emptyState)}
         pagination={{
-          onNextClick: handleNextClick,
-          onPrevClick: handlePrevClick,
-          onRowsChange: handleRowsChange,
+          onNextClick: () => {
+            cleanChildrenStates()
+            handleNextClick()
+          },
+          onPrevClick: () => {
+            cleanChildrenStates()
+            handlePrevClick()
+          },
+          onRowsChange: (e: ChangeEvent<HTMLInputElement>) => {
+            cleanChildrenStates()
+            handleRowsChange(e)
+          },
           currentItemFrom: (page - 1) * pageSize + 1,
           currentItemTo: total < page * pageSize ? total : page * pageSize,
           textShowRows: formatMessage(tableMessages.showRows),
@@ -313,9 +420,18 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
           inputSearch: {
             value: searchValue,
             placeholder: formatMessage(tableMessages.placeholderSearch),
-            onChange: handleInputSearchChange,
-            onClear: handleInputSearchClear,
-            onSubmit: handleInputSearchSubmit,
+            onChange: (e: React.FormEvent<HTMLInputElement>) => {
+              cleanChildrenStates()
+              handleInputSearchChange(e)
+            },
+            onClear: () => {
+              cleanChildrenStates()
+              handleInputSearchClear()
+            },
+            onSubmit: () => {
+              cleanChildrenStates()
+              handleInputSearchSubmit()
+            },
           },
           fields: {
             label: formatMessage(tableMessages.toggleFields),
@@ -331,14 +447,20 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
           sortedBy,
           sortOrder,
         }}
-        onSort={handleSort}
+        onSort={(sortArgs: { sortOrder: string; sortedBy: string }) => {
+          cleanChildrenStates()
+          handleSort(sortArgs)
+        }}
         filters={{
           alwaysVisibleFilters: [
             'status',
             ...(showCostCenterFilter ? ['organizationAndCostCenter'] : []),
           ],
           statements: filterStatements,
-          onChangeStatements: handleFiltersChange,
+          onChangeStatements: (statements: FilterStatement[]) => {
+            cleanChildrenStates()
+            handleFiltersChange(statements)
+          },
           clearAllFiltersButtonLabel: formatMessage(tableMessages.clearFilters),
           collapseLeft: true,
           options: {
