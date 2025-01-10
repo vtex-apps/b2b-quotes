@@ -61,3 +61,23 @@ export const useSessionResponse = () => {
 
   return session
 }
+
+export const getEmptySimpleQuote = (parentQuote: string): QuoteSimple => ({
+  id: '',
+  referenceName: '',
+  subtotal: 0,
+  costCenter: '',
+  costCenterName: '',
+  creatorEmail: '',
+  creatorRole: '',
+  creationDate: '',
+  expirationDate: '',
+  lastUpdate: '',
+  organization: '',
+  organizationName: '',
+  status: '',
+  viewedByCustomer: true,
+  viewedBySales: true,
+  parentQuote,
+  rowLoading: true,
+})

@@ -1,18 +1,12 @@
-query GetQuotes(
-  $organization: [String]
-  $costCenter: [String]
-  $status: [String]
-  $search: String
+query GetChildrenQuotes(
+  $id: String
   $page: Int
   $pageSize: Int
   $sortOrder: String
   $sortedBy: String
 ) {
-  getQuotes(
-    organization: $organization
-    costCenter: $costCenter
-    status: $status
-    search: $search
+  getChildrenQuotes(
+    id: $id
     page: $page
     pageSize: $pageSize
     sortOrder: $sortOrder
@@ -34,7 +28,8 @@ query GetQuotes(
       costCenterName
       viewedBySales
       viewedByCustomer
-      hasChildren
+      seller
+      parentQuote
     }
     pagination {
       total

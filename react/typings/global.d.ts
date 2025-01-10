@@ -17,6 +17,10 @@ declare global {
     costCenterName: string
     viewedBySales: boolean
     viewedByCustomer: boolean
+    hasChildren?: boolean | null
+    parentQuote?: string | null
+    seller?: string
+    rowLoading?: boolean
   }
 
   interface Quote extends QuoteSimple {
