@@ -606,7 +606,9 @@ const QuoteDetails: FunctionComponent = () => {
             <div className="flex flex-column pl5">
               <div className="mb5 flex flex-column-s flex-row-l justify-between items-center">
                 <PageHeader
-                  title={`${quoteState.referenceName} (${quoteState.items.length})`}
+                  title={`${quoteState.referenceName} (${
+                    childrenQuoteList?.getChildrenQuotes?.data?.length ?? 0
+                  })`}
                   linkLabel={formatMessage(quoteMessages.back)}
                   onLinkClick={() => {
                     navigate({
@@ -670,99 +672,101 @@ const QuoteDetails: FunctionComponent = () => {
               <Fragment>
                 <AlertMessage quoteState={quoteState} noteState={noteState} />
 
-                {/* {quoteState.hasChildren ? ( */}
-                <QuoteChildren
-                  childrens={childrenQuoteList}
-                  quoteState={quoteState}
-                  isSalesRep={isSalesRep}
-                />
-                {/* ) : ( */}
-                <div className="pa5">
-                  <QuoteTable
+                {quoteState.hasChildren ? (
+                  <QuoteChildren
+                    childrens={childrenQuoteList ?? []}
                     quoteState={quoteState}
-                    updatingSubtotal={updatingSubtotal}
-                    originalSubtotal={originalSubtotal}
                     isSalesRep={isSalesRep}
-                    formState={formState}
-                    maxDiscountState={maxDiscountState}
-                    discountState={discountState}
-                    onUpdateSellingPrice={handleUpdateSellingPrice}
-                    onUpdateQuantity={handleUpdateQuantity}
                   />
-                  {formState.isEditable && isSalesRep && (
-                    <div className="mt3">
-                      <h3 className="t-heading-4 mb4">
-                        <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.title" />
-                      </h3>
-                      <div className="pa5">
-                        <PercentageDiscount
-                          updatingSubtotal={updatingSubtotal}
-                          originalSubtotal={originalSubtotal}
-                          maxDiscountState={maxDiscountState}
-                          discountState={discountState}
-                          handlePercentageDiscount={handlePercentageDiscount}
-                        />
-                        {maxDiscountState < 100 && (
-                          <div className="mt1">
-                            <FormattedMessage
-                              id="store/b2b-quotes.quote-details.apply-discount.maxDiscount-text"
-                              values={{ maxDiscount: maxDiscountState }}
-                            />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {quoteState.expirationDate &&
-                    formState.isEditable &&
-                    isSalesRep && (
+                ) : (
+                  <div className="pa5">
+                    <QuoteTable
+                      quoteState={quoteState}
+                      updatingSubtotal={updatingSubtotal}
+                      originalSubtotal={originalSubtotal}
+                      isSalesRep={isSalesRep}
+                      formState={formState}
+                      maxDiscountState={maxDiscountState}
+                      discountState={discountState}
+                      onUpdateSellingPrice={handleUpdateSellingPrice}
+                      onUpdateQuantity={handleUpdateQuantity}
+                    />
+                    {formState.isEditable && isSalesRep && (
                       <div className="mt3">
-                        <h3 className="t-heading-4">
-                          <FormattedMessage id="store/b2b-quotes.quote-details.expiration-date-change.title" />
+                        <h3 className="t-heading-4 mb4">
+                          <FormattedMessage id="store/b2b-quotes.quote-details.apply-discount.title" />
                         </h3>
                         <div className="pa5">
-                          <DatePicker
-                            label={formatMessage(quoteMessages.expiration)}
-                            minDate={new Date()}
-                            locale="en-US"
-                            value={new Date(quoteState.expirationDate)}
-                            onChange={(date: Date) =>
-                              setQuoteState({
-                                ...quoteState,
-                                expirationDate: date.toISOString(),
-                              })
-                            }
+                          <PercentageDiscount
+                            updatingSubtotal={updatingSubtotal}
+                            originalSubtotal={originalSubtotal}
+                            maxDiscountState={maxDiscountState}
+                            discountState={discountState}
+                            handlePercentageDiscount={handlePercentageDiscount}
                           />
+                          {maxDiscountState < 100 && (
+                            <div className="mt1">
+                              <FormattedMessage
+                                id="store/b2b-quotes.quote-details.apply-discount.maxDiscount-text"
+                                values={{ maxDiscount: maxDiscountState }}
+                              />
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
 
-                  <QuoteUpdateHistory
-                    updateHistory={quoteState.updateHistory}
-                  />
+                    {quoteState.expirationDate &&
+                      formState.isEditable &&
+                      isSalesRep && (
+                        <div className="mt3">
+                          <h3 className="t-heading-4">
+                            <FormattedMessage id="store/b2b-quotes.quote-details.expiration-date-change.title" />
+                          </h3>
+                          <div className="pa5">
+                            <DatePicker
+                              label={formatMessage(quoteMessages.expiration)}
+                              minDate={new Date()}
+                              locale="en-US"
+                              value={new Date(quoteState.expirationDate)}
+                              onChange={(date: Date) =>
+                                setQuoteState({
+                                  ...quoteState,
+                                  expirationDate: date.toISOString(),
+                                })
+                              }
+                            />
+                          </div>
+                        </div>
+                      )}
 
-                  {formState.isEditable && (
-                    <div className="mt3 pa5">
-                      <Textarea
-                        label={formatMessage(quoteMessages.addNote)}
-                        value={noteState}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                          setNoteState(e.target.value)
-                        }}
-                        characterCountdownText={
-                          <FormattedMessage
-                            id="store/b2b-quotes.create.characterLeft"
-                            values={{ count: noteState.length }}
-                          />
-                        }
-                        maxLength="500"
-                        rows="4"
-                      />
-                    </div>
-                  )}
-                </div>
-                {/* )} */}
+                    <QuoteUpdateHistory
+                      updateHistory={quoteState.updateHistory}
+                    />
+
+                    {formState.isEditable && (
+                      <div className="mt3 pa5">
+                        <Textarea
+                          label={formatMessage(quoteMessages.addNote)}
+                          value={noteState}
+                          onChange={(
+                            e: React.ChangeEvent<HTMLInputElement>
+                          ) => {
+                            setNoteState(e.target.value)
+                          }}
+                          characterCountdownText={
+                            <FormattedMessage
+                              id="store/b2b-quotes.create.characterLeft"
+                              values={{ count: noteState.length }}
+                            />
+                          }
+                          maxLength="500"
+                          rows="4"
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
               </Fragment>
             )}
           </PageBlock>
