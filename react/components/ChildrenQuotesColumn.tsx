@@ -29,15 +29,17 @@ const ChildrenQuotesColumn: FunctionComponent<ChildrenQuotesColumnProps> = ({
   const [fetchChildrenQuotes] = useLazyQuery(GET_CHILDREN_QUOTES, {
     fetchPolicy: 'cache-and-network',
     onCompleted({ getChildrenQuotes }) {
-      const { data } = getChildrenQuotes
-      const [firstChild] = data
+      const [firstChild] = getChildrenQuotes
       const { parentQuote } = firstChild
       const prevChildrenQuotes = childrenQuotes[parentQuote]
 
-      if (!prevChildrenQuotes || !arrayShallowEqual(prevChildrenQuotes, data)) {
+      if (
+        !prevChildrenQuotes ||
+        !arrayShallowEqual(prevChildrenQuotes, getChildrenQuotes)
+      ) {
         setChildrenQuotes((prev) => ({
           ...prev,
-          [parentQuote]: data,
+          [parentQuote]: getChildrenQuotes,
         }))
       }
     },

@@ -1,58 +1,22 @@
-query GetChildrenQuotes(
-  $id: String
-  $page: Int
-  $pageSize: Int
-  $sortOrder: String
-  $sortedBy: String
-) {
-  getChildrenQuotes(
-    id: $id
-    page: $page
-    pageSize: $pageSize
-    sortOrder: $sortOrder
-    sortedBy: $sortedBy
-  ) @context(provider: "vtex.b2b-quotes-graphql") {
-    data {
-      items {
-        name
-        skuName
-        refId
-        id
-        productId
-        imageUrl
-        listPrice
-        price
-        quantity
-        sellingPrice
-        seller
-      }
-      updateHistory {
-        email
-        role
-        date
-        status
-        note
-      }
-      id
-      referenceName
-      creatorEmail
-      creatorRole
-      creationDate
-      expirationDate
-      lastUpdate
-      subtotal
-      status
-      organization
-      organizationName
-      costCenter
-      costCenterName
-      viewedBySales
-      viewedByCustomer
-      seller
-      parentQuote
-    }
-    pagination {
-      total
-    }
+query GetChildrenQuotes($id: String) {
+  getChildrenQuotes(id: $id) @context(provider: "vtex.b2b-quotes-graphql") {
+    id
+    referenceName
+    creatorEmail
+    creatorRole
+    creationDate
+    expirationDate
+    lastUpdate
+    subtotal
+    status
+    organization
+    organizationName
+    costCenter
+    costCenterName
+    viewedBySales
+    viewedByCustomer
+    seller
+    sellerName
+    parentQuote
   }
 }

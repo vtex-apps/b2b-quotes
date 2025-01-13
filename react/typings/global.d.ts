@@ -18,8 +18,10 @@ declare global {
     viewedBySales: boolean
     viewedByCustomer: boolean
     hasChildren?: boolean | null
+    childrenQuantity?: number | null
     parentQuote?: string | null
     seller?: string
+    sellerName?: string
     rowLoading?: boolean
   }
 

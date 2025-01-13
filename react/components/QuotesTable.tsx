@@ -90,11 +90,14 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
         quotes.push(
           ...childrenQuotes[quote.id].map((child) => ({
             ...child,
-            referenceName: child.seller ?? child.referenceName,
+            referenceName:
+              child.sellerName ?? child.seller ?? child.referenceName,
           }))
         )
       } else {
-        quotes.push(getEmptySimpleQuote(quote.id))
+        for (let i = 0; i < (quote.childrenQuantity ?? 1); i++) {
+          quotes.push(getEmptySimpleQuote(quote.id))
+        }
       }
     }
   }
@@ -156,6 +159,7 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
             referenceName,
             parentQuote,
             rowLoading,
+            childrenQuantity,
           },
         }: CellRendererProps) => {
           let renderedName = <>{rowLoading ? <Spinner /> : referenceName}</>
@@ -170,6 +174,9 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
           return (
             <div {...(!!parentQuote && { className: 'pl7' })}>
               {renderedName}
+              {!!childrenQuantity && (
+                <span className="c-muted-2 pl3">({childrenQuantity})</span>
+              )}
             </div>
           )
         },
