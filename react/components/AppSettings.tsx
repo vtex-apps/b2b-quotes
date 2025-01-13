@@ -107,7 +107,6 @@ const AppSettings: FC = () => {
           <Box>
             <h3 style={{ fontSize: '1rem', fontWeight: 600 }}>
               <FormattedMessage id="admin/b2b-quotes.settings.saveSettings.management.quotes.expiration.data" />
-              aaaa
             </h3>
           </Box>
           <Box as="section" csx={{ marginBottom: 32 }}>
