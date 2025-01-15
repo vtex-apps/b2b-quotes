@@ -1,8 +1,9 @@
 import type { FC } from 'react'
 import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from 'react-apollo'
-import { useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import type { NumberInputValue } from '@vtex/admin-ui'
+import { RadioGroup } from 'vtex.styleguide'
 import {
   Page,
   PageHeader,
@@ -28,6 +29,10 @@ const AppSettings: FC = () => {
     cartLifeSpan: 30,
   })
 
+  const [quotesManagedValue, setQuotesManagedValue] = useState({
+    value: 'MARKETPLACE',
+  })
+
   const [settingsLoading, setSettingsLoading] = useState(false)
 
   const { data, loading } = useQuery(APP_SETTINGS, {
@@ -35,6 +40,9 @@ const AppSettings: FC = () => {
     onCompleted: (insideData) => {
       if (insideData?.getAppSettings?.adminSetup) {
         setSettingsState(insideData.getAppSettings.adminSetup)
+        setQuotesManagedValue({
+          value: insideData.getAppSettings.adminSetup.quotesManagedBy,
+        })
       }
     },
   })
@@ -52,7 +60,10 @@ const AppSettings: FC = () => {
 
     saveSettings({
       variables: {
-        input: settingsState,
+        input: {
+          cartLifeSpan: settingsState.cartLifeSpan,
+          quotesManagedBy: quotesManagedValue.value,
+        },
       },
     })
       .then(() => {
@@ -85,9 +96,20 @@ const AppSettings: FC = () => {
       {loading && <Skeleton shape="rect" />}
       {data?.getAppSettings?.adminSetup && (
         <PageContent
-          csx={{ padding: 5, display: 'table-cell', verticalAlign: 'middle' }}
+          csx={{
+            padding: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            maxWidth: '720px',
+            width: '100%',
+          }}
         >
-          <Box as="section" csx={{ paddingBottom: 5 }}>
+          <Box>
+            <h3 style={{ fontSize: '1rem', fontWeight: 600 }}>
+              <FormattedMessage id="admin/b2b-quotes.settings.saveSettings.management.quotes.expiration.data" />
+            </h3>
+          </Box>
+          <Box as="section" csx={{ marginBottom: 32 }}>
             <NumberInput
               value={settingsState.cartLifeSpan}
               label={formatMessage(adminMessages.cartLifeSpanLabel)}
@@ -108,7 +130,62 @@ const AppSettings: FC = () => {
               }}
             />
           </Box>
-          <Box as="section">
+          <Box as="section" csx={{ marginBottom: 16 }}>
+            <h3 style={{ fontSize: '1rem', fontWeight: 600 }}>
+              <FormattedMessage id="admin/b2b-quotes.settings.saveSettings.management.quotes.title" />
+            </h3>
+            <p style={{ fontSize: '0.875rem' }} className="c-muted-1 mt1">
+              <FormattedMessage id="admin/b2b-quotes.settings.saveSettings.management.quotes.description" />
+            </p>
+            <p style={{ fontSize: '0.875rem' }} className="c-muted-1 mt6 mb4">
+              <FormattedMessage id="admin/b2b-quotes.settings.saveSettings.management.quotes.info" />
+            </p>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <RadioGroup
+                hideBorder
+                name="paymentMethods"
+                options={[
+                  {
+                    value: 'MARKETPLACE',
+                    label: (
+                      <div>
+                        <span style={{ fontSize: '0.875rem' }}>
+                          <FormattedMessage id="admin/b2b-quotes.settings.saveSettings.management.quotes.option.one" />
+                        </span>
+                        <p
+                          style={{ fontSize: '0.75rem' }}
+                          className="c-muted-1"
+                        >
+                          <FormattedMessage id="admin/b2b-quotes.settings.saveSettings.management.quotes.option.one.describe" />
+                        </p>
+                      </div>
+                    ),
+                  },
+                  {
+                    value: 'SELLER',
+                    label: (
+                      <div>
+                        <span style={{ fontSize: '0.875rem' }}>
+                          <FormattedMessage id="admin/b2b-quotes.settings.saveSettings.management.quotes.option.two" />
+                        </span>
+                        <p
+                          style={{ fontSize: '0.75rem' }}
+                          className="c-muted-1"
+                        >
+                          <FormattedMessage id="admin/b2b-quotes.settings.saveSettings.management.quotes.option.two.describe" />
+                        </p>
+                      </div>
+                    ),
+                  },
+                ]}
+                value={quotesManagedValue.value}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setQuotesManagedValue({ value: e.currentTarget.value })
+                }
+              />
+            </div>
+          </Box>
+          <Box csx={{ marginTop: 16 }}>
             <Button
               disabled={settingsState.cartLifeSpan < 1}
               variant="primary"

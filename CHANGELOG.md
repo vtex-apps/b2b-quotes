@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add new splitting quote configuration to settings UI
 - Display quotes table page with seller quotes if the quote was splitted
 - Display quotes children quantity and seller trade name when there are splitted quotes
 

@@ -2,6 +2,7 @@ mutation SaveAppSettings($input: AppSettingsInput!) {
   saveAppSettings(input: $input) @context(provider: "vtex.b2b-quotes-graphql") {
     adminSetup {
       cartLifeSpan
+      quotesManagedBy
     }
   }
 }

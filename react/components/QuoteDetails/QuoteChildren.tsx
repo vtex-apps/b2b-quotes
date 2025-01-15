@@ -1,33 +1,32 @@
-import React, { memo, useCallback, useState } from 'react'
+import React, { memo, useMemo, useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { formatCurrency } from 'vtex.format-currency'
 import { useRuntime } from 'vtex.render-runtime'
-import { Collapsible, Tab, Tabs, Tag, Totalizer } from 'vtex.styleguide'
+import {
+  Button,
+  Card,
+  Collapsible,
+  Tab,
+  Tabs,
+  Tag,
+  Totalizer,
+} from 'vtex.styleguide'
 
 import { quoteMessages, statusMessages } from '../../utils/messages'
-import { LabelByStatusMap } from '../../utils/status'
+import { LabelByStatusMap, Status } from '../../utils/status'
 import QuoteTable from './QuoteTable'
 import QuoteUpdateHistory from './QuoteUpdateHistory'
 
 interface Props {
-  quoteState: Quote
+  quote: Quote
   isSalesRep: boolean
-  childrens: {
-    getChildrenQuotes: {
-      data: Quote[]
-    }
-  }
 }
 
-const QuoteChildren: React.FC<Props> = ({
-  quoteState,
-  childrens,
-  isSalesRep,
-}) => {
-  const { culture } = useRuntime()
+const QuoteChildren: React.FC<Props> = ({ quote, isSalesRep }) => {
+  const { culture, navigate } = useRuntime()
   const intl = useIntl()
   const { formatMessage, formatDate } = intl
-  const [openId, setOpenId] = useState<string | null>(null)
+  const [open, setOpen] = useState(true)
   const [currentTab, setCurrentTab] = useState<number | null>(1)
 
   const formatPrice = (value: number) =>
@@ -37,139 +36,128 @@ const QuoteChildren: React.FC<Props> = ({
       value: value / 100,
     })
 
-  // Memoized toggle function to prevent re-creation
-  const handleToggle = useCallback(
-    (id: string) => {
-      setOpenId((prevOpenId) => (prevOpenId === id ? null : id))
-    },
-    [] // No dependencies, so the function won't be recreated
+  const originalSubtotal = useMemo(
+    () =>
+      (quote.items ?? []).reduce((acc, item) => {
+        return acc + item.price * item.quantity
+      }, 0),
+    [quote.items]
+  )
+
+  const discount = useMemo(
+    () => Math.round(100 - (quote.subtotal / originalSubtotal) * 100),
+    [originalSubtotal, quote.subtotal]
   )
 
   return (
-    <div>
-      {childrens?.getChildrenQuotes?.data.map((quote: Quote, index: number) => {
-        const isOpen = openId === quote?.id
-
-        const originalSubtotal = (quote.items ?? []).reduce((acc, item) => {
-          return acc + item.price * item.quantity
-        }, 0)
-
-        const discount = Math.round(
-          100 - (quote.subtotal / originalSubtotal) * 100
-        )
-
-        return (
-          <div
-            className={
-              childrens.getChildrenQuotes.data.length >= 2 ? 'mb5' : ''
-            }
-            key={quote?.referenceName}
-          >
-            <Collapsible
-              key={quote?.id}
-              onClick={() => handleToggle(quote?.id)}
-              header={
-                <div className="flex flex-column-s flex-row-l justify-between items-center">
-                  <div>
-                    <span className="mr3">{quote?.seller}</span>
-                    <Tag type={LabelByStatusMap[quote.status]}>
-                      <FormattedMessage
-                        id={
-                          statusMessages[
-                            quoteState.status as keyof typeof statusMessages
-                          ]?.id
-                        }
-                      />
-                    </Tag>
-                  </div>
-                  <div className="flex flex-column-s flex-row-l justify-start items-center">
-                    <span className="t-mini c-muted-2 mr3">
-                      {formatMessage(quoteMessages.expiration)}
-                    </span>
-                    <span>
-                      {formatDate(quote.expirationDate, {
-                        day: 'numeric',
-                        month: 'numeric',
-                        year: 'numeric',
-                      })}
-                    </span>
-                  </div>
-                </div>
-              }
-              isOpen={isOpen}
-            >
-              <div className="pa6">
-                <div className="mb5">
-                  <Totalizer
-                    items={[
-                      {
-                        label: formatMessage(quoteMessages.percentageDiscount),
-                        value: `0%`,
-                      },
-                      {
-                        label: formatMessage(quoteMessages.quotedSubtotal),
-                        value: formatPrice(discount),
-                      },
-                      {
-                        label: formatMessage(quoteMessages.quotedSubtotal),
-                        value: `0%`,
-                      },
-                    ]}
-                  />
-                </div>
-                <div className="flex t-small c-muted-2 items-center pv5 mb5">
-                  {formatDate(quote.expirationDate, {
-                    day: 'numeric',
-                    month: 'numeric',
-                    year: 'numeric',
-                    hour: '2-digit',
-                  })}
-                  <span>·</span>
+    <div className="mb5">
+      <Card>
+        <Collapsible
+          key={quote?.id}
+          onClick={() => setOpen((prev) => !prev)}
+          header={
+            <div className="flex justify-between items-center">
+              <div>
+                <span className="mr3">
+                  {quote?.sellerName ?? quote?.seller}
+                </span>
+                <Tag type={LabelByStatusMap[quote.status]}>
                   <FormattedMessage
                     id={
                       statusMessages[
-                        quoteState.status as keyof typeof statusMessages
-                      ].id
+                        quote.status as keyof typeof statusMessages
+                      ]?.id
                     }
                   />
-                </div>
-                <Tabs>
-                  <Tab
-                    label={`Products (${quote.items.length})`}
-                    active={currentTab === 1}
-                    onClick={() => setCurrentTab(1)}
-                  >
-                    <div className="mt5">
-                      <QuoteTable
-                        quoteState={quote}
-                        updatingSubtotal={discount}
-                        originalSubtotal={originalSubtotal}
-                        isSalesRep={isSalesRep}
-                        formState={{
-                          isEditable: false,
-                          errorMessage: '',
-                        }}
-                      />
-                    </div>
-                  </Tab>
-                  <Tab
-                    label="Histórico"
-                    active={currentTab === 2}
-                    onClick={() => setCurrentTab(2)}
-                  >
-                    <div className="flex flex-column-s flex-column-l">
-                      <QuoteUpdateHistory updateHistory={quote.updateHistory} />
-                    </div>
-                  </Tab>
-                </Tabs>
+                </Tag>
               </div>
-            </Collapsible>
-            {index !== childrens?.getChildrenQuotes.data.length - 1 && (
-              <hr className="ma0 bb bb-0 b--black-10 mt5" />
+              <div className="flex flex-column-s flex-row-l justify-start items-center">
+                <span className="t-mini c-muted-2 mr3">
+                  {formatMessage(quoteMessages.expiration)}
+                </span>
+                <span>
+                  {quote.expirationDate
+                    ? formatDate(quote.expirationDate, {
+                        day: 'numeric',
+                        month: 'numeric',
+                        year: 'numeric',
+                      })
+                    : '---'}
+                </span>
+              </div>
+            </div>
+          }
+          isOpen={open}
+        >
+          <div className="pt6">
+            <div className="mb5">
+              <Totalizer
+                items={[
+                  {
+                    label: formatMessage(quoteMessages.percentageDiscount),
+                    value: `${discount}%`,
+                  },
+                  {
+                    label: formatMessage(quoteMessages.originalSubtotal),
+                    value: formatPrice(originalSubtotal),
+                  },
+                  {
+                    label: formatMessage(quoteMessages.quotedSubtotal),
+                    value: formatPrice(quote.subtotal),
+                  },
+                ]}
+              />
+            </div>
+            <Tabs>
+              <Tab
+                label={formatMessage(quoteMessages.productsTitle, {
+                  total: quote.items.length,
+                })}
+                active={currentTab === 1}
+                onClick={() => setCurrentTab(1)}
+              >
+                <div className="mt5">
+                  <QuoteTable
+                    quoteState={quote}
+                    updatingSubtotal={quote.subtotal}
+                    originalSubtotal={originalSubtotal}
+                    isSalesRep={isSalesRep}
+                    formState={{ isEditable: false }}
+                  />
+                </div>
+              </Tab>
+              <Tab
+                label={formatMessage(quoteMessages.historyTitle)}
+                active={currentTab === 2}
+                onClick={() => setCurrentTab(2)}
+              >
+                <div className="flex flex-column-s flex-column-l">
+                  <QuoteUpdateHistory updateHistory={quote.updateHistory} />
+                </div>
+              </Tab>
+            </Tabs>
+            {(quote.status === Status.PENDING ||
+              quote.status === Status.READY ||
+              quote.status === Status.REVISED) && (
+              <div className="flex mt6 justify-end">
+                <Button
+                  variation="secondary"
+                  size="small"
+                  onClick={() =>
+                    navigate({
+                      page: 'store.b2b-quote-details',
+                      params: { id: quote.id },
+                      query: 'parent',
+                    })
+                  }
+                >
+                  {formatMessage(quoteMessages.makeChanges)}
+                </Button>
+              </div>
             )}
           </div>
-        )
-      })}
+        </Collapsible>
+      </Card>
     </div>
   )
 }

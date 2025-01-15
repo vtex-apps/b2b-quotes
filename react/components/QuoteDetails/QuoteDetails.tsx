@@ -19,8 +19,8 @@ import {
 
 import CLEAR_CART from '../../graphql/clearCartMutation.graphql'
 import CREATE_QUOTE from '../../graphql/createQuote.graphql'
-import GET_CHILDREN_QUOTES from '../../graphql/getChildrenQuotes.graphql'
 import GET_AUTH_RULES from '../../graphql/getDimension.graphql'
+import GET_CHILDREN_QUOTES from '../../graphql/getFullChildrenQuotes.graphql'
 import GET_PERMISSIONS from '../../graphql/getPermissions.graphql'
 import GET_QUOTE from '../../graphql/getQuote.graphql'
 import GET_ORDERFORM from '../../graphql/orderForm.gql'
@@ -39,6 +39,7 @@ import AlertMessage from './AlertMessage'
 import PercentageDiscount from './PercentageDiscount'
 import QuoteChildren from './QuoteChildren'
 import QuoteDetailsNotAuthenticated from './QuoteDetailsNotAuthenticated'
+import QuoteName from './QuoteName'
 import QuoteTable from './QuoteTable'
 import QuoteUpdateHistory from './QuoteUpdateHistory'
 import SaveButtons from './SaveButtons'
@@ -76,6 +77,7 @@ const QuoteDetails: FunctionComponent = () => {
    */
   const {
     route: { params },
+    query,
     navigate,
     workspace,
     account,
@@ -115,21 +117,29 @@ const QuoteDetails: FunctionComponent = () => {
   const [originalSubtotal, setOriginalSubtotal] = useState(0)
   const [updatingSubtotal, setUpdatingSubtotal] = useState(0)
   const [sentToSalesRep, setSentToSalesRep] = useState(false)
+  const getQuoteVariables = { id: params?.id }
 
   /**
    * GraphQL Queries
    */
   const { data, loading, refetch } = useQuery(GET_QUOTE, {
-    variables: { id: params?.id },
+    variables: getQuoteVariables,
     ssr: false,
     skip: isNewQuote,
   })
 
-  const { data: childrenQuoteList } = useQuery(GET_CHILDREN_QUOTES, {
-    variables: { id: params?.id },
+  const {
+    data: childrenQuoteList,
+    loading: childrenQuotesLoading,
+    refetch: refetchChildrenQuotes,
+  } = useQuery(GET_CHILDREN_QUOTES, {
+    fetchPolicy: 'network-only',
+    variables: getQuoteVariables,
     ssr: false,
-    skip: isNewQuote,
+    skip: isNewQuote || !data?.getQuote?.hasChildren,
   })
+
+  const childrenQuotes = childrenQuoteList?.getChildrenQuotes
 
   const {
     data: orderFormData,
@@ -142,8 +152,16 @@ const QuoteDetails: FunctionComponent = () => {
     loading: permissionsLoading,
   } = useQuery(GET_PERMISSIONS, { ssr: false })
 
-  const { id = '', items = [], status = '', expirationDate } =
-    data?.getQuote ?? {}
+  const {
+    id = '',
+    items = [],
+    status = '',
+    expirationDate,
+    childrenQuantity,
+    parentQuote,
+    seller,
+    sellerName,
+  } = data?.getQuote ?? {}
 
   const { permissions = [] } = permissionsData?.checkUserPermission ?? {}
   const isSalesRep = permissions.some(
@@ -264,6 +282,18 @@ const QuoteDetails: FunctionComponent = () => {
     }
   }
 
+  const handleAfterSaveQuote = () => {
+    if (parentQuote && query?.parent !== undefined) {
+      navigate({
+        page: 'store.b2b-quote-details',
+        params: { id: parentQuote },
+      })
+    } else {
+      refetch(getQuoteVariables)
+      refetchChildrenQuotes(getQuoteVariables)
+    }
+  }
+
   const handleSaveQuote = () => {
     setUpdatingQuoteState(true)
     const {
@@ -294,7 +324,7 @@ const QuoteDetails: FunctionComponent = () => {
         setDiscountState(0)
         setUpdatingQuoteState(false)
         toastMessage(quoteMessages.updateSuccess)
-        refetch({ id: params?.id })
+        handleAfterSaveQuote()
       })
   }
 
@@ -347,7 +377,7 @@ const QuoteDetails: FunctionComponent = () => {
         setDiscountState(0)
         setUpdatingQuoteState(false)
         toastMessage(quoteMessages.updateSuccess)
-        refetch({ id: params?.id })
+        handleAfterSaveQuote()
       })
   }
 
@@ -603,81 +633,110 @@ const QuoteDetails: FunctionComponent = () => {
         <Layout
           fullWidth
           pageHeader={
-            <div className="flex flex-column pl5">
-              <div className="mb5 flex flex-column-s flex-row-l justify-between items-center">
-                <PageHeader
-                  title={`${quoteState.referenceName} (${
-                    childrenQuoteList?.getChildrenQuotes?.data?.length ?? 0
-                  })`}
-                  linkLabel={formatMessage(quoteMessages.back)}
-                  onLinkClick={() => {
-                    navigate({
-                      page: 'store.b2b-quotes',
-                    })
-                  }}
-                />
-                <div className="nowrap">
-                  <SaveButtons
-                    isNewQuote={isNewQuote}
-                    updatingQuoteState={updatingQuoteState}
-                    sentToSalesRep={sentToSalesRep}
-                    quoteState={quoteState}
-                    onSaveForLater={() => {
-                      createQuote(false)
-                    }}
-                    onSaveQuote={() => {
-                      if (isNewQuote) {
-                        createQuote(!isSalesRep)
-                      } else {
-                        handleSaveQuote()
-                      }
-                    }}
-                    quoteItems={items}
-                    expirationDate={expirationDate}
-                    noteState={noteState}
-                    isSalesRep={isSalesRep}
-                  />
-                  {quoteDeclinable && (
-                    <span className="mr4">
-                      <Button
-                        variation="danger"
-                        onClick={() => handleDeclineQuote()}
-                        disabled={!formState.isEditable || updatingQuoteState}
-                      >
-                        <FormattedMessage id="store/b2b-quotes.quote-details.decline" />
-                      </Button>
-                    </span>
-                  )}
-
-                  {quoteUsable && (
-                    <span className="mr4">
-                      <Button
-                        variation="primary"
-                        onClick={() => handleUseQuote()}
-                        isLoading={usingQuoteState}
-                      >
-                        <FormattedMessage id="store/b2b-quotes.quote-details.use-quote" />
-                      </Button>
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
+            <PageHeader
+              title={formatMessage(
+                isNewQuote
+                  ? quoteMessages.createPageTitle
+                  : quoteMessages.updatePageTitle
+              )}
+              linkLabel={formatMessage(quoteMessages.back)}
+              onLinkClick={() => {
+                if (parentQuote && query?.parent !== undefined) {
+                  navigate({
+                    page: 'store.b2b-quote-details',
+                    params: { id: parentQuote },
+                  })
+                } else {
+                  navigate({
+                    page: 'store.b2b-quotes',
+                  })
+                }
+              }}
+            />
           }
         >
           <PageBlock>
-            {loading ? (
+            {loading || childrenQuotesLoading ? (
               <Spinner />
             ) : (
               <Fragment>
                 <AlertMessage quoteState={quoteState} noteState={noteState} />
 
-                {quoteState.hasChildren ? (
-                  <QuoteChildren
-                    childrens={childrenQuoteList ?? []}
-                    quoteState={quoteState}
-                    isSalesRep={isSalesRep}
-                  />
+                <div className="flex flex-column pl5">
+                  <div className="mb5 flex flex-column-s flex-row-l justify-between items-center">
+                    <QuoteName
+                      childrenQuantity={childrenQuantity}
+                      sellerName={sellerName || seller}
+                      isNewQuote={isNewQuote}
+                      quoteState={quoteState}
+                      setQuoteState={setQuoteState}
+                      formState={formState}
+                      onChange={(e: any) => {
+                        setQuoteState({
+                          ...quoteState,
+                          referenceName: e.target.value,
+                        })
+                      }}
+                    />
+
+                    <div className="nowrap">
+                      <SaveButtons
+                        isNewQuote={isNewQuote}
+                        updatingQuoteState={updatingQuoteState}
+                        sentToSalesRep={sentToSalesRep}
+                        quoteState={quoteState}
+                        onSaveForLater={() => {
+                          createQuote(false)
+                        }}
+                        onSaveQuote={() => {
+                          if (isNewQuote) {
+                            createQuote(!isSalesRep)
+                          } else {
+                            handleSaveQuote()
+                          }
+                        }}
+                        quoteItems={items}
+                        expirationDate={expirationDate}
+                        noteState={noteState}
+                        isSalesRep={isSalesRep}
+                      />
+                      {quoteDeclinable && (
+                        <span className="mr4">
+                          <Button
+                            variation="danger"
+                            onClick={() => handleDeclineQuote()}
+                            disabled={
+                              !formState.isEditable || updatingQuoteState
+                            }
+                          >
+                            <FormattedMessage id="store/b2b-quotes.quote-details.decline" />
+                          </Button>
+                        </span>
+                      )}
+
+                      {quoteUsable && (
+                        <span className="mr4">
+                          <Button
+                            variation="primary"
+                            onClick={() => handleUseQuote()}
+                            isLoading={usingQuoteState}
+                          >
+                            <FormattedMessage id="store/b2b-quotes.quote-details.use-quote" />
+                          </Button>
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {quoteState.hasChildren && !!childrenQuotes?.length ? (
+                  childrenQuotes.map((quote: Quote) => (
+                    <QuoteChildren
+                      key={quote.id}
+                      quote={quote}
+                      isSalesRep={isSalesRep}
+                    />
+                  ))
                 ) : (
                   <div className="pa5">
                     <QuoteTable

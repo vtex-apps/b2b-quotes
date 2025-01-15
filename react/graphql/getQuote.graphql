@@ -33,5 +33,9 @@ query GetQuote($id: String) {
     organizationName
     costCenterName
     hasChildren
+    seller
+    sellerName
+    parentQuote
+    childrenQuantity
   }
 }

@@ -1,7 +1,14 @@
 /* eslint-disable react/display-name */
 import type { FunctionComponent, ChangeEvent } from 'react'
 import React from 'react'
-import { PageBlock, Table, Tag, Checkbox, Spinner } from 'vtex.styleguide'
+import {
+  PageBlock,
+  Table,
+  Tag,
+  Checkbox,
+  Spinner,
+  Tooltip,
+} from 'vtex.styleguide'
 import { useIntl, FormattedMessage } from 'react-intl'
 import { FormattedCurrency } from 'vtex.format-currency'
 import { useRuntime } from 'vtex.render-runtime'
@@ -172,12 +179,18 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
           }
 
           return (
-            <div {...(!!parentQuote && { className: 'pl7' })}>
-              {renderedName}
-              {!!childrenQuantity && (
-                <span className="c-muted-2 pl3">({childrenQuantity})</span>
-              )}
-            </div>
+            <Tooltip
+              label={`${referenceName}${
+                childrenQuantity ? ` (${childrenQuantity})` : ''
+              }`}
+            >
+              <div {...(!!parentQuote && { className: 'pl7' })}>
+                {renderedName}
+                {!!childrenQuantity && (
+                  <span className="c-muted-2 pl3">({childrenQuantity})</span>
+                )}
+              </div>
+            </Tooltip>
           )
         },
       },

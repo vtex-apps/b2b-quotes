@@ -37,51 +37,53 @@ const QuoteTable = ({
 
   return (
     <Table
-      totalizers={[
-        {
-          label: formatMessage(quoteMessages.originalSubtotal),
-          value: formatPrice(originalSubtotal),
-        },
-        {
-          label: formatMessage(quoteMessages.percentageDiscount),
-          value:
-            updatingSubtotal && originalSubtotal
-              ? `${Math.round(
-                  100 - (updatingSubtotal / originalSubtotal) * 100
-                )}%`
-              : `0%`,
-        },
-        {
-          label: formatMessage(quoteMessages.quotedSubtotal),
-          value: formatPrice(updatingSubtotal),
-        },
-        ...(quoteState.expirationDate && [
+      totalizers={
+        !quoteState.parentQuote && [
           {
-            label: formatMessage(quoteMessages.expiration),
-            value: formatDate(quoteState.expirationDate, {
-              day: 'numeric',
-              month: 'numeric',
-              year: 'numeric',
-            }),
+            label: formatMessage(quoteMessages.originalSubtotal),
+            value: formatPrice(originalSubtotal),
           },
-        ]),
-        ...(quoteState.status && [
           {
-            label: formatMessage(quoteMessages.status),
-            value: (
-              <Tag type={LabelByStatusMap[quoteState.status]}>
-                <FormattedMessage
-                  id={
-                    statusMessages[
-                      quoteState.status as keyof typeof statusMessages
-                    ].id
-                  }
-                />
-              </Tag>
-            ),
+            label: formatMessage(quoteMessages.percentageDiscount),
+            value:
+              updatingSubtotal && originalSubtotal
+                ? `${Math.round(
+                    100 - (updatingSubtotal / originalSubtotal) * 100
+                  )}%`
+                : `0%`,
           },
-        ]),
-      ]}
+          {
+            label: formatMessage(quoteMessages.quotedSubtotal),
+            value: formatPrice(updatingSubtotal),
+          },
+          ...(quoteState.expirationDate && [
+            {
+              label: formatMessage(quoteMessages.expiration),
+              value: formatDate(quoteState.expirationDate, {
+                day: 'numeric',
+                month: 'numeric',
+                year: 'numeric',
+              }),
+            },
+          ]),
+          ...(quoteState.status && [
+            {
+              label: formatMessage(quoteMessages.status),
+              value: (
+                <Tag type={LabelByStatusMap[quoteState.status]}>
+                  <FormattedMessage
+                    id={
+                      statusMessages[
+                        quoteState.status as keyof typeof statusMessages
+                      ].id
+                    }
+                  />
+                </Tag>
+              ),
+            },
+          ]),
+        ]
+      }
       fullWidth
       schema={{
         properties: {

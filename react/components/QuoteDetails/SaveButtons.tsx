@@ -16,6 +16,8 @@ const SaveButtons = ({
   noteState,
   isSalesRep,
 }: any) => {
+  if (quoteState.hasChildren) return null
+
   if (isNewQuote) {
     return (
       <Fragment>

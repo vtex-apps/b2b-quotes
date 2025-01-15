@@ -53,4 +53,5 @@ declare module 'vtex.styleguide' {
   export const AutocompleteInput
   // eslint-disable-next-line @typescript-eslint/naming-convention
   export const EXPERIMENTAL_Modal
+  export const RadioGroup
 }
