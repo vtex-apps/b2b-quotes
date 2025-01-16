@@ -123,6 +123,7 @@ const QuoteDetails: FunctionComponent = () => {
    * GraphQL Queries
    */
   const { data, loading, refetch } = useQuery(GET_QUOTE, {
+    fetchPolicy: 'network-only',
     variables: getQuoteVariables,
     ssr: false,
     skip: isNewQuote,
