@@ -53,7 +53,6 @@ const QuoteChildren: React.FC<Props> = ({ quote, isSalesRep }) => {
     <div className="mb5">
       <Card>
         <Collapsible
-          key={quote?.id}
           onClick={() => setOpen((prev) => !prev)}
           header={
             <div className="flex justify-between items-center">

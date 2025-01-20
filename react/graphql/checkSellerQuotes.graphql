@@ -1,0 +1,7 @@
+query CheckSellerQuotes($sellers: [String!]!) {
+  checkSellerQuotes(sellers: $sellers)
+    @context(provider: "vtex.b2b-quotes-graphql") {
+    id
+    name
+  }
+}

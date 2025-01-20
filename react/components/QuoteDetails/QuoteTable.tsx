@@ -1,14 +1,26 @@
-import { Input, InputCurrency, Table, Tag } from 'vtex.styleguide'
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
+import { useQuery } from 'react-apollo'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { formatCurrency, FormattedCurrency } from 'vtex.format-currency'
-import { useIntl, FormattedMessage } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
+import {
+  Card,
+  Collapsible,
+  Input,
+  InputCurrency,
+  Spinner,
+  Table,
+  Tag,
+  Totalizer,
+} from 'vtex.styleguide'
 
+import CHECK_SELLER_QUOTES from '../../graphql/checkSellerQuotes.graphql'
 import { itemDiscountEligible } from '../../utils/helpers'
 import { quoteMessages, statusMessages } from '../../utils/messages'
 import { LabelByStatusMap } from '../../utils/status'
 
 const QuoteTable = ({
+  isNewQuote,
   quoteState,
   updatingSubtotal,
   originalSubtotal,
@@ -35,55 +47,29 @@ const QuoteTable = ({
 
   quoteState.expirationDate = quoteState.expirationDate || ''
 
-  return (
+  const sellers = Array.from(
+    new Set(quoteState.items.map((item: any) => item.seller))
+  )
+
+  const {
+    data: checkSellerQuotesData,
+    loading: checkSellerQuotesLoading,
+  } = useQuery(CHECK_SELLER_QUOTES, {
+    fetchPolicy: 'network-only',
+    ssr: false,
+    skip: !isNewQuote || !sellers?.length || sellers.length === 1,
+    variables: { sellers },
+  })
+
+  const checkedSellers = checkSellerQuotesData?.checkSellerQuotes
+
+  const checkedExternalSellers = checkedSellers
+    ?.filter((seller: any) => seller.id !== '1')
+    ?.map((seller: any) => seller.id)
+
+  const renderTable = (items: any, totalizers?: any) => (
     <Table
-      totalizers={
-        !quoteState.parentQuote && [
-          {
-            label: formatMessage(quoteMessages.originalSubtotal),
-            value: formatPrice(originalSubtotal),
-          },
-          {
-            label: formatMessage(quoteMessages.percentageDiscount),
-            value:
-              updatingSubtotal && originalSubtotal
-                ? `${Math.round(
-                    100 - (updatingSubtotal / originalSubtotal) * 100
-                  )}%`
-                : `0%`,
-          },
-          {
-            label: formatMessage(quoteMessages.quotedSubtotal),
-            value: formatPrice(updatingSubtotal),
-          },
-          ...(quoteState.expirationDate && [
-            {
-              label: formatMessage(quoteMessages.expiration),
-              value: formatDate(quoteState.expirationDate, {
-                day: 'numeric',
-                month: 'numeric',
-                year: 'numeric',
-              }),
-            },
-          ]),
-          ...(quoteState.status && [
-            {
-              label: formatMessage(quoteMessages.status),
-              value: (
-                <Tag type={LabelByStatusMap[quoteState.status]}>
-                  <FormattedMessage
-                    id={
-                      statusMessages[
-                        quoteState.status as keyof typeof statusMessages
-                      ].id
-                    }
-                  />
-                </Tag>
-              ),
-            },
-          ]),
-        ]
-      }
+      totalizers={totalizers}
       fullWidth
       schema={{
         properties: {
@@ -224,9 +210,116 @@ const QuoteTable = ({
           },
         },
       }}
-      items={quoteState.items}
+      items={items}
       emptyStateLabel={formatMessage(quoteMessages.emptyState)}
     />
+  )
+
+  const totalizers = [
+    {
+      label: formatMessage(quoteMessages.originalSubtotal),
+      value: formatPrice(originalSubtotal),
+    },
+    {
+      label: formatMessage(quoteMessages.percentageDiscount),
+      value:
+        updatingSubtotal && originalSubtotal
+          ? `${Math.round(100 - (updatingSubtotal / originalSubtotal) * 100)}%`
+          : `0%`,
+    },
+    {
+      label: formatMessage(quoteMessages.quotedSubtotal),
+      value: formatPrice(updatingSubtotal),
+    },
+    ...(quoteState.expirationDate && [
+      {
+        label: formatMessage(quoteMessages.expiration),
+        value: formatDate(quoteState.expirationDate, {
+          day: 'numeric',
+          month: 'numeric',
+          year: 'numeric',
+        }),
+      },
+    ]),
+    ...(quoteState.status && [
+      {
+        label: formatMessage(quoteMessages.status),
+        value: (
+          <Tag type={LabelByStatusMap[quoteState.status]}>
+            <FormattedMessage
+              id={
+                statusMessages[quoteState.status as keyof typeof statusMessages]
+                  .id
+              }
+            />
+          </Tag>
+        ),
+      },
+    ]),
+  ]
+
+  if (checkSellerQuotesLoading) {
+    return (
+      <div className="flex justify-center mv8">
+        <Spinner />
+      </div>
+    )
+  }
+
+  if (!isNewQuote || !checkedExternalSellers?.length) {
+    return renderTable(quoteState.items, totalizers)
+  }
+
+  const itemsBySeller: Record<string, any> = {}
+
+  quoteState.items.forEach((item: any) => {
+    let sellerId: string = item.seller
+
+    if (!checkedExternalSellers.includes(item.seller)) {
+      sellerId = '1'
+    }
+
+    if (!itemsBySeller[sellerId]) {
+      itemsBySeller[sellerId] = { items: [] }
+    }
+
+    itemsBySeller[sellerId].items.push(item)
+    itemsBySeller[sellerId].sellerName = checkedSellers.find(
+      (seller: any) => seller.id === sellerId
+    )?.name
+  })
+
+  return (
+    <div className="flex flex-column">
+      {!quoteState.parentQuote && (
+        <div className="mb6">
+          <Totalizer items={totalizers} />
+        </div>
+      )}
+      {Object.entries(itemsBySeller).map(([seller, sellerQuote]: any) => (
+        <ChildrenQuoteCard key={seller} title={sellerQuote.sellerName}>
+          {renderTable(sellerQuote.items)}
+        </ChildrenQuoteCard>
+      ))}
+    </div>
+  )
+}
+
+function ChildrenQuoteCard({ children, title }: React.PropsWithChildren<any>) {
+  const [open, setOpen] = useState(true)
+
+  return (
+    <div className="mb6">
+      <Card>
+        <Collapsible
+          isOpen={open}
+          onClick={() => setOpen((prev) => !prev)}
+          header={title}
+        >
+          <div className="pv4">{children}</div>
+        </Collapsible>
+      </Card>
+    </div>
   )
 }
 

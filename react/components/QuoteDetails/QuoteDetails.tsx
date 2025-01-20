@@ -741,6 +741,7 @@ const QuoteDetails: FunctionComponent = () => {
                 ) : (
                   <div className="pa5">
                     <QuoteTable
+                      isNewQuote={isNewQuote}
                       quoteState={quoteState}
                       updatingSubtotal={updatingSubtotal}
                       originalSubtotal={originalSubtotal}
