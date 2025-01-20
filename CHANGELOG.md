@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add new splitting quote configuration to settings UI
 
+## [1.6.6] - 2025-01-06
+### Fixed
+- Fix Request Quote message in Quotes Details
+
 ## [1.6.5] - 2024-09-26
 ### Fixed
 
