@@ -2,6 +2,7 @@ query GetAppSettings {
   getAppSettings @context(provider: "vtex.b2b-quotes-graphql") {
     adminSetup {
       cartLifeSpan
+      quotesManagedBy
     }
   }
 }
