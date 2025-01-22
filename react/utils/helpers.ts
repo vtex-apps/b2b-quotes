@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { getSession } from '../modules/session'
+import { Status } from './status'
 
 export const initQuoteFromOrderForm = (orderForm: any) => {
   const quoteItems = [] as QuoteItem[]
@@ -81,3 +82,10 @@ export const getEmptySimpleQuote = (parentQuote: string): QuoteSimple => ({
   parentQuote,
   rowLoading: true,
 })
+
+export const isQuoteUsable = (permissions: string[], status: string) =>
+  permissions.includes('use-quotes') &&
+  status &&
+  status !== Status.EXPIRED &&
+  status !== Status.PLACED &&
+  status !== Status.DECLINED

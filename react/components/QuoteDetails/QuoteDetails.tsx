@@ -1,6 +1,12 @@
 /* eslint-disable react/display-name */
 import type { ChangeEventHandler, FunctionComponent } from 'react'
-import React, { Fragment, useContext, useEffect, useState } from 'react'
+import React, {
+  Fragment,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import { useMutation, useQuery } from 'react-apollo'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useCheckoutURL } from 'vtex.checkout-resources/Utils'
@@ -17,6 +23,7 @@ import {
   ToastContext,
 } from 'vtex.styleguide'
 
+import CHECK_SELLER_QUOTES from '../../graphql/checkSellerQuotes.graphql'
 import CLEAR_CART from '../../graphql/clearCartMutation.graphql'
 import CREATE_QUOTE from '../../graphql/createQuote.graphql'
 import GET_AUTH_RULES from '../../graphql/getDimension.graphql'
@@ -27,7 +34,11 @@ import GET_ORDERFORM from '../../graphql/orderForm.gql'
 import UPDATE_QUOTE from '../../graphql/updateQuote.graphql'
 import USE_QUOTE from '../../graphql/useQuote.graphql'
 import useCheckout from '../../modules/checkoutHook'
-import { initQuoteFromOrderForm, useSessionResponse } from '../../utils/helpers'
+import {
+  initQuoteFromOrderForm,
+  isQuoteUsable,
+  useSessionResponse,
+} from '../../utils/helpers'
 import { quoteMessages } from '../../utils/messages'
 import { sendCreateQuoteMetric } from '../../utils/metrics/createQuote'
 import type { UseQuoteMetricsParams } from '../../utils/metrics/useQuote'
@@ -114,6 +125,7 @@ const QuoteDetails: FunctionComponent = () => {
   const [discountState, setDiscountState] = useState(0)
   const [updatingQuoteState, setUpdatingQuoteState] = useState(false)
   const [usingQuoteState, setUsingQuoteState] = useState(false)
+  const [usingQuoteChild, setUsingQuoteChild] = useState<string>()
   const [originalSubtotal, setOriginalSubtotal] = useState(0)
   const [updatingSubtotal, setUpdatingSubtotal] = useState(0)
   const [sentToSalesRep, setSentToSalesRep] = useState(false)
@@ -142,6 +154,28 @@ const QuoteDetails: FunctionComponent = () => {
 
   const childrenQuotes = childrenQuoteList?.getChildrenQuotes
 
+  const sellers = Array.from(
+    new Set(quoteState.items.map((item: QuoteItem) => item.seller))
+  )
+
+  const externalSellers = sellers.filter((seller) => seller !== '1')
+
+  const {
+    data: checkSellerQuotesData,
+    loading: checkSellerQuotesLoading,
+  } = useQuery(CHECK_SELLER_QUOTES, {
+    fetchPolicy: 'network-only',
+    ssr: false,
+    skip: !isNewQuote,
+    variables: { sellers: externalSellers },
+  })
+
+  const checkedSellers = checkSellerQuotesData?.checkSellerQuotes
+
+  const hasCheckedExternalSellers = !!checkedSellers?.some(
+    (seller: Seller) => seller.id !== '1'
+  )
+
   const {
     data: orderFormData,
     refetch: refetchOrderForm,
@@ -169,15 +203,12 @@ const QuoteDetails: FunctionComponent = () => {
     (permission: string) => permission.indexOf('edit-quotes') >= 0
   )
 
-  const quoteUsable =
-    permissions.includes('use-quotes') &&
-    status &&
-    status !== Status.EXPIRED &&
-    status !== Status.PLACED &&
-    status !== Status.DECLINED
+  const quoteUsable = isQuoteUsable(permissions, status)
 
   const quoteDeclinable =
     permissions.includes('decline-quotes') &&
+    (!seller || seller === '1') &&
+    !quoteState.hasChildren &&
     status &&
     status !== Status.EXPIRED &&
     status !== Status.DECLINED
@@ -189,18 +220,21 @@ const QuoteDetails: FunctionComponent = () => {
   const [updateQuote] = useMutation(UPDATE_QUOTE)
   const [mutationUseQuote] = useMutation(USE_QUOTE)
   const [clearCart] = useMutation(CLEAR_CART)
-
   /**
    * functions
    */
-  const setEditable = () => {
+  const setEditable = useCallback(() => {
+    if (parentQuote && seller && seller !== '1') {
+      return
+    }
+
     setFormState((f) => {
       return {
         ...f,
         isEditable: true,
       }
     })
-  }
+  }, [parentQuote, seller])
 
   const handleClearCart = (orderFormId: string) => {
     return clearCart({
@@ -329,9 +363,25 @@ const QuoteDetails: FunctionComponent = () => {
       })
   }
 
-  const handleUseQuote = () => {
-    setUsingQuoteState(true)
-    const { id: _id } = quoteState
+  const updateUseState = (quote: Quote, newState: boolean) => {
+    if (quote.parentQuote) {
+      if (newState) {
+        setUsingQuoteChild(quote.id)
+
+        return
+      }
+
+      setUsingQuoteChild(undefined)
+
+      return
+    }
+
+    setUsingQuoteState(newState)
+  }
+
+  const handleUseQuote = (quote: Quote) => {
+    updateUseState(quote, true)
+    const { id: _id } = quote
     const variables = {
       id: _id,
       orderFormId: orderFormState,
@@ -343,11 +393,11 @@ const QuoteDetails: FunctionComponent = () => {
       .catch((error) => {
         console.error(error)
         toastMessage(quoteMessages.useError)
-        setUsingQuoteState(false)
+        updateUseState(quote, false)
       })
       .then(() => {
         const metricsParam: UseQuoteMetricsParams = {
-          quoteState,
+          quoteState: quote,
           orderFormId: variables.orderFormId,
           account,
           sessionResponse,
@@ -355,7 +405,7 @@ const QuoteDetails: FunctionComponent = () => {
 
         sendUseQuoteMetric(metricsParam)
         goToCheckout(checkoutUrl)
-        setUsingQuoteState(false)
+        updateUseState(quote, false)
       })
   }
 
@@ -575,7 +625,7 @@ const QuoteDetails: FunctionComponent = () => {
     ) {
       setEditable()
     }
-  }, [data])
+  }, [data, setEditable])
 
   useEffect(() => {
     // only run this function if this is a new quote and there is orderForm data
@@ -593,7 +643,7 @@ const QuoteDetails: FunctionComponent = () => {
       return { ...prevState, items: itemsCopy }
     })
     setUpdatingSubtotal(subtotal)
-  }, [isNewQuote, orderFormData])
+  }, [isNewQuote, orderFormData, setEditable])
 
   if (sessionResponse) {
     isAuthenticated =
@@ -657,7 +707,7 @@ const QuoteDetails: FunctionComponent = () => {
           }
         >
           <PageBlock>
-            {loading || childrenQuotesLoading ? (
+            {loading || childrenQuotesLoading || checkSellerQuotesLoading ? (
               <Spinner />
             ) : (
               <Fragment>
@@ -719,7 +769,7 @@ const QuoteDetails: FunctionComponent = () => {
                         <span className="mr4">
                           <Button
                             variation="primary"
-                            onClick={() => handleUseQuote()}
+                            onClick={() => handleUseQuote(quoteState)}
                             isLoading={usingQuoteState}
                           >
                             <FormattedMessage id="store/b2b-quotes.quote-details.use-quote" />
@@ -736,6 +786,10 @@ const QuoteDetails: FunctionComponent = () => {
                       key={quote.id}
                       quote={quote}
                       isSalesRep={isSalesRep}
+                      usingParentQuote={usingQuoteState}
+                      usingQuoteChild={usingQuoteChild}
+                      handleUseQuote={handleUseQuote}
+                      permissions={permissions}
                     />
                   ))
                 ) : (
@@ -751,6 +805,7 @@ const QuoteDetails: FunctionComponent = () => {
                       discountState={discountState}
                       onUpdateSellingPrice={handleUpdateSellingPrice}
                       onUpdateQuantity={handleUpdateQuantity}
+                      checkedSellers={checkedSellers}
                     />
                     {formState.isEditable && isSalesRep && (
                       <div className="mt3">
@@ -805,7 +860,7 @@ const QuoteDetails: FunctionComponent = () => {
                       updateHistory={quoteState.updateHistory}
                     />
 
-                    {formState.isEditable && (
+                    {formState.isEditable && !hasCheckedExternalSellers && (
                       <div className="mt3 pa5">
                         <Textarea
                           label={formatMessage(quoteMessages.addNote)}

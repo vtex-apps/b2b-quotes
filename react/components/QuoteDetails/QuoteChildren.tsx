@@ -16,18 +16,40 @@ import { quoteMessages, statusMessages } from '../../utils/messages'
 import { LabelByStatusMap, Status } from '../../utils/status'
 import QuoteTable from './QuoteTable'
 import QuoteUpdateHistory from './QuoteUpdateHistory'
+import { isQuoteUsable } from '../../utils/helpers'
 
 interface Props {
   quote: Quote
   isSalesRep: boolean
+  handleUseQuote: (quote: Quote) => void
+  permissions: string[]
+  usingParentQuote: boolean
+  usingQuoteChild?: string
 }
 
-const QuoteChildren: React.FC<Props> = ({ quote, isSalesRep }) => {
+const QuoteChildren: React.FC<Props> = ({
+  quote,
+  isSalesRep,
+  handleUseQuote,
+  permissions,
+  usingParentQuote,
+  usingQuoteChild,
+}) => {
   const { culture, navigate } = useRuntime()
   const intl = useIntl()
   const { formatMessage, formatDate } = intl
   const [open, setOpen] = useState(true)
   const [currentTab, setCurrentTab] = useState<number | null>(1)
+  const {
+    id,
+    items,
+    subtotal,
+    status,
+    seller,
+    sellerName,
+    expirationDate,
+    updateHistory,
+  } = quote
 
   const formatPrice = (value: number) =>
     formatCurrency({
@@ -38,16 +60,24 @@ const QuoteChildren: React.FC<Props> = ({ quote, isSalesRep }) => {
 
   const originalSubtotal = useMemo(
     () =>
-      (quote.items ?? []).reduce((acc, item) => {
+      (items ?? []).reduce((acc, item) => {
         return acc + item.price * item.quantity
       }, 0),
-    [quote.items]
+    [items]
   )
 
   const discount = useMemo(
-    () => Math.round(100 - (quote.subtotal / originalSubtotal) * 100),
-    [originalSubtotal, quote.subtotal]
+    () => Math.round(100 - (subtotal / originalSubtotal) * 100),
+    [originalSubtotal, subtotal]
   )
+
+  const quoteUsable = isQuoteUsable(permissions, status)
+
+  const quoteEditable =
+    seller === '1' &&
+    (status === Status.PENDING ||
+      status === Status.READY ||
+      status === Status.REVISED)
 
   return (
     <div className="mb5">
@@ -57,15 +87,11 @@ const QuoteChildren: React.FC<Props> = ({ quote, isSalesRep }) => {
           header={
             <div className="flex justify-between items-center">
               <div>
-                <span className="mr3">
-                  {quote?.sellerName ?? quote?.seller}
-                </span>
-                <Tag type={LabelByStatusMap[quote.status]}>
+                <span className="mr3">{sellerName ?? seller}</span>
+                <Tag type={LabelByStatusMap[status]}>
                   <FormattedMessage
                     id={
-                      statusMessages[
-                        quote.status as keyof typeof statusMessages
-                      ]?.id
+                      statusMessages[status as keyof typeof statusMessages]?.id
                     }
                   />
                 </Tag>
@@ -75,8 +101,8 @@ const QuoteChildren: React.FC<Props> = ({ quote, isSalesRep }) => {
                   {formatMessage(quoteMessages.expiration)}
                 </span>
                 <span>
-                  {quote.expirationDate
-                    ? formatDate(quote.expirationDate, {
+                  {expirationDate
+                    ? formatDate(expirationDate, {
                         day: 'numeric',
                         month: 'numeric',
                         year: 'numeric',
@@ -102,7 +128,7 @@ const QuoteChildren: React.FC<Props> = ({ quote, isSalesRep }) => {
                   },
                   {
                     label: formatMessage(quoteMessages.quotedSubtotal),
-                    value: formatPrice(quote.subtotal),
+                    value: formatPrice(subtotal),
                   },
                 ]}
               />
@@ -110,7 +136,7 @@ const QuoteChildren: React.FC<Props> = ({ quote, isSalesRep }) => {
             <Tabs>
               <Tab
                 label={formatMessage(quoteMessages.productsTitle, {
-                  total: quote.items.length,
+                  total: items.length,
                 })}
                 active={currentTab === 1}
                 onClick={() => setCurrentTab(1)}
@@ -118,7 +144,7 @@ const QuoteChildren: React.FC<Props> = ({ quote, isSalesRep }) => {
                 <div className="mt5">
                   <QuoteTable
                     quoteState={quote}
-                    updatingSubtotal={quote.subtotal}
+                    updatingSubtotal={subtotal}
                     originalSubtotal={originalSubtotal}
                     isSalesRep={isSalesRep}
                     formState={{ isEditable: false }}
@@ -131,29 +157,36 @@ const QuoteChildren: React.FC<Props> = ({ quote, isSalesRep }) => {
                 onClick={() => setCurrentTab(2)}
               >
                 <div className="flex flex-column-s flex-column-l">
-                  <QuoteUpdateHistory updateHistory={quote.updateHistory} />
+                  <QuoteUpdateHistory updateHistory={updateHistory} />
                 </div>
               </Tab>
             </Tabs>
-            {(quote.status === Status.PENDING ||
-              quote.status === Status.READY ||
-              quote.status === Status.REVISED) && (
-              <div className="flex mt6 justify-end">
+            <div className="flex mt6 justify-end">
+              <Button
+                variation="secondary"
+                size="small"
+                disabled={!quoteEditable}
+                onClick={() =>
+                  navigate({
+                    page: 'store.b2b-quote-details',
+                    params: { id },
+                    query: 'parent',
+                  })
+                }
+              >
+                {formatMessage(quoteMessages.makeChanges)}
+              </Button>
+              <div className="ml3">
                 <Button
-                  variation="secondary"
                   size="small"
-                  onClick={() =>
-                    navigate({
-                      page: 'store.b2b-quote-details',
-                      params: { id: quote.id },
-                      query: 'parent',
-                    })
-                  }
+                  disabled={!quoteUsable}
+                  isLoading={usingParentQuote || usingQuoteChild === id}
+                  onClick={() => handleUseQuote(quote)}
                 >
-                  {formatMessage(quoteMessages.makeChanges)}
+                  {formatMessage(quoteMessages.useQuote)}
                 </Button>
               </div>
-            )}
+            </div>
           </div>
         </Collapsible>
       </Card>

@@ -71,4 +71,9 @@ declare global {
     orderForm: OrderFormType | undefined
     setOrderForm: (orderForm: Partial<OrderFormType>) => void
   }
+
+  interface Seller {
+    id: string
+    name: string
+  }
 }

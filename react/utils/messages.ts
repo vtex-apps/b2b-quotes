@@ -10,6 +10,9 @@ export const quoteMessages = defineMessages({
   updateError: {
     id: `${storePrefix}quote-details.update-error`,
   },
+  useQuote: {
+    id: `${storePrefix}quote-details.use-quote`,
+  },
   useError: {
     id: `${storePrefix}quote-details.use-error`,
   },

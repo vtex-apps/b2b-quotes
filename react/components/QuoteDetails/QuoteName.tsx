@@ -38,7 +38,7 @@ const QuoteName = ({
         </span>
       )}
       {sellerName && (
-        <span className="v-mid c-muted-2 pl3 t-heading-4">({sellerName})</span>
+        <div className="c-muted-2 pt2 t-heading-4">({sellerName})</div>
       )}
     </h3>
   )

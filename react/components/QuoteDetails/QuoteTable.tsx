@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from 'react'
-import { useQuery } from 'react-apollo'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { formatCurrency, FormattedCurrency } from 'vtex.format-currency'
 import { useRuntime } from 'vtex.render-runtime'
@@ -8,13 +7,11 @@ import {
   Collapsible,
   Input,
   InputCurrency,
-  Spinner,
   Table,
   Tag,
   Totalizer,
 } from 'vtex.styleguide'
 
-import CHECK_SELLER_QUOTES from '../../graphql/checkSellerQuotes.graphql'
 import { itemDiscountEligible } from '../../utils/helpers'
 import { quoteMessages, statusMessages } from '../../utils/messages'
 import { LabelByStatusMap } from '../../utils/status'
@@ -30,6 +27,7 @@ const QuoteTable = ({
   discountState,
   onUpdateSellingPrice,
   onUpdateQuantity,
+  checkedSellers,
 }: any) => {
   const intl = useIntl()
   const {
@@ -46,22 +44,6 @@ const QuoteTable = ({
     })
 
   quoteState.expirationDate = quoteState.expirationDate || ''
-
-  const sellers = Array.from(
-    new Set(quoteState.items.map((item: any) => item.seller))
-  )
-
-  const {
-    data: checkSellerQuotesData,
-    loading: checkSellerQuotesLoading,
-  } = useQuery(CHECK_SELLER_QUOTES, {
-    fetchPolicy: 'network-only',
-    ssr: false,
-    skip: !isNewQuote || !sellers?.length || sellers.length === 1,
-    variables: { sellers },
-  })
-
-  const checkedSellers = checkSellerQuotesData?.checkSellerQuotes
 
   const checkedExternalSellers = checkedSellers
     ?.filter((seller: any) => seller.id !== '1')
@@ -257,14 +239,6 @@ const QuoteTable = ({
       },
     ]),
   ]
-
-  if (checkSellerQuotesLoading) {
-    return (
-      <div className="flex justify-center mv8">
-        <Spinner />
-      </div>
-    )
-  }
 
   if (!isNewQuote || !checkedExternalSellers?.length) {
     return renderTable(quoteState.items, totalizers)
