@@ -76,6 +76,8 @@
   "store/b2b-quotes.quote-details.apply-discount.help-text": "К промежуточному итогу расценок будет применена процентная скидка. Внимание: это отменит изменения, внесённые по отдельным артикулам.",
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "Процентная скидка недоступна, поскольку уже действует акционная скидка выше максимальной ручной скидки.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Введённые вручную скидки, превышающие {maxDiscount} %, будут автоматически отклонены.",
+  "store/b2b-quotes.quote-details.products.title": "Продукты ({total})",
+  "store/b2b-quotes.quote-details.make-changes.label": "Сделать изменения",
   "store/b2b-quotes.quote-details.update-history.title": "Журнал обновлений",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{Создано}other{Обновлено}} {date} пользователем {email} ({role}) со статусом {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Примечания:",

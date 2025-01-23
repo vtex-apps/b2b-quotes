@@ -76,6 +76,8 @@
   "store/b2b-quotes.quote-details.apply-discount.help-text": "견적 소계에 백분율 할인을 적용합니다. 이는 개별 SKU 가격에 대한 모든 변경 사항보다 우선 적용됩니다.",
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "프로모션에서 이미 최대 수동 할인보다 높은 할인을 적용하고 있으므로 백분율 할인을 사용할 수 없습니다.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "{maxDiscount}%를 초과하는 수동 할인은 자동으로 거부됩니다.",
+  "store/b2b-quotes.quote-details.products.title": "사항 ({total})",
+  "store/b2b-quotes.quote-details.make-changes.label": "변경 하기",
   "store/b2b-quotes.quote-details.update-history.title": "기록 업데이트",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{생성됨.}other{업데이트됨.}} 날짜: {date} 이메일: {email}({role}) 상태: {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "메모:",

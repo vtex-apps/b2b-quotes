@@ -76,6 +76,8 @@
   "store/b2b-quotes.quote-details.apply-discount.help-text": "Приложете процентна отстъпка към междинната сума на офертата. Имайте предвид, че това ще замести всякакви направени промени в цените на отделните SKU.",
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "Процентната отстъпка не е налична, защото заради промоцията вече се прилага отстъпка, по-висока от максималната ръчна отстъпка.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Ръчните отстъпки над {maxDiscount}% ще бъдат отхвърляни автоматично.",
+  "store/b2b-quotes.quote-details.products.title": "Продукти ({total})",
+  "store/b2b-quotes.quote-details.make-changes.label": "Редактиране на офертата",
   "store/b2b-quotes.quote-details.update-history.title": "Актуализиране на хронологията",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{Създадено}other{Актуализирано}} на {date} от {email} ({role}) със статус {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Бележки:",

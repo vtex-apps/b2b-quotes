@@ -76,6 +76,8 @@
   "store/b2b-quotes.quote-details.apply-discount.help-text": "Εφαρμόστε ένα ποσοστό έκπτωσης στο υποσύνολο προσφοράς. Σημειώστε ότι αυτό θα παρακάμψει τυχόν αλλαγές που έγιναν σε μεμονωμένες τιμές SKU.",
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "Το ποσοστό έκπτωσης δεν είναι διαθέσιμο, επειδή μια προσφορά εφαρμόζει ήδη έκπτωση υψηλότερη από τη μέγιστη μη αυτόματη έκπτωση.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Μη αυτόματες εκπτώσεις άνω του {maxDiscount}% θα απορρίπτονται αυτόματα.",
+  "store/b2b-quotes.quote-details.products.title": "Προιοντα ({total})",
+  "store/b2b-quotes.quote-details.make-changes.label": "Δημιουργία αλλαγής",
   "store/b2b-quotes.quote-details.update-history.title": "Ενημέρωση Ιστορικού",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{δημιουργήθηκε}other{ενημερώθηκε}} στις {date} μέσω {email} ({role}) με κατάσταση {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Σημειώσεις:",

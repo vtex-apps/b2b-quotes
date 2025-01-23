@@ -76,6 +76,8 @@
   "store/b2b-quotes.quote-details.apply-discount.help-text": "Tillämpa en procentuell rabatt på offerten delsumman. Obs: Detta kommer att åsidosätta eventuella ändringar i enskilda SKU priser.",
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "Procentrabatt är inaktiverad eftersom en kampanj redan tillämpar en rabatt högre än den maximala manuella rabatten.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Manuella rabatter över {maxDiscount}% kommer automatiskt att avvisas.",
+  "store/b2b-quotes.quote-details.products.title": "Produkter ({total})",
+  "store/b2b-quotes.quote-details.make-changes.label": "Skapa ändringar",
   "store/b2b-quotes.quote-details.update-history.title": "Uppdatera historik",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{Skapad}other{Uppdaterad}} den {date} av {email} ({role}) med status {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Anteckningar:",

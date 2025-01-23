@@ -17,6 +17,7 @@ declare module 'vtex.styleguide' {
   export const InputButton
   export const InputCurrency
   export const InputSearch
+  export const IconCaretRight
   export const IconCaretDown
   export const IconCaretUp
   export const IconArrowDown

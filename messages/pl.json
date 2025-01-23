@@ -76,6 +76,8 @@
   "store/b2b-quotes.quote-details.apply-discount.help-text": "Zastosuj rabat procentowy do podsumy wyceny. Uwaga: zastąpi to wszelkie zmiany wprowadzone w poszczególnych cenach SKU.",
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "Rabat procentowy nie jest dostępny, ponieważ promocja już wykorzystuje rabat wyższy niż maksymalna zniżka ręczna.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Zniżki ręczne powyżej {maxDiscount}% zostaną automatycznie odrzucone.",
+  "store/b2b-quotes.quote-details.products.title": "Produkty ({total})",
+  "store/b2b-quotes.quote-details.make-changes.label": "Zrobić zmiany",
   "store/b2b-quotes.quote-details.update-history.title": "Historia zmian",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{Utworzono}other{Zaktualizowano}} dnia {date} przez {email} ({role}) ze statusem {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Uwagi:",

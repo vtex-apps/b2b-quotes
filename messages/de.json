@@ -76,6 +76,8 @@
   "store/b2b-quotes.quote-details.apply-discount.help-text": "Anwendung eines prozentualen Rabatts auf die Zwischensumme des Angebots. Hinweis: Dadurch werden alle Änderungen an einzelnen SKU-Preisen überschrieben.",
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "Der prozentuale Rabatt ist nicht verfügbar, da eine Werbeaktion bereits einen höheren Rabatt als den maximalen manuellen Rabatt gewährt.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Manuelle Rabatte über {maxDiscount}% werden automatisch verweigert.",
+  "store/b2b-quotes.quote-details.products.title": "Produkte ({total})",
+  "store/b2b-quotes.quote-details.make-changes.label": "Anderungen vornehmen",
   "store/b2b-quotes.quote-details.update-history.title": "Update-Verlauf",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{Erstellt}other{Aktualisiert}} am {date} von {email} ({role}) mit dem Status {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Anmerkungen:",

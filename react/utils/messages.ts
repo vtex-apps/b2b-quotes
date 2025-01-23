@@ -10,6 +10,9 @@ export const quoteMessages = defineMessages({
   updateError: {
     id: `${storePrefix}quote-details.update-error`,
   },
+  useQuote: {
+    id: `${storePrefix}quote-details.use-quote`,
+  },
   useError: {
     id: `${storePrefix}quote-details.use-error`,
   },
@@ -66,6 +69,15 @@ export const quoteMessages = defineMessages({
   },
   expirationDateChange: {
     id: `${storePrefix}quote-details.expiration-date-change.title`,
+  },
+  productsTitle: {
+    id: `${storePrefix}quote-details.products.title`,
+  },
+  historyTitle: {
+    id: `${storePrefix}quote-details.update-history.title`,
+  },
+  makeChanges: {
+    id: `${storePrefix}quote-details.make-changes.label`,
   },
   createPageTitle: {
     id: `${storePrefix}create.title`,

@@ -17,6 +17,12 @@ declare global {
     costCenterName: string
     viewedBySales: boolean
     viewedByCustomer: boolean
+    hasChildren?: boolean | null
+    childrenQuantity?: number | null
+    parentQuote?: string | null
+    seller?: string
+    sellerName?: string
+    rowLoading?: boolean
   }
 
   interface Quote extends QuoteSimple {
@@ -64,5 +70,10 @@ declare global {
     loading: boolean
     orderForm: OrderFormType | undefined
     setOrderForm: (orderForm: Partial<OrderFormType>) => void
+  }
+
+  interface Seller {
+    id: string
+    name: string
   }
 }

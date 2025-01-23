@@ -76,6 +76,8 @@
   "store/b2b-quotes.quote-details.apply-discount.help-text": "Anvend en procentrabat til tilbudssubtotalen. Bemærk, at dette vil tilsidesætte eventuelle ændringer af individuelle SKU-priser.",
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "Procentrabat er ikke tilgængelig, da en kampagne allerede anvender en rabat, som er højere end den maksimale manuelle rabat.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Manuelle rabatter over {maxDiscount}% vil automatisk blive afvist.",
+  "store/b2b-quotes.quote-details.products.title": "Produkter ({total})",
+  "store/b2b-quotes.quote-details.make-changes.label": "Gør ændringer",
   "store/b2b-quotes.quote-details.update-history.title": "Opdateringshistorik",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{Oprettet}other{Opdateret}} den {date} af {email} ({role}) med status {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Noter:",

@@ -76,6 +76,8 @@
   "store/b2b-quotes.quote-details.apply-discount.help-text": "Aplique um desconto percentual ao subtotal da cotação. Atenção: isso irá substituir quaisquer alterações feitas nos preços de SKU individuais.",
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "O desconto percentual está desativado porque a promoção já está aplicando um desconto maior do que o desconto manual máximo.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Os descontos manuais acima de {maxDiscount}% serão recusados automaticamente.",
+  "store/b2b-quotes.quote-details.products.title": "Produtos ({total})",
+  "store/b2b-quotes.quote-details.make-changes.label": "Fazer alterações",
   "store/b2b-quotes.quote-details.update-history.title": "Histórico de atualizações",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{Criada}other{Atualizada}} em {date} por {email} ({role}) com status {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Observações:",
