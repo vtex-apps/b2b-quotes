@@ -19,10 +19,21 @@ let isAuthenticated =
 
 const QuotesTableContainer: FunctionComponent = () => {
   const { navigate, rootPath } = useRuntime()
-  const [paginationState, setPaginationState] = useState({
+  const [paginationState, setPaginationStateOriginal] = useState({
     page: 1,
     pageSize: 25,
   })
+
+  const setPaginationState = (
+    paginationArgs: typeof paginationState,
+    scrollToTop = true
+  ) => {
+    setPaginationStateOriginal(paginationArgs)
+
+    if (scrollToTop) {
+      window.scrollTo(0, 0)
+    }
+  }
 
   const [filterState, setFilterState] = useState({
     filterStatements: [] as FilterStatement[],
@@ -186,10 +197,13 @@ const QuotesTableContainer: FunctionComponent = () => {
       filterStatements: statements,
     })
 
-    setPaginationState({
-      ...paginationState,
-      page: 1,
-    })
+    setPaginationState(
+      {
+        ...paginationState,
+        page: 1,
+      },
+      false
+    )
 
     refetch({
       page: 1,

@@ -1,0 +1,4 @@
+.tableContainer :global(.dtc) > :global(.vtex-styleguide-9-x-rotate) {
+  position: absolute;
+  top: 200px;
+}

@@ -19,6 +19,7 @@ import OrganizationAndCostCenterFilter from './OrganizationAndCostCenterFilter'
 import type { OrgAndCC } from './OrganizationAndCostCenterFilter'
 import { LabelByStatusMap } from '../utils/status'
 import { getEmptySimpleQuote } from '../utils/helpers'
+import styles from './QuotesTable.css'
 
 interface QuotesTableProps {
   permissions: string[]
@@ -400,151 +401,155 @@ const QuotesTable: FunctionComponent<QuotesTableProps> = ({
 
   return (
     <PageBlock>
-      <Table
-        density="low"
-        fullWidth
-        items={quotes}
-        loading={loading}
-        schema={getSchema()}
-        lineActions={lineActions}
-        onRowClick={({ rowData: { id } }: CellRendererProps) => {
-          if (!id) return
+      <div className={`${styles.tableContainer} relative`}>
+        <Table
+          density="low"
+          fullWidth
+          items={quotes}
+          loading={loading}
+          schema={getSchema()}
+          lineActions={lineActions}
+          onRowClick={({ rowData: { id } }: CellRendererProps) => {
+            if (!id) return
 
-          navigate({
-            page: 'store.b2b-quote-details',
-            params: { id },
-          })
-        }}
-        emptyStateLabel={formatMessage(tableMessages.emptyState)}
-        pagination={{
-          onNextClick: () => {
-            cleanChildrenStates()
-            handleNextClick()
-          },
-          onPrevClick: () => {
-            cleanChildrenStates()
-            handlePrevClick()
-          },
-          onRowsChange: (e: ChangeEvent<HTMLInputElement>) => {
-            cleanChildrenStates()
-            handleRowsChange(e)
-          },
-          currentItemFrom: (page - 1) * pageSize + 1,
-          currentItemTo: total < page * pageSize ? total : page * pageSize,
-          textShowRows: formatMessage(tableMessages.showRows),
-          textOf: formatMessage(tableMessages.of),
-          totalItems: total,
-          rowsOptions: [25, 50, 100],
-        }}
-        toolbar={{
-          inputSearch: {
-            value: searchValue,
-            placeholder: formatMessage(tableMessages.placeholderSearch),
-            onChange: (e: React.FormEvent<HTMLInputElement>) => {
+            navigate({
+              page: 'store.b2b-quote-details',
+              params: { id },
+            })
+          }}
+          emptyStateLabel={formatMessage(tableMessages.emptyState)}
+          pagination={{
+            onNextClick: () => {
               cleanChildrenStates()
-              handleInputSearchChange(e)
+              handleNextClick()
             },
-            onClear: () => {
+            onPrevClick: () => {
               cleanChildrenStates()
-              handleInputSearchClear()
+              handlePrevClick()
             },
-            onSubmit: () => {
+            onRowsChange: (e: ChangeEvent<HTMLInputElement>) => {
               cleanChildrenStates()
-              handleInputSearchSubmit()
+              handleRowsChange(e)
             },
-          },
-          fields: {
-            label: formatMessage(tableMessages.toggleFields),
-            showAllLabel: formatMessage(tableMessages.showAllFields),
-            hideAllLabel: formatMessage(tableMessages.hideAllFields),
-          },
-          newLine: {
-            label: formatMessage(tableMessages.newQuote),
-            handleCallback: handleNewQuote,
-          },
-        }}
-        sort={{
-          sortedBy,
-          sortOrder,
-        }}
-        onSort={(sortArgs: { sortOrder: string; sortedBy: string }) => {
-          cleanChildrenStates()
-          handleSort(sortArgs)
-        }}
-        filters={{
-          alwaysVisibleFilters: [
-            'status',
-            ...(showCostCenterFilter ? ['organizationAndCostCenter'] : []),
-          ],
-          statements: filterStatements,
-          onChangeStatements: (statements: FilterStatement[]) => {
-            cleanChildrenStates()
-            handleFiltersChange(statements)
-          },
-          clearAllFiltersButtonLabel: formatMessage(tableMessages.clearFilters),
-          collapseLeft: true,
-          options: {
-            status: {
-              label: formatMessage(tableMessages.statusFilter),
-              renderFilterLabel: (st: any) => {
-                if (!st?.object) {
-                  // you should treat empty object cases only for alwaysVisibleFilters
-                  return formatMessage(tableMessages.filtersAll)
-                }
-
-                const keys = st.object ? Object.keys(st.object) : []
-                const isAllTrue = !keys.some((key) => !st.object[key])
-                const isAllFalse = !keys.some((key) => st.object[key])
-                const trueKeys = keys.filter((key) => st.object[key])
-                let trueKeysLabel = ''
-
-                trueKeys.forEach((key, index) => {
-                  trueKeysLabel += `${key}${
-                    index === trueKeys.length - 1 ? '' : ', '
-                  }`
-                })
-
-                if (isAllTrue) {
-                  return formatMessage(tableMessages.filtersAll)
-                }
-
-                if (isAllFalse) {
-                  return formatMessage(tableMessages.filtersNone)
-                }
-
-                return `${trueKeysLabel}`
+            currentItemFrom: (page - 1) * pageSize + 1,
+            currentItemTo: total < page * pageSize ? total : page * pageSize,
+            textShowRows: formatMessage(tableMessages.showRows),
+            textOf: formatMessage(tableMessages.of),
+            totalItems: total,
+            rowsOptions: [25, 50, 100],
+          }}
+          toolbar={{
+            inputSearch: {
+              value: searchValue,
+              placeholder: formatMessage(tableMessages.placeholderSearch),
+              onChange: (e: React.FormEvent<HTMLInputElement>) => {
+                cleanChildrenStates()
+                handleInputSearchChange(e)
               },
-              verbs: [
-                {
-                  label: formatMessage(tableMessages.filtersIncludes),
-                  value: 'includes',
-                  object: statusSelectorObject,
-                },
-              ],
+              onClear: () => {
+                cleanChildrenStates()
+                handleInputSearchClear()
+              },
+              onSubmit: () => {
+                cleanChildrenStates()
+                handleInputSearchSubmit()
+              },
             },
-            ...(showCostCenterFilter && {
-              organizationAndCostCenter: {
-                label: formatMessage(tableMessages.organizationAndCostCenter),
+            fields: {
+              label: formatMessage(tableMessages.toggleFields),
+              showAllLabel: formatMessage(tableMessages.showAllFields),
+              hideAllLabel: formatMessage(tableMessages.hideAllFields),
+            },
+            newLine: {
+              label: formatMessage(tableMessages.newQuote),
+              handleCallback: handleNewQuote,
+            },
+          }}
+          sort={{
+            sortedBy,
+            sortOrder,
+          }}
+          onSort={(sortArgs: { sortOrder: string; sortedBy: string }) => {
+            cleanChildrenStates()
+            handleSort(sortArgs)
+          }}
+          filters={{
+            alwaysVisibleFilters: [
+              'status',
+              ...(showCostCenterFilter ? ['organizationAndCostCenter'] : []),
+            ],
+            statements: filterStatements,
+            onChangeStatements: (statements: FilterStatement[]) => {
+              cleanChildrenStates()
+              handleFiltersChange(statements)
+            },
+            clearAllFiltersButtonLabel: formatMessage(
+              tableMessages.clearFilters
+            ),
+            collapseLeft: true,
+            options: {
+              status: {
+                label: formatMessage(tableMessages.statusFilter),
                 renderFilterLabel: (st: any) => {
                   if (!st?.object) {
                     // you should treat empty object cases only for alwaysVisibleFilters
                     return formatMessage(tableMessages.filtersAll)
                   }
 
-                  return '...'
+                  const keys = st.object ? Object.keys(st.object) : []
+                  const isAllTrue = !keys.some((key) => !st.object[key])
+                  const isAllFalse = !keys.some((key) => st.object[key])
+                  const trueKeys = keys.filter((key) => st.object[key])
+                  let trueKeysLabel = ''
+
+                  trueKeys.forEach((key, index) => {
+                    trueKeysLabel += `${key}${
+                      index === trueKeys.length - 1 ? '' : ', '
+                    }`
+                  })
+
+                  if (isAllTrue) {
+                    return formatMessage(tableMessages.filtersAll)
+                  }
+
+                  if (isAllFalse) {
+                    return formatMessage(tableMessages.filtersNone)
+                  }
+
+                  return `${trueKeysLabel}`
                 },
                 verbs: [
                   {
-                    label: '',
-                    value: '=',
-                    object: organizationFilter,
+                    label: formatMessage(tableMessages.filtersIncludes),
+                    value: 'includes',
+                    object: statusSelectorObject,
                   },
                 ],
               },
-            }),
-          },
-        }}
-      />
+              ...(showCostCenterFilter && {
+                organizationAndCostCenter: {
+                  label: formatMessage(tableMessages.organizationAndCostCenter),
+                  renderFilterLabel: (st: any) => {
+                    if (!st?.object) {
+                      // you should treat empty object cases only for alwaysVisibleFilters
+                      return formatMessage(tableMessages.filtersAll)
+                    }
+
+                    return '...'
+                  },
+                  verbs: [
+                    {
+                      label: '',
+                      value: '=',
+                      object: organizationFilter,
+                    },
+                  ],
+                },
+              }),
+            },
+          }}
+        />
+      </div>
     </PageBlock>
   )
 }
