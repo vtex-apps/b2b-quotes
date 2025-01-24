@@ -77,7 +77,7 @@
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "Prosenttialennus on pois käytöstä, koska kampanja lisää jo manuaalista enimmäisalennusta suuremman alennuksen.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Yli {maxDiscount} %:n manuaaliset alennukset hylätään automaattisesti.",
   "store/b2b-quotes.quote-details.products.title": "Tuotteet ({total})",
-  "store/b2b-quotes.quote-details.make-changes.label": "Muuta tarjousta",
+  "store/b2b-quotes.quote-details.notes-after-created.helpText": "Huomautuksia voidaan lisätä lainausten luomisen jälkeen.",
   "store/b2b-quotes.quote-details.update-history.title": "Päivityshistoria",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{Luotu}other{Päivitetty}} {date} {email} toimesta roolilla ({role}) tilalla {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Muistiinpanot:",

@@ -13,6 +13,7 @@ import { useCheckoutURL } from 'vtex.checkout-resources/Utils'
 import { OrderForm } from 'vtex.order-manager'
 import { useRuntime } from 'vtex.render-runtime'
 import {
+  Alert,
   Button,
   DatePicker,
   Layout,
@@ -113,6 +114,7 @@ const QuoteDetails: FunctionComponent = () => {
   const [quoteState, setQuoteState] = useState<Quote>(initialState)
   const [formState, setFormState] = useState({
     isEditable: false,
+    canAddNotes: false,
     errorMessage: '',
   })
 
@@ -224,17 +226,31 @@ const QuoteDetails: FunctionComponent = () => {
    * functions
    */
   const setEditable = useCallback(() => {
+    let isEditable = true
+    let canAddNotes = true
+
     if (parentQuote && seller && seller !== '1') {
-      return
+      isEditable = false
+    }
+
+    if (isNewQuote && sellers.length > 1 && hasCheckedExternalSellers) {
+      canAddNotes = false
     }
 
     setFormState((f) => {
       return {
         ...f,
-        isEditable: true,
+        isEditable,
+        canAddNotes,
       }
     })
-  }, [parentQuote, seller])
+  }, [
+    hasCheckedExternalSellers,
+    isNewQuote,
+    parentQuote,
+    seller,
+    sellers.length,
+  ])
 
   const handleClearCart = (orderFormId: string) => {
     return clearCart({
@@ -860,7 +876,7 @@ const QuoteDetails: FunctionComponent = () => {
                       updateHistory={quoteState.updateHistory}
                     />
 
-                    {formState.isEditable && !hasCheckedExternalSellers && (
+                    {formState.canAddNotes && (
                       <div className="mt3 pa5">
                         <Textarea
                           label={formatMessage(quoteMessages.addNote)}
@@ -879,6 +895,16 @@ const QuoteDetails: FunctionComponent = () => {
                           maxLength="500"
                           rows="4"
                         />
+                      </div>
+                    )}
+
+                    {isNewQuote && !formState.canAddNotes && (
+                      <div className="mt3 pa5">
+                        <Alert type="warning">
+                          {formatMessage(
+                            quoteMessages.notesAfterCreatedHelpText
+                          )}
+                        </Alert>
                       </div>
                     )}
                   </div>

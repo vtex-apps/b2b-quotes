@@ -77,7 +77,7 @@
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "El descuento porcentual está desactivado porque hay una promoción que ya ha aplicado un descuento mayor que el descuento manual máximo.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Los descuentos manuales superiores al {maxDiscount} % se rechazarán automáticamente.",
   "store/b2b-quotes.quote-details.products.title": "Productos ({total})",
-  "store/b2b-quotes.quote-details.make-changes.label": "Hacer cambios",
+  "store/b2b-quotes.quote-details.notes-after-created.helpText": "Se pueden agregar notas después de crear las cotizaciones.",
   "store/b2b-quotes.quote-details.update-history.title": "Historial de actualizaciones",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, one {} =0{Creada}other{Actualizada}} el {date} por {email} ({role}) con el status {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Observaciones:",

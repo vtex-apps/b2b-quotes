@@ -77,7 +77,7 @@
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "Lo sconto percentuale non è disponibile in quanto una promozione applica già uno sconto superiore allo sconto manuale massimo.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Gli sconti manuali superiori a {maxDiscount}% verranno rifiutati automaticamente.",
   "store/b2b-quotes.quote-details.products.title": "Prodotti ({total})",
-  "store/b2b-quotes.quote-details.make-changes.label": "Fai delle modifiche",
+  "store/b2b-quotes.quote-details.notes-after-created.helpText": "Dopo aver creato le citazioni, è possibile aggiungere delle note.",
   "store/b2b-quotes.quote-details.update-history.title": "Cronologia degli aggiornamenti",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{Creato}other{Aggiornato}} il {date} da {email} ({role}) con stato {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Note:",
