@@ -1,7 +1,7 @@
 {
   "vendor": "vtex",
   "name": "b2b-quotes",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "title": "B2B Quotes & Carts",
   "description": "Allows B2B Customers to request quotes from their sales reps and/or save carts for future use",
   "builders": {
@@ -29,7 +29,9 @@
     "vtex.my-account": "1.x",
     "vtex.my-account-commons": "1.x"
   },
-  "registries": ["smartcheckout"],
+  "registries": [
+    "smartcheckout"
+  ],
   "policies": [],
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }
