@@ -77,7 +77,7 @@
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "Prosentrabatt er ikke tilgjengelig fordi en kampanje allerede bruker en rabatt som er høyere enn den maksimale manuelle rabatten.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Manuelle rabatter over {maxDiscount}% blir automatisk avvist.",
   "store/b2b-quotes.quote-details.products.title": "Produkter ({total})",
-  "store/b2b-quotes.quote-details.make-changes.label": "Legg til endringer",
+  "store/b2b-quotes.quote-details.notes-after-created.helpText": "Notater kan legges til etter at sitatene er opprettet.",
   "store/b2b-quotes.quote-details.update-history.title": "Oppdater historikk",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{Opprettet}other{Oppdatert}} den {date} av {email} ({role}) med status {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Notater:",

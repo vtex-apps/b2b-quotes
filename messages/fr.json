@@ -77,7 +77,7 @@
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "La remise en pourcentage n'est pas disponible car une promotion applique déjà une réduction supérieure à la remise manuelle maximale.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Les remises manuelles supérieures à {maxDiscount}% seront automatiquement refusées.",
   "store/b2b-quotes.quote-details.products.title": "Produits ({total})",
-  "store/b2b-quotes.quote-details.make-changes.label": "Faire des modifications",
+  "store/b2b-quotes.quote-details.notes-after-created.helpText": "Des notes peuvent être ajoutées après la création des devis.",
   "store/b2b-quotes.quote-details.update-history.title": "Mettre à jour l’historique",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{Créé}other{Mis à jour}} le {date} par {email} ({role}) avec le statut {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Notes :",

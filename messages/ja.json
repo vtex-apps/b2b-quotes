@@ -77,7 +77,7 @@
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "手入力できる最大の割引よりも高い割引をプロモーションがすでに適用しているため、割引率は無効です。",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "{maxDiscount}% を超える手入力の割引は自動的に却下されます。",
   "store/b2b-quotes.quote-details.products.title": "商品 ({total})",
-  "store/b2b-quotes.quote-details.make-changes.label": "変更を加える",
+  "store/b2b-quotes.quote-details.notes-after-created.helpText": "見積書を作成した後でメモを追加できます。",
   "store/b2b-quotes.quote-details.update-history.title": "更新履歴",
   "store/b2b-quotes.quote-details.update-history.update-details": "{date} に {email} ({role}) によって {index, plural, =0{作成済み}other{更新済み}} となり、ステータスは {status} になりました",
   "store/b2b-quotes.quote-details.update-history.notes": "備考:",

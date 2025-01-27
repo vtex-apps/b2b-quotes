@@ -77,7 +77,7 @@
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "Percentuálna zľava nie je k dispozícii, pretože promo akcia už uplatňuje zľavu vyššiu, než je maximálna manuálna zľava.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Manuálne zľavy nad {maxDiscount} % budú automaticky odmietnuté.",
   "store/b2b-quotes.quote-details.products.title": "Produkty ({total})",
-  "store/b2b-quotes.quote-details.make-changes.label": "Vykonajte zmeny",
+  "store/b2b-quotes.quote-details.notes-after-created.helpText": "Poznámky je možné pridať po vytvorení úvodzoviek.",
   "store/b2b-quotes.quote-details.update-history.title": "História aktualizácií",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural,  =0{vytvorené}other{aktualizované}} dňa {date} používateľom {email} ({role}) so stavom {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Poznámky:",

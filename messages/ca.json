@@ -77,7 +77,7 @@
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "El percentatge de descompte no està disponible perquè en una promoció ja s'aplica un descompte superior al descompte manual màxim.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Es rebutjaran automàticament els descomptes manuals superiors a {maxDiscount}%.",
   "store/b2b-quotes.quote-details.products.title": "Productes ({total})",
-  "store/b2b-quotes.quote-details.make-changes.label": "Fes canvis",
+  "store/b2b-quotes.quote-details.notes-after-created.helpText": "Les notes es poden afegir després de crear les cometes.",
   "store/b2b-quotes.quote-details.update-history.title": "Actualitza l'historial",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{creat}other{actualitzat}} el {date} per {email} ({role}) amb l'estat {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Notes:",

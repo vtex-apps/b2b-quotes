@@ -77,7 +77,7 @@
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "لا يتوفر خصم النسبة المئوية لأن العرض الترويجي يطبق بالفعل خصمًا أعلى من الحد الأقصى للخصم اليدوي.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "الخصومات اليدوية التي تزيد على {maxDiscount}% سيتم رفضها تلقائياً.",
   "store/b2b-quotes.quote-details.products.title": "المنتجات ({total})",
-  "store/b2b-quotes.quote-details.make-changes.label": "إجراء تغييرات",
+  "store/b2b-quotes.quote-details.notes-after-created.helpText": "يمكن إضافة الملاحظات بعد إنشاء الاقتباسات.",
   "store/b2b-quotes.quote-details.update-history.title": "سجل التحديث",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{تم إنشاءه}other{تم تحديثه}} يوم {date} من قبل {email} ({role}) مع الحالة {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "ملاحظات:",

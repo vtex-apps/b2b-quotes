@@ -77,7 +77,7 @@
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "Procentrabat er ikke tilgængelig, da en kampagne allerede anvender en rabat, som er højere end den maksimale manuelle rabat.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Manuelle rabatter over {maxDiscount}% vil automatisk blive afvist.",
   "store/b2b-quotes.quote-details.products.title": "Produkter ({total})",
-  "store/b2b-quotes.quote-details.make-changes.label": "Gør ændringer",
+  "store/b2b-quotes.quote-details.notes-after-created.helpText": "Noter kan tilføjes efter citaterne er oprettet.",
   "store/b2b-quotes.quote-details.update-history.title": "Opdateringshistorik",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{Oprettet}other{Opdateret}} den {date} af {email} ({role}) med status {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Noter:",

@@ -77,7 +77,7 @@
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "Procentuele korting is niet beschikbaar omdat een promotie al een korting toepast die hoger is dan de maximale handmatige korting.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Handmatige kortingen boven {maxDiscount}% worden automatisch geweigerd.",
   "store/b2b-quotes.quote-details.products.title": "Artikelen ({total})",
-  "store/b2b-quotes.quote-details.make-changes.label": "Veranderingen doen",
+  "store/b2b-quotes.quote-details.notes-after-created.helpText": "Nadat de offerte is gemaakt, kunt u er nog notities aan toevoegen.",
   "store/b2b-quotes.quote-details.update-history.title": "Geschiedenis bijwerken",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, one {} =0{Gemaakt}other{Bijgewerkt}} op {date} door {email} ({role}) met status {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Notities:",

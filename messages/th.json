@@ -77,7 +77,7 @@
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "ไม่มีส่วนลดเป็นเปอร์เซ็นต์เนื่องจากมีโปรโมชันที่ให้ส่วนลดมากกว่าส่วนลดสูงสุดแบบแมนวลอยู่แล้ว",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "ส่วนลดแบบแมนวลที่เกินกว่า {maxDiscount}% จะถูกยกเลิกโดยอัตโนมัติ",
   "store/b2b-quotes.quote-details.products.title": "สินค้า ({total})",
-  "store/b2b-quotes.quote-details.make-changes.label": "ทําการเปลี่ยนแปลง",
+  "store/b2b-quotes.quote-details.notes-after-created.helpText": "สามารถเพิ่มหมายเหตุได้หลังจากสร้างคำพูดแล้ว",
   "store/b2b-quotes.quote-details.update-history.title": "ประวัติการอัปเดต",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{สร้างแล้ว}other{อัปเดตแล้ว}}เมื่อ {date} โดย {email} ({role}) พร้อมสถานะ {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "หมายเหตุ:",
