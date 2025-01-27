@@ -76,8 +76,8 @@ export const quoteMessages = defineMessages({
   historyTitle: {
     id: `${storePrefix}quote-details.update-history.title`,
   },
-  makeChanges: {
-    id: `${storePrefix}quote-details.make-changes.label`,
+  notesAfterCreatedHelpText: {
+    id: `${storePrefix}quote-details.notes-after-created.helpText`,
   },
   createPageTitle: {
     id: `${storePrefix}create.title`,

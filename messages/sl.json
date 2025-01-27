@@ -77,7 +77,7 @@
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "Odstotek popusta ni na voljo, ker promocija že uporablja popust, ki je višji od največjega ročnega popusta.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Ročni popusti nad {maxDiscount}% bodo samodejno zavrnjeni.",
   "store/b2b-quotes.quote-details.products.title": "Artikli ({total})",
-  "store/b2b-quotes.quote-details.make-changes.label": "Posodobi ponudbo",
+  "store/b2b-quotes.quote-details.notes-after-created.helpText": "Opombe lahko dodate, ko so ponudbe ustvarjene.",
   "store/b2b-quotes.quote-details.update-history.title": "Posodobi zgodovino",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{Ustvarjeno}other{Posodobljeno}} na {date} z {email} ({role}) s stanjem {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Opombe:",

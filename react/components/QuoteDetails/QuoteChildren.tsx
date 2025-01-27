@@ -12,11 +12,11 @@ import {
   Totalizer,
 } from 'vtex.styleguide'
 
+import { isQuoteUsable } from '../../utils/helpers'
 import { quoteMessages, statusMessages } from '../../utils/messages'
-import { LabelByStatusMap, Status } from '../../utils/status'
+import { LabelByStatusMap } from '../../utils/status'
 import QuoteTable from './QuoteTable'
 import QuoteUpdateHistory from './QuoteUpdateHistory'
-import { isQuoteUsable } from '../../utils/helpers'
 
 interface Props {
   quote: Quote
@@ -39,6 +39,7 @@ const QuoteChildren: React.FC<Props> = ({
   const intl = useIntl()
   const { formatMessage, formatDate } = intl
   const [open, setOpen] = useState(true)
+  const [loadingViewQuote, setLoadingViewQuote] = useState(false)
   const [currentTab, setCurrentTab] = useState<number | null>(1)
   const {
     id,
@@ -72,12 +73,6 @@ const QuoteChildren: React.FC<Props> = ({
   )
 
   const quoteUsable = isQuoteUsable(permissions, status)
-
-  const quoteEditable =
-    seller === '1' &&
-    (status === Status.PENDING ||
-      status === Status.READY ||
-      status === Status.REVISED)
 
   return (
     <div className="mb5">
@@ -165,16 +160,18 @@ const QuoteChildren: React.FC<Props> = ({
               <Button
                 variation="secondary"
                 size="small"
-                disabled={!quoteEditable}
-                onClick={() =>
+                isLoading={loadingViewQuote}
+                onClick={() => {
+                  setLoadingViewQuote(true)
+
                   navigate({
                     page: 'store.b2b-quote-details',
                     params: { id },
                     query: 'parent',
                   })
-                }
+                }}
               >
-                {formatMessage(quoteMessages.makeChanges)}
+                {formatMessage(quoteMessages.updatePageTitle)}
               </Button>
               <div className="ml3">
                 <Button

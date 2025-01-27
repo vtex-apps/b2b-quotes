@@ -77,7 +77,7 @@
   "store/b2b-quotes.quote-details.apply-discount.disabled-message": "Reducerea procentuală nu este disponibilă deoarece o promoție aplică deja o reducere mai mare decât reducerea manuală maximă.",
   "store/b2b-quotes.quote-details.apply-discount.maxDiscount-text": "Reducerile manuale peste {maxDiscount}% vor fi respinse automat.",
   "store/b2b-quotes.quote-details.products.title": "Produse ({total})",
-  "store/b2b-quotes.quote-details.make-changes.label": "Facă modificări",
+  "store/b2b-quotes.quote-details.notes-after-created.helpText": "Notele pot fi adăugate după ce au fost create ghilimele.",
   "store/b2b-quotes.quote-details.update-history.title": "Actualizare Istoric",
   "store/b2b-quotes.quote-details.update-history.update-details": "{index, plural, =0{Creată}other{Actualizată}} la data {date} prin {email} ({role}) cu statusul {status}",
   "store/b2b-quotes.quote-details.update-history.notes": "Note:",
