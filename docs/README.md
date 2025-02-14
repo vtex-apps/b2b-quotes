@@ -223,11 +223,11 @@ Once the order has been placed, the quote or saved cart’s status will automati
 
 The **B2B Quotes & Carts** app provides a set of three email templates to be sent to B2B users, triggered automatically based on specific changes:
 
-| Template name | Recipients                                                                                                                                                     | Trigger                                                                                                            |
-| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| Quote created | Users with any of the following permissions:<br>Edit My Cost Center's Quotes and Carts<br>Edit My Organization's Quotes and Carts<br>Edit All Quotes and Carts | The quote request was created.                                                                                     |
-| Quote placed  | All users who have previously interacted with the quote by editing it, requesting adjustments or approving it.                                                 | An order was placed from the existing quote.                                                                       |
-| Quote updated | All users who have previously interacted with the quote.                                                                                                       | The quote was updated in any way – including changes in discounts or expiration dates, new notes added or refusal. |
+| **Template name**  | **Recipients**  | **Email trigger**  |
+|---------------------|----------------|--------------------|
+| **Quote created**  | Only users with the **sales-admin** role receive this email. | The email is sent only if **all** of the following conditions are met:<br>• The quote creator **must not** have permissions to edit quotes.<br>• The quote must be created using the `Request quote` button and cannot be saved for later. |
+| **Quote placed**  | All users who interacted with the quote by editing, requesting adjustments, or approving it. | An order was placed from the existing quote. |
+| **Quote updated**  | All users who interacted with the quote. | The quote was updated in any way – including changes in discounts, expiration dates, new notes added, or refusal. |
 
 If you want to view or edit any of these templates, follow the steps below.
 
