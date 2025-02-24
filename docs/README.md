@@ -226,8 +226,8 @@ The **B2B Quotes & Carts** app provides a set of three email templates to be sen
 | **Template name**  | **Recipients**  | **Email trigger**  |
 |---------------------|----------------|--------------------|
 | Quote created  | Only users with the **sales-admin** role receive this email. | Sent only if all of the following conditions are met:<br>• The quote creator does not have permission to edit quotes.<br>• The quote must be created using the `Request quote` button and cannot be saved for later. |
-| **Quote placed**  | All users who interacted with the quote by editing, requesting adjustments, or approving it. | An order was placed from the existing quote. |
-| **Quote updated**  | All users who interacted with the quote. | The quote was updated in any way – including changes in discounts, expiration dates, new notes added, or refusal. |
+| Quote placed  | All users who edited, requested adjustments or approved the quote. | Sent when an order is placed from the existing quote. |
+| Quote updated  | All users who interacted with the quote. | Sent when the quote is updated in any way, including changes in discounts, updates to expiration dates, addition of new notes, or quote refusal. |
 
 If you want to view or edit any of these templates, follow the steps below.
 
