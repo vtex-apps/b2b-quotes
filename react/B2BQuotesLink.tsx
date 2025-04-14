@@ -21,6 +21,7 @@ const B2BQuotesLink: FunctionComponent<Props> = ({ render }) => {
 
   const { data } = useQuery(CHECK_PERMISSIONS, {
     variables: { email: userEmail },
+    skip: !userEmail,
   })
 
   useEffect(() => {
