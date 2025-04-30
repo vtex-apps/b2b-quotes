@@ -30,6 +30,8 @@ Along with this app, we recommend installing [B2B Checkout Settings](https://dev
 
 You can install the **B2B Quotes & Carts** app by running `vtex install vtex.b2b-quotes` in your terminal, using the [VTEX IO CLI](https://developers.vtex.com/vtex-developer-docs/docs/vtex-io-documentation-vtex-io-cli-installation-and-command-reference).
 
+When you install the **B2B Quotes & Carts** app, a data entity named **quotes** is created in **Master Data V2**. This entity stores all the information related to quotes and saved carts generated through the app.
+
 ## How the app works
 
 The **B2B Quotes & Carts** app enables a shared [My Quotes](#my-quotes) page for members of a B2B organization, from where it is possible to create a quote or saved cart and view existing quotes and saved carts.
