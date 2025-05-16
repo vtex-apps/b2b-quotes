@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.3] - 2025-05-16
+
 ### Added
 - Updated documentation to include details about the creation of the "quotes" data entity when installing the B2B Quotes & Carts app.
 
