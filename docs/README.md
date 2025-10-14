@@ -30,6 +30,8 @@ Along with this app, we recommend installing [B2B Checkout Settings](https://dev
 
 You can install the **B2B Quotes & Carts** app by running `vtex install vtex.b2b-quotes` in your terminal, using the [VTEX IO CLI](https://developers.vtex.com/vtex-developer-docs/docs/vtex-io-documentation-vtex-io-cli-installation-and-command-reference).
 
+When you install the **B2B Quotes & Carts** app, a data entity named **quotes** is created in **Master Data V2**. This entity stores all the information related to quotes and saved carts generated through the app.
+
 ## How the app works
 
 The **B2B Quotes & Carts** app enables a shared [My Quotes](#my-quotes) page for members of a B2B organization, from where it is possible to create a quote or saved cart and view existing quotes and saved carts.
@@ -223,11 +225,11 @@ Once the order has been placed, the quote or saved cart’s status will automati
 
 The **B2B Quotes & Carts** app provides a set of three email templates to be sent to B2B users, triggered automatically based on specific changes:
 
-| Template name | Recipients                                                                                                                                                     | Trigger                                                                                                            |
-| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| Quote created | Users with any of the following permissions:<br>Edit My Cost Center's Quotes and Carts<br>Edit My Organization's Quotes and Carts<br>Edit All Quotes and Carts | The quote request was created.                                                                                     |
-| Quote placed  | All users who have previously interacted with the quote by editing it, requesting adjustments or approving it.                                                 | An order was placed from the existing quote.                                                                       |
-| Quote updated | All users who have previously interacted with the quote.                                                                                                       | The quote was updated in any way – including changes in discounts or expiration dates, new notes added or refusal. |
+| **Template name**  | **Recipients**  | **Email trigger**  |
+|---------------------|----------------|--------------------|
+| Quote created  | Only users with the **sales-admin** role receive this email. | Sent only if all of the following conditions are met:<br>• The quote creator does not have permission to edit quotes.<br>• The quote must be created using the `Request quote` button and cannot be saved for later. |
+| Quote placed  | All users who edited, requested adjustments or approved the quote. | Sent when an order is placed from the existing quote. |
+| Quote updated  | All users who interacted with the quote. | Sent when the quote is updated in any way, including changes in discounts, updates to expiration dates, addition of new notes, or quote refusal. |
 
 If you want to view or edit any of these templates, follow the steps below.
 

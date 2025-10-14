@@ -1,0 +1,23 @@
+query GetChildrenQuotes($id: String) {
+  getChildrenQuotes(id: $id, sortOrder: "ASC", sortedBy: "sellerName")
+    @context(provider: "vtex.b2b-quotes-graphql") {
+    id
+    referenceName
+    creatorEmail
+    creatorRole
+    creationDate
+    expirationDate
+    lastUpdate
+    subtotal
+    status
+    organization
+    organizationName
+    costCenter
+    costCenterName
+    viewedBySales
+    viewedByCustomer
+    seller
+    sellerName
+    parentQuote
+  }
+}

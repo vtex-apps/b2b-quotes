@@ -16,6 +16,8 @@ const SaveButtons = ({
   noteState,
   isSalesRep,
 }: any) => {
+  if (quoteState.hasChildren) return null
+
   if (isNewQuote) {
     return (
       <Fragment>
@@ -44,7 +46,7 @@ const SaveButtons = ({
               updatingQuoteState
             }
           >
-            <FormattedMessage id="store/b2b-quotes.create.button.save-for-later" />
+            <FormattedMessage id="store/b2b-quotes.create.button.request-quote" />
           </Button>
         </span>
       </Fragment>

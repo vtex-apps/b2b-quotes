@@ -9,6 +9,87 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Skip graphl query if parameter is null
 
+## [3.0.1] - 2025-10-06
+
+### Added
+- Policies for view and edit for buyer organizations
+
+## [3.0.0] - 2025-09-24
+
+### Changed
+- Update dependency major version. If you are updating to this major version, make sure to update the following apps (if you have then installed) to the following major versions:
+    - vtex.b2b-admin-customers@2.x
+    - vtex.b2b-checkout-settings@3.x
+    - vtex.b2b-my-account@2.x
+    - vtex.b2b-orders-history@2.x
+    - vtex.b2b-organizations@3.x
+    - vtex.b2b-organizations-graphql@2.x
+    - vtex.b2b-quotes@3.x
+    - vtex.b2b-quotes-graphql@4.x
+    - vtex.b2b-suite@2.x
+    - vtex.b2b-theme@5.x
+    - vtex.storefront-permissions-components@2.x
+    - vtex.storefront-permissions-ui@1.x
+
+## [2.0.0] - 2025-05-27
+
+### Changed
+- Update dependency major version. If you are updating to this major version, make sure to update the following apps (if you have then installed) to the following major versions:
+    - vtex.b2b-admin-customers@1.x
+    - vtex.b2b-checkout-settings@2.x
+    - vtex.b2b-my-account@1.x
+    - vtex.b2b-orders-history@1.x
+    - vtex.b2b-organizations@2.x
+    - vtex.b2b-organizations-graphql@1.x
+    - vtex.b2b-quotes-graphql@3.x
+    - vtex.b2b-suite@1.x
+    - vtex.b2b-theme@4.x
+    - vtex.storefront-permissions@2.x
+    - vtex.storefront-permissions-components@1.x
+    - vtex.storefront-permissions-ui@2.x
+
+## [1.7.3] - 2025-05-16
+
+### Added
+- Updated documentation to include details about the creation of the "quotes" data entity when installing the B2B Quotes & Carts app.
+
+### Fixed
+- Updated pull request workflows
+
+## [1.7.2] - 2025-02-24
+
+### Changed
+- Updated documentation section "Email templates"
+
+## [1.7.1] - 2025-01-27
+
+### Fixed
+
+- Enable comments in seller quotes after split
+
+### Added
+
+- Check seller quotes on quote creation
+- Display quotes tables with seller quotes if the quote was splitted
+- Display quotes children quantity and seller trade name when there are splitted quotes
+
+## [1.7.0] - 2025-01-21
+### Added
+
+- Add new splitting quote configuration to settings UI
+
+## [1.6.6] - 2025-01-06
+### Fixed
+- Fix Request Quote message in Quotes Details
+
+### Added
+
+- Add new splitting quote configuration to settings UI
+
+## [1.6.6] - 2025-01-06
+### Fixed
+- Fix Request Quote message in Quotes Details
+
 ## [1.6.5] - 2024-09-26
 ### Fixed
 

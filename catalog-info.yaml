@@ -4,8 +4,9 @@ metadata:
   name: b2b-quotes
   annotations:
     github.com/project-slug: vtex-apps/b2b-quotes
+    vtex.com/application-id: XIWYRN8I
 spec:
   system: b2b-suite
   type: frontend-ui
   lifecycle: maintenance
-  owner: b-2-b-enabler
+  owner: te-0010

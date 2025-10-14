@@ -1,10 +1,17 @@
-import { Input } from 'vtex.styleguide'
 import React from 'react'
 import { useIntl } from 'react-intl'
+import { Input } from 'vtex.styleguide'
 
 import { quoteMessages } from '../../utils/messages'
 
-const QuoteName = ({ isNewQuote, quoteState, formState, onChange }: any) => {
+const QuoteName = ({
+  isNewQuote,
+  quoteState,
+  formState,
+  onChange,
+  childrenQuantity,
+  sellerName,
+}: any) => {
   const { formatMessage } = useIntl()
 
   return isNewQuote ? (
@@ -23,7 +30,17 @@ const QuoteName = ({ isNewQuote, quoteState, formState, onChange }: any) => {
       />
     </div>
   ) : (
-    <h3 className="t-heading-3 mb8">{quoteState.referenceName}</h3>
+    <h3 className="t-heading-3 mb8">
+      {quoteState.referenceName}
+      {childrenQuantity > 0 && (
+        <span className="v-mid c-muted-2 pl3 t-heading-4">
+          ({childrenQuantity})
+        </span>
+      )}
+      {sellerName && (
+        <div className="c-muted-2 pt2 t-heading-4">({sellerName})</div>
+      )}
+    </h3>
   )
 }
 
