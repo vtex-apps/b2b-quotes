@@ -70,6 +70,7 @@
   "store/b2b-quotes.quote-details.items.refId.title": "Referansekode",
   "store/b2b-quotes.quote-details.items.name.title": "Navn",
   "store/b2b-quotes.quote-details.items.quantity.title": "Antall",
+  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "Enh. Mult.",
   "store/b2b-quotes.quote-details.items.price.title": "Pris",
   "store/b2b-quotes.quote-details.items.total.title": "Total",
   "store/b2b-quotes.quote-details.apply-discount.title": "Bruk prosentvis rabatt",

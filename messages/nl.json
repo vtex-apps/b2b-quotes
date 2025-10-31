@@ -70,6 +70,7 @@
   "store/b2b-quotes.quote-details.items.refId.title": "Ref. code",
   "store/b2b-quotes.quote-details.items.name.title": "Naam",
   "store/b2b-quotes.quote-details.items.quantity.title": "Aantal artikelen",
+  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "Eenh. Mult.",
   "store/b2b-quotes.quote-details.items.price.title": "Prijs",
   "store/b2b-quotes.quote-details.items.total.title": "Totaal",
   "store/b2b-quotes.quote-details.apply-discount.title": "Kortingspercentage toepassen",

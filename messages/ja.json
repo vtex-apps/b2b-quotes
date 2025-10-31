@@ -70,6 +70,7 @@
   "store/b2b-quotes.quote-details.items.refId.title": "参照コード",
   "store/b2b-quotes.quote-details.items.name.title": "名前",
   "store/b2b-quotes.quote-details.items.quantity.title": "数量",
+  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "単位倍数",
   "store/b2b-quotes.quote-details.items.price.title": "価格",
   "store/b2b-quotes.quote-details.items.total.title": "合計",
   "store/b2b-quotes.quote-details.apply-discount.title": "割引率を適用",

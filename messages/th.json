@@ -70,6 +70,7 @@
   "store/b2b-quotes.quote-details.items.refId.title": "โค้ดอ้างอิง",
   "store/b2b-quotes.quote-details.items.name.title": "ชื่อ",
   "store/b2b-quotes.quote-details.items.quantity.title": "จำนวน",
+  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "ตัวคูณหน่วย",
   "store/b2b-quotes.quote-details.items.price.title": "ราคา",
   "store/b2b-quotes.quote-details.items.total.title": "ยอดรวม",
   "store/b2b-quotes.quote-details.apply-discount.title": "ใช้ส่วนลดเป็นเปอร์เซ็นต์",

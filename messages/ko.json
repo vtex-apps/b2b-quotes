@@ -70,6 +70,7 @@
   "store/b2b-quotes.quote-details.items.refId.title": "참조 코드",
   "store/b2b-quotes.quote-details.items.name.title": "이름",
   "store/b2b-quotes.quote-details.items.quantity.title": "수량",
+  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "단위 배수",
   "store/b2b-quotes.quote-details.items.price.title": "가격",
   "store/b2b-quotes.quote-details.items.total.title": "합계",
   "store/b2b-quotes.quote-details.apply-discount.title": "백분율 할인 적용",

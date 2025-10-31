@@ -70,6 +70,7 @@
   "store/b2b-quotes.quote-details.items.refId.title": "Referenční kód",
   "store/b2b-quotes.quote-details.items.name.title": "Název",
   "store/b2b-quotes.quote-details.items.quantity.title": "Množství",
+  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "Násob.",
   "store/b2b-quotes.quote-details.items.price.title": "Cena",
   "store/b2b-quotes.quote-details.items.total.title": "Celkem",
   "store/b2b-quotes.quote-details.apply-discount.title": "Uplatnit procentuální slevu",

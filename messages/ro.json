@@ -70,6 +70,7 @@
   "store/b2b-quotes.quote-details.items.refId.title": "Cod ref.",
   "store/b2b-quotes.quote-details.items.name.title": "Nume",
   "store/b2b-quotes.quote-details.items.quantity.title": "Cantitate",
+  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "U. Mult.",
   "store/b2b-quotes.quote-details.items.price.title": "Preț",
   "store/b2b-quotes.quote-details.items.total.title": "Total",
   "store/b2b-quotes.quote-details.apply-discount.title": "Aplică reducerea procentuală",

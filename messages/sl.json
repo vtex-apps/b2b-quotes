@@ -70,6 +70,7 @@
   "store/b2b-quotes.quote-details.items.refId.title": "Ref. koda",
   "store/b2b-quotes.quote-details.items.name.title": "Ime",
   "store/b2b-quotes.quote-details.items.quantity.title": "Količina",
+  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "En. Množ.",
   "store/b2b-quotes.quote-details.items.price.title": "Cena",
   "store/b2b-quotes.quote-details.items.total.title": "Skupaj",
   "store/b2b-quotes.quote-details.apply-discount.title": "Uporabi odstotek popusta",

@@ -28,6 +28,8 @@ const QuoteTable = ({
   onUpdateSellingPrice,
   onUpdateQuantity,
   checkedSellers,
+  computedSubtotal,
+  unitMultipliers,
 }: any) => {
   const intl = useIntl()
   const {
@@ -172,16 +174,33 @@ const QuoteTable = ({
               return quantity
             },
           },
+          unitMultiplier: {
+            title: formatMessage(quoteMessages.unitMultiplier),
+            headerRight: true,
+            width: 80,
+            cellRenderer: ({ rowData: { id } }: any) => {
+              const hasMultipliers = unitMultipliers && Object.keys(unitMultipliers).length > 0
+              const multiplier = hasMultipliers ? unitMultipliers[id] ?? 1 : ''
+
+              return (
+                <div className="w-100 tr">
+                  {multiplier && `x ${multiplier}`}
+                </div>
+              )
+            },
+          },
           total: {
             title: formatMessage(quoteMessages.total),
             headerRight: true,
             cellRenderer: ({ rowData }: any) => {
+              const hasMultipliers = unitMultipliers && Object.keys(unitMultipliers).length > 0
+              const multiplier = hasMultipliers ? unitMultipliers[rowData.id] ?? 1 : ''
               return (
                 <span className="tr w-100">
                   <FormattedCurrency
                     value={
                       rowData.sellingPrice
-                        ? (rowData.sellingPrice * rowData.quantity) / 100
+                        ? ((rowData.sellingPrice * rowData.quantity) / 100) * multiplier
                         : 0
                     }
                   />
@@ -206,7 +225,7 @@ const QuoteTable = ({
       label: formatMessage(quoteMessages.percentageDiscount),
       value:
         updatingSubtotal && originalSubtotal
-          ? `${Math.round(100 - (updatingSubtotal / originalSubtotal) * 100)}%`
+          ? `${Math.round(100 - (updatingSubtotal / computedSubtotal) * 100)}%`
           : `0%`,
     },
     {

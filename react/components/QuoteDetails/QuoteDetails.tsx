@@ -6,8 +6,9 @@ import React, {
   useContext,
   useEffect,
   useState,
+  useMemo,
 } from 'react'
-import { useMutation, useQuery } from 'react-apollo'
+import { useMutation, useQuery, useApolloClient } from 'react-apollo'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useCheckoutURL } from 'vtex.checkout-resources/Utils'
 import { OrderForm } from 'vtex.order-manager'
@@ -35,6 +36,8 @@ import GET_ORDERFORM from '../../graphql/orderForm.gql'
 import UPDATE_QUOTE from '../../graphql/updateQuote.graphql'
 import USE_QUOTE from '../../graphql/useQuote.graphql'
 import useCheckout from '../../modules/checkoutHook'
+import GET_UNIT_MULTIPLIER from '../../graphql/getUnitMultiplier.graphql'
+
 import {
   initQuoteFromOrderForm,
   isQuoteUsable,
@@ -132,10 +135,14 @@ const QuoteDetails: FunctionComponent = () => {
   const [updatingSubtotal, setUpdatingSubtotal] = useState(0)
   const [sentToSalesRep, setSentToSalesRep] = useState(false)
   const getQuoteVariables = { id: params?.id }
+  const [unitMultipliers, setUnitMultipliers] = useState<Record<string, number>>({})
+  const [isMultipliersLoaded, setIsMultipliersLoaded] = useState(false)
 
   /**
    * GraphQL Queries
-   */
+  */
+  const client = useApolloClient()
+
   const { data, loading, refetch } = useQuery(GET_QUOTE, {
     fetchPolicy: 'network-only',
     variables: getQuoteVariables,
@@ -495,7 +502,7 @@ const QuoteDetails: FunctionComponent = () => {
           quantity = 50
         }
 
-        newSubtotal += item.sellingPrice * quantity
+        newSubtotal += item.sellingPrice * quantity * unitMultipliers[item.id]
 
         return {
           ...item,
@@ -503,7 +510,7 @@ const QuoteDetails: FunctionComponent = () => {
         }
       }
 
-      newSubtotal += item.sellingPrice * item.quantity
+      newSubtotal += item.sellingPrice * item.quantity * unitMultipliers[item.id]
 
       return item
     })
@@ -531,7 +538,7 @@ const QuoteDetails: FunctionComponent = () => {
       quoteState.items.forEach((item: QuoteItem) => {
         const newSellingPrice = Math.round(item.price * ((100 - percent) / 100))
 
-        newSubtotal += newSellingPrice * item.quantity
+        newSubtotal += newSellingPrice * item.quantity * unitMultipliers[item.id]
 
         newItems.push({ ...item, sellingPrice: newSellingPrice })
       })
@@ -548,11 +555,45 @@ const QuoteDetails: FunctionComponent = () => {
   /**
    * effects
    */
+
+  useEffect(() => {
+    const fetchMultipliers = async () => {
+      if (quoteState?.items?.length) {
+        setIsMultipliersLoaded(false)
+
+        try {
+          await Promise.all(
+            quoteState.items.map(async (item: any) => {
+              const res = await client.query({
+                query: GET_UNIT_MULTIPLIER,
+                variables: { skuId: item.id },
+                fetchPolicy: "network-only",
+              })
+              const multiplier = res?.data?.sku?.unitMultiplier || 1
+
+              setUnitMultipliers((prev) => ({
+                ...prev,
+                [item.id]: multiplier,
+              }))
+            })
+          )
+
+          setIsMultipliersLoaded(true)
+        } catch (err) {
+          console.error("Error fetching multipliers:", err)
+          setIsMultipliersLoaded(true) 
+        }
+      }
+    }
+
+    fetchMultipliers()
+  }, [quoteState, client])
+
   useEffect(() => {
     if (!quoteState.items.find((item) => item.error)) {
       setUpdatingSubtotal(
         quoteState.items.reduce(
-          (sum, item) => sum + item.sellingPrice * item.quantity,
+          (sum, item) => sum + item.sellingPrice * item.quantity * unitMultipliers[item.id],
           0
         )
       )
@@ -564,7 +605,7 @@ const QuoteDetails: FunctionComponent = () => {
     )
 
     setOriginalSubtotal(price)
-  }, [quoteState])
+  }, [quoteState, isMultipliersLoaded])
 
   useEffect(() => {
     if (!orderFormData?.orderForm) return
@@ -588,60 +629,102 @@ const QuoteDetails: FunctionComponent = () => {
 
   useEffect(() => {
     if (!data?.getQuote) return
+    const fetchMultipliersAndSetQuote = async () => {
+      const {
+        getQuote: {
+          id: _id,
+          costCenter,
+          costCenterName,
+          creationDate,
+          creatorEmail,
+          creatorRole,
+          expirationDate: _expirationDate,
+          items: _items,
+          lastUpdate,
+          organization,
+          organizationName,
+          referenceName,
+          status: _status,
+          subtotal,
+          updateHistory,
+          viewedByCustomer,
+          viewedBySales,
+          hasChildren,
+        },
+      } = data
 
-    const {
-      getQuote: {
-        id: _id,
-        costCenter,
-        costCenterName,
-        creationDate,
-        creatorEmail,
-        creatorRole,
-        expirationDate: _expirationDate,
-        items: _items,
-        lastUpdate,
-        organization,
-        organizationName,
-        referenceName,
-        status: _status,
-        subtotal,
-        updateHistory,
-        viewedByCustomer,
-        viewedBySales,
-        hasChildren,
-      },
-    } = data
+      try {
 
-    setUpdatingSubtotal(subtotal)
-    setQuoteState({
-      id: _id,
-      costCenter,
-      costCenterName,
-      creationDate,
-      creatorEmail,
-      creatorRole,
-      expirationDate: _expirationDate,
-      items: _items,
-      lastUpdate,
-      organization,
-      organizationName,
-      referenceName,
-      status: _status,
-      subtotal,
-      updateHistory,
-      viewedByCustomer,
-      viewedBySales,
-      hasChildren,
-    })
+        let priceChanged = false
 
-    if (
-      _status === Status.PENDING ||
-      _status === Status.READY ||
-      _status === Status.REVISED
-    ) {
-      setEditable()
+        const itemsWithMultipliers: QuoteItem[] = await Promise.all(
+          _items.map(async (item: QuoteItem) => {
+            const res = await client.query({
+              query: GET_UNIT_MULTIPLIER,
+              variables: { skuId: item.id },
+              fetchPolicy: "network-only",
+            })
+
+            const multiplier = res?.data?.sku?.unitMultiplier || 1
+            const newSellingPrice = item.sellingPrice === item.price * multiplier ? item.price : item.sellingPrice
+
+            if (newSellingPrice !== item.sellingPrice) {
+              priceChanged = true
+            }
+
+            return {
+              ...item,
+              sellingPrice: newSellingPrice
+            }
+          })
+        )
+
+        setUpdatingSubtotal(subtotal)
+        setQuoteState({
+          id: _id,
+          costCenter,
+          costCenterName,
+          creationDate,
+          creatorEmail,
+          creatorRole,
+          expirationDate: _expirationDate,
+          items: itemsWithMultipliers,
+          lastUpdate,
+          organization,
+          organizationName,
+          referenceName,
+          status: _status,
+          subtotal,
+          updateHistory,
+          viewedByCustomer,
+          viewedBySales,
+          hasChildren,
+        })
+
+        if (priceChanged) {
+          updateQuote({
+            variables: {
+              id: _id,
+              items: itemsWithMultipliers,
+              subtotal: subtotal,
+            },
+          })
+        }
+
+        if (
+          _status === Status.PENDING ||
+          _status === Status.READY ||
+          _status === Status.REVISED
+        ) {
+          setEditable()
+        }
+      } catch (err) {
+        console.error("Error fetching multipliers:", err)
+      }
     }
-  }, [data, setEditable])
+
+    fetchMultipliersAndSetQuote()
+  }, [data, setEditable, client])
 
   useEffect(() => {
     // only run this function if this is a new quote and there is orderForm data
@@ -660,6 +743,25 @@ const QuoteDetails: FunctionComponent = () => {
     })
     setUpdatingSubtotal(subtotal)
   }, [isNewQuote, orderFormData, setEditable])
+
+  /**
+ * memo
+ */
+  const computedSubtotal = useMemo(() => {
+    const quoteItems = quoteState?.items || []
+
+    if (unitMultipliers.legth <= 0) return
+
+    const detailedItems = quoteItems.map((item: any) => ({
+      skuId: item.id,
+      effectivePrice: item.price * item.quantity * unitMultipliers[item.id]
+    }))
+
+    return detailedItems.reduce(
+      (acc, { effectivePrice }) => acc + effectivePrice,
+      0
+    )
+  }, [quoteState, unitMultipliers])
 
   if (sessionResponse) {
     isAuthenticated =
@@ -822,6 +924,8 @@ const QuoteDetails: FunctionComponent = () => {
                       onUpdateSellingPrice={handleUpdateSellingPrice}
                       onUpdateQuantity={handleUpdateQuantity}
                       checkedSellers={checkedSellers}
+                      computedSubtotal={computedSubtotal}
+                      unitMultipliers={unitMultipliers}
                     />
                     {formState.isEditable && isSalesRep && (
                       <div className="mt3">

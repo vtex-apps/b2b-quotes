@@ -70,6 +70,7 @@
   "store/b2b-quotes.quote-details.items.refId.title": "Code de référence",
   "store/b2b-quotes.quote-details.items.name.title": "Nom",
   "store/b2b-quotes.quote-details.items.quantity.title": "Quantité",
+  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "U. Mult.",
   "store/b2b-quotes.quote-details.items.price.title": "Prix",
   "store/b2b-quotes.quote-details.items.total.title": "Total",
   "store/b2b-quotes.quote-details.apply-discount.title": "Appliquer la remise en pourcentage",

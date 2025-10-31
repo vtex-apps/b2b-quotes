@@ -19,7 +19,7 @@ export const initQuoteFromOrderForm = (orderForm: any) => {
         ...item,
         listPrice: item.listPrice * 100,
         price: item.price * 100,
-        sellingPrice: item.sellingPrice * 100,
+        sellingPrice: item.price * 100,
       })
     }
   })

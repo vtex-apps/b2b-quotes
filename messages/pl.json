@@ -70,6 +70,7 @@
   "store/b2b-quotes.quote-details.items.refId.title": "Kod odnies.",
   "store/b2b-quotes.quote-details.items.name.title": "Nazwa",
   "store/b2b-quotes.quote-details.items.quantity.title": "Ilość",
+  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "Jedn. Mnoż.",
   "store/b2b-quotes.quote-details.items.price.title": "Cena",
   "store/b2b-quotes.quote-details.items.total.title": "Ogółem",
   "store/b2b-quotes.quote-details.apply-discount.title": "Zastosuj rabat procentowy",

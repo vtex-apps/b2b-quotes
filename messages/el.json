@@ -70,6 +70,7 @@
   "store/b2b-quotes.quote-details.items.refId.title": "Κωδικός Αναφοράς",
   "store/b2b-quotes.quote-details.items.name.title": "Όνομα",
   "store/b2b-quotes.quote-details.items.quantity.title": "Ποσότητα",
+  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "Πολ. Μον.",
   "store/b2b-quotes.quote-details.items.price.title": "Τιμή",
   "store/b2b-quotes.quote-details.items.total.title": "Σύνολο",
   "store/b2b-quotes.quote-details.apply-discount.title": "Εφαρμογή ποσοστού έκπτωσης",
