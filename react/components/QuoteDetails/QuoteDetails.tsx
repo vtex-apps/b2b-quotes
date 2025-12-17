@@ -37,7 +37,6 @@ import UPDATE_QUOTE from '../../graphql/updateQuote.graphql'
 import USE_QUOTE from '../../graphql/useQuote.graphql'
 import useCheckout from '../../modules/checkoutHook'
 import GET_UNIT_MULTIPLIER from '../../graphql/getUnitMultiplier.graphql'
-
 import {
   initQuoteFromOrderForm,
   isQuoteUsable,
@@ -135,12 +134,15 @@ const QuoteDetails: FunctionComponent = () => {
   const [updatingSubtotal, setUpdatingSubtotal] = useState(0)
   const [sentToSalesRep, setSentToSalesRep] = useState(false)
   const getQuoteVariables = { id: params?.id }
-  const [unitMultipliers, setUnitMultipliers] = useState<Record<string, number>>({})
+  const [unitMultipliers, setUnitMultipliers] = useState<
+    Record<string, number>
+  >({})
+
   const [isMultipliersLoaded, setIsMultipliersLoaded] = useState(false)
 
   /**
    * GraphQL Queries
-  */
+   */
   const client = useApolloClient()
 
   const { data, loading, refetch } = useQuery(GET_QUOTE, {
@@ -510,7 +512,8 @@ const QuoteDetails: FunctionComponent = () => {
         }
       }
 
-      newSubtotal += item.sellingPrice * item.quantity * unitMultipliers[item.id]
+      newSubtotal +=
+        item.sellingPrice * item.quantity * unitMultipliers[item.id]
 
       return item
     })
@@ -538,7 +541,8 @@ const QuoteDetails: FunctionComponent = () => {
       quoteState.items.forEach((item: QuoteItem) => {
         const newSellingPrice = Math.round(item.price * ((100 - percent) / 100))
 
-        newSubtotal += newSellingPrice * item.quantity * unitMultipliers[item.id]
+        newSubtotal +=
+          newSellingPrice * item.quantity * unitMultipliers[item.id]
 
         newItems.push({ ...item, sellingPrice: newSellingPrice })
       })
@@ -567,8 +571,9 @@ const QuoteDetails: FunctionComponent = () => {
               const res = await client.query({
                 query: GET_UNIT_MULTIPLIER,
                 variables: { skuId: item.id },
-                fetchPolicy: "network-only",
+                fetchPolicy: 'network-only',
               })
+
               const multiplier = res?.data?.sku?.unitMultiplier || 1
 
               setUnitMultipliers((prev) => ({
@@ -580,8 +585,8 @@ const QuoteDetails: FunctionComponent = () => {
 
           setIsMultipliersLoaded(true)
         } catch (err) {
-          console.error("Error fetching multipliers:", err)
-          setIsMultipliersLoaded(true) 
+          console.error('Error fetching multipliers:', err)
+          setIsMultipliersLoaded(true)
         }
       }
     }
@@ -593,7 +598,8 @@ const QuoteDetails: FunctionComponent = () => {
     if (!quoteState.items.find((item) => item.error)) {
       setUpdatingSubtotal(
         quoteState.items.reduce(
-          (sum, item) => sum + item.sellingPrice * item.quantity * unitMultipliers[item.id],
+          (sum, item) =>
+            sum + item.sellingPrice * item.quantity * unitMultipliers[item.id],
           0
         )
       )
@@ -605,7 +611,7 @@ const QuoteDetails: FunctionComponent = () => {
     )
 
     setOriginalSubtotal(price)
-  }, [quoteState, isMultipliersLoaded])
+  }, [quoteState, isMultipliersLoaded, unitMultipliers])
 
   useEffect(() => {
     if (!orderFormData?.orderForm) return
@@ -654,7 +660,6 @@ const QuoteDetails: FunctionComponent = () => {
       } = data
 
       try {
-
         let priceChanged = false
 
         const itemsWithMultipliers: QuoteItem[] = await Promise.all(
@@ -662,11 +667,14 @@ const QuoteDetails: FunctionComponent = () => {
             const res = await client.query({
               query: GET_UNIT_MULTIPLIER,
               variables: { skuId: item.id },
-              fetchPolicy: "network-only",
+              fetchPolicy: 'network-only',
             })
 
             const multiplier = res?.data?.sku?.unitMultiplier || 1
-            const newSellingPrice = item.sellingPrice === item.price * multiplier ? item.price : item.sellingPrice
+            const newSellingPrice =
+              item.sellingPrice === item.price * multiplier
+                ? item.price
+                : item.sellingPrice
 
             if (newSellingPrice !== item.sellingPrice) {
               priceChanged = true
@@ -674,7 +682,7 @@ const QuoteDetails: FunctionComponent = () => {
 
             return {
               ...item,
-              sellingPrice: newSellingPrice
+              sellingPrice: newSellingPrice,
             }
           })
         )
@@ -706,7 +714,7 @@ const QuoteDetails: FunctionComponent = () => {
             variables: {
               id: _id,
               items: itemsWithMultipliers,
-              subtotal: subtotal,
+              subtotal,
             },
           })
         }
@@ -719,12 +727,12 @@ const QuoteDetails: FunctionComponent = () => {
           setEditable()
         }
       } catch (err) {
-        console.error("Error fetching multipliers:", err)
+        console.error('Error fetching multipliers:', err)
       }
     }
 
     fetchMultipliersAndSetQuote()
-  }, [data, setEditable, client])
+  }, [data, setEditable, client, updateQuote])
 
   useEffect(() => {
     // only run this function if this is a new quote and there is orderForm data
@@ -745,8 +753,8 @@ const QuoteDetails: FunctionComponent = () => {
   }, [isNewQuote, orderFormData, setEditable])
 
   /**
- * memo
- */
+   * memo
+   */
   const computedSubtotal = useMemo(() => {
     const quoteItems = quoteState?.items || []
 
@@ -754,7 +762,7 @@ const QuoteDetails: FunctionComponent = () => {
 
     const detailedItems = quoteItems.map((item: any) => ({
       skuId: item.id,
-      effectivePrice: item.price * item.quantity * unitMultipliers[item.id]
+      effectivePrice: item.price * item.quantity * unitMultipliers[item.id],
     }))
 
     return detailedItems.reduce(

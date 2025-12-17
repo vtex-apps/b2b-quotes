@@ -179,7 +179,9 @@ const QuoteTable = ({
             headerRight: true,
             width: 80,
             cellRenderer: ({ rowData: { id } }: any) => {
-              const hasMultipliers = unitMultipliers && Object.keys(unitMultipliers).length > 0
+              const hasMultipliers =
+                unitMultipliers && Object.keys(unitMultipliers).length > 0
+
               const multiplier = hasMultipliers ? unitMultipliers[id] ?? 1 : ''
 
               return (
@@ -193,14 +195,20 @@ const QuoteTable = ({
             title: formatMessage(quoteMessages.total),
             headerRight: true,
             cellRenderer: ({ rowData }: any) => {
-              const hasMultipliers = unitMultipliers && Object.keys(unitMultipliers).length > 0
-              const multiplier = hasMultipliers ? unitMultipliers[rowData.id] ?? 1 : ''
+              const hasMultipliers =
+                unitMultipliers && Object.keys(unitMultipliers).length > 0
+
+              const multiplier = hasMultipliers
+                ? unitMultipliers[rowData.id] ?? 1
+                : ''
+
               return (
                 <span className="tr w-100">
                   <FormattedCurrency
                     value={
                       rowData.sellingPrice
-                        ? ((rowData.sellingPrice * rowData.quantity) / 100) * multiplier
+                        ? ((rowData.sellingPrice * rowData.quantity) / 100) *
+                          multiplier
                         : 0
                     }
                   />
