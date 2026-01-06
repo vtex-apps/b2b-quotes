@@ -70,6 +70,7 @@
   "store/b2b-quotes.quote-details.items.refId.title": "Ref. kód",
   "store/b2b-quotes.quote-details.items.name.title": "Názov",
   "store/b2b-quotes.quote-details.items.quantity.title": "Množstvo",
+  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "Násob.",
   "store/b2b-quotes.quote-details.items.price.title": "Cena",
   "store/b2b-quotes.quote-details.items.total.title": "Celkom",
   "store/b2b-quotes.quote-details.apply-discount.title": "Použiť percentuálnu zľavu",

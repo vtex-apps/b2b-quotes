@@ -70,6 +70,7 @@
   "store/b2b-quotes.quote-details.items.refId.title": "Viitekoodi",
   "store/b2b-quotes.quote-details.items.name.title": "Nimi",
   "store/b2b-quotes.quote-details.items.quantity.title": "Lukumäärä",
+  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "Yks. Kert.",
   "store/b2b-quotes.quote-details.items.price.title": "Hinta",
   "store/b2b-quotes.quote-details.items.total.title": "Yhteensä",
   "store/b2b-quotes.quote-details.apply-discount.title": "Käytä prosenttialennusta",

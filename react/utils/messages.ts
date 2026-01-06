@@ -46,6 +46,9 @@ export const quoteMessages = defineMessages({
   quantity: {
     id: `${storePrefix}quote-details.items.quantity.title`,
   },
+  unitMultiplier: {
+    id: `${storePrefix}quote-details.items.unitMultiplier.title`,
+  },
   total: {
     id: `${storePrefix}quote-details.items.total.title`,
   },

@@ -70,6 +70,7 @@
   "store/b2b-quotes.quote-details.items.refId.title": "Код для довідки",
   "store/b2b-quotes.quote-details.items.name.title": "Назва",
   "store/b2b-quotes.quote-details.items.quantity.title": "Кількість",
+  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "Множ. од.",
   "store/b2b-quotes.quote-details.items.price.title": "Ціна",
   "store/b2b-quotes.quote-details.items.total.title": "Разом",
   "store/b2b-quotes.quote-details.apply-discount.title": "Застосувати відсоткову знижку",

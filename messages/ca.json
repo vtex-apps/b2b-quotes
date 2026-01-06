@@ -70,6 +70,7 @@
   "store/b2b-quotes.quote-details.items.refId.title": "Codi de la referència",
   "store/b2b-quotes.quote-details.items.name.title": "Nom",
   "store/b2b-quotes.quote-details.items.quantity.title": "Quantitat",
+  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "U. Mult.",
   "store/b2b-quotes.quote-details.items.price.title": "Preu",
   "store/b2b-quotes.quote-details.items.total.title": "Total",
   "store/b2b-quotes.quote-details.apply-discount.title": "Aplica el percentatge de descompte",

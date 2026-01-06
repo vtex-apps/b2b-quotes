@@ -70,6 +70,7 @@
   "store/b2b-quotes.quote-details.items.refId.title": "الرمز المرجعي",
   "store/b2b-quotes.quote-details.items.name.title": "الإسم",
   "store/b2b-quotes.quote-details.items.quantity.title": "الكمية",
+  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "وحدة متعددة",
   "store/b2b-quotes.quote-details.items.price.title": "السعر",
   "store/b2b-quotes.quote-details.items.total.title": "المجموع",
   "store/b2b-quotes.quote-details.apply-discount.title": "تطبيق خصم النسبة المئوية",

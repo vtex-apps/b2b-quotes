@@ -70,6 +70,7 @@
   "store/b2b-quotes.quote-details.items.refId.title": "Ref. Kod",
   "store/b2b-quotes.quote-details.items.name.title": "Namn",
   "store/b2b-quotes.quote-details.items.quantity.title": "Kvantitet",
+  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "Enh. Mult.",
   "store/b2b-quotes.quote-details.items.price.title": "Pris",
   "store/b2b-quotes.quote-details.items.total.title": "Totalt",
   "store/b2b-quotes.quote-details.apply-discount.title": "Tillämpa procentrabatt",

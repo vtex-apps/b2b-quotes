@@ -70,6 +70,7 @@
   "store/b2b-quotes.quote-details.items.refId.title": "Реф. код",
   "store/b2b-quotes.quote-details.items.name.title": "Име",
   "store/b2b-quotes.quote-details.items.quantity.title": "Количество",
+  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "Множител",
   "store/b2b-quotes.quote-details.items.price.title": "Цена",
   "store/b2b-quotes.quote-details.items.total.title": "Общо",
   "store/b2b-quotes.quote-details.apply-discount.title": "Прилагане на процентна отстъпка",
