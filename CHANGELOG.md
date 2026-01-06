@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.4] - 2026-01-06
+
 ### Added
 
 - add unitMultiplier logic and adjust sellingPrice to show unit price
