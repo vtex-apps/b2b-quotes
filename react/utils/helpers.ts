@@ -17,9 +17,11 @@ export const initQuoteFromOrderForm = (orderForm: any) => {
     } else {
       quoteItems.push({
         ...item,
-        listPrice: typeof item.listPrice === 'number' ? item.listPrice * 100 : 0,
+        listPrice:
+          typeof item.listPrice === 'number' ? item.listPrice * 100 : 0,
         price: typeof item.price === 'number' ? item.price * 100 : 0,
-        sellingPrice: typeof item.sellingPrice === 'number' ? item.sellingPrice * 100 : 0,
+        sellingPrice:
+          typeof item.sellingPrice === 'number' ? item.sellingPrice * 100 : 0,
       })
     }
   })

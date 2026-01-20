@@ -15,7 +15,6 @@ import {
 import { itemDiscountEligible } from '../../utils/helpers'
 import { quoteMessages, statusMessages } from '../../utils/messages'
 import { LabelByStatusMap } from '../../utils/status'
-
 import styles from './QuoteTable.css'
 
 const QuoteTable = ({
