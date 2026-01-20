@@ -70,7 +70,7 @@
   "store/b2b-quotes.quote-details.items.refId.title": "Cód. de ref.",
   "store/b2b-quotes.quote-details.items.name.title": "Nombre",
   "store/b2b-quotes.quote-details.items.quantity.title": "Cantidad",
-  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "U. Mult.",
+  "store/b2b-quotes.quote-details.items.unitMultiplier.title": "Multiplicador de Unidad",
   "store/b2b-quotes.quote-details.items.price.title": "Precio",
   "store/b2b-quotes.quote-details.items.total.title": "Total",
   "store/b2b-quotes.quote-details.apply-discount.title": "Aplicar descuento porcentual",
