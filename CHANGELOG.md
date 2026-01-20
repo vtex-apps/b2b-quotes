@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Updated "U. Mult." label to "Multiplicador de Unidade" (PT), "Unit Multiplier" (EN), and "Multiplicador de Unidad" (ES) for better readability
+
 ## [3.0.4] - 2026-01-06
 
 ### Added
