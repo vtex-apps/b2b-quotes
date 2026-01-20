@@ -1,0 +1,6 @@
+/* prevent overflow for large values in total column */
+.quoteTable :global(.vtex-format-currency-2-x-currencyContainer),
+.quoteTable :global([class*='currencyContainer']) {
+  white-space: nowrap;
+  overflow: visible;
+}

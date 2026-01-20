@@ -228,7 +228,8 @@ const OrganizationAndCostCenterFilter = ({
   const onChangeOrganization = useCallback((value: string) => {
     setOrgState(value)
     setCostCenterState('')
-  }, [])
+    onChange({ organizationId: value, costCenterId: '' })
+  }, [onChange])
 
   const onChangeCostCenter = useCallback(
     (value: string) => {
