@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Promotional prices not being preserved when creating quotes
+- Items with promotional price of $0.00 not being included in quotes
+- Large currency values (>9,999.99) being truncated in Total and Quoted Price columns
+- Unit Multiplier column width adjusted to prevent text truncation
+
 ## [3.0.4] - 2026-01-06
 
 ### Added

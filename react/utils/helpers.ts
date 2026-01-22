@@ -14,12 +14,14 @@ export const initQuoteFromOrderForm = (orderForm: any) => {
 
     if (existingItem) {
       existingItem.quantity += item.quantity
-    } else if (item.sellingPrice !== 0) {
+    } else {
       quoteItems.push({
         ...item,
-        listPrice: item.listPrice * 100,
-        price: item.price * 100,
-        sellingPrice: item.price * 100,
+        listPrice:
+          typeof item.listPrice === 'number' ? item.listPrice * 100 : 0,
+        price: typeof item.price === 'number' ? item.price * 100 : 0,
+        sellingPrice:
+          typeof item.sellingPrice === 'number' ? item.sellingPrice * 100 : 0,
       })
     }
   })

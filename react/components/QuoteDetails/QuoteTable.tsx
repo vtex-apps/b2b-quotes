@@ -15,6 +15,7 @@ import {
 import { itemDiscountEligible } from '../../utils/helpers'
 import { quoteMessages, statusMessages } from '../../utils/messages'
 import { LabelByStatusMap } from '../../utils/status'
+import styles from './QuoteTable.css'
 
 const QuoteTable = ({
   isNewQuote,
@@ -55,6 +56,7 @@ const QuoteTable = ({
     <Table
       totalizers={totalizers}
       fullWidth
+      className={styles.quoteTable}
       schema={{
         properties: {
           imageUrl: {
@@ -118,7 +120,7 @@ const QuoteTable = ({
           sellingPrice: {
             title: formatMessage(quoteMessages.quotePrice),
             headerRight: true,
-            width: 120,
+            width: 150,
             cellRenderer: ({
               cellData: sellingPrice,
               rowData: { id: itemId, listPrice, error },
@@ -177,7 +179,7 @@ const QuoteTable = ({
           unitMultiplier: {
             title: formatMessage(quoteMessages.unitMultiplier),
             headerRight: true,
-            width: 80,
+            width: 180,
             cellRenderer: ({ rowData: { id } }: any) => {
               const hasMultipliers =
                 unitMultipliers && Object.keys(unitMultipliers).length > 0
@@ -203,7 +205,7 @@ const QuoteTable = ({
                 : ''
 
               return (
-                <span className="tr w-100">
+                <div className="tr w-100">
                   <FormattedCurrency
                     value={
                       rowData.sellingPrice
@@ -212,10 +214,10 @@ const QuoteTable = ({
                         : 0
                     }
                   />
-                </span>
+                </div>
               )
             },
-            width: 100,
+            width: 150,
           },
         },
       }}
