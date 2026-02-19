@@ -274,9 +274,16 @@ const QuoteDetails: FunctionComponent = () => {
 
     setUpdatingQuoteState(true)
     const { referenceName, items: quoteItems } = quoteState
+
+    // Add unitMultiplier to items (keep sellingPrice as unit price)
+    const itemsWithMultipliers = quoteItems.map((item: QuoteItem) => ({
+      ...item,
+      unitMultiplier: unitMultipliers[item.id] ?? 1,
+    }))
+
     const cart = {
       referenceName,
-      items: quoteItems,
+      items: itemsWithMultipliers,
       subtotal: updatingSubtotal,
       note: noteState,
       sendToSalesRep,
@@ -364,10 +371,18 @@ const QuoteDetails: FunctionComponent = () => {
 
     const itemsChanged = !arrayShallowEqual(data.getQuote.items, _items)
 
+    // Add unitMultiplier to items if they changed (keep sellingPrice as unit price)
+    const itemsWithMultipliers = itemsChanged
+      ? _items.map((item: QuoteItem) => ({
+          ...item,
+          unitMultiplier: unitMultipliers[item.id] ?? 1,
+        }))
+      : undefined
+
     updateQuote({
       variables: {
         id: _id,
-        ...(itemsChanged && { items: _items }),
+        ...(itemsChanged && { items: itemsWithMultipliers }),
         ...(itemsChanged && { subtotal: updatingSubtotal }),
         ...(noteState && { note: noteState }),
         decline: false,

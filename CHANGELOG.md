@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Quote creation and update now correctly includes unitMultiplier in items sent to backend, ensuring accurate subtotal calculations for products with unitMultiplier values different from 1
+
 ## [3.0.6] - 2026-01-29
 
 ### Changed
