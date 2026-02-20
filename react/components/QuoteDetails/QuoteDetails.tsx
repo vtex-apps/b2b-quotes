@@ -606,7 +606,8 @@ const QuoteDetails: FunctionComponent = () => {
     }
 
     const price = quoteState.items.reduce(
-      (sum: number, item: QuoteItem) => sum + item.price * item.quantity,
+      (sum: number, item: QuoteItem) =>
+        sum + item.price * item.quantity * (unitMultipliers[item.id] ?? 1),
       0
     )
 
@@ -916,6 +917,7 @@ const QuoteDetails: FunctionComponent = () => {
                       usingQuoteChild={usingQuoteChild}
                       handleUseQuote={handleUseQuote}
                       permissions={permissions}
+                      unitMultipliers={unitMultipliers}
                     />
                   ))
                 ) : (
