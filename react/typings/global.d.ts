@@ -51,6 +51,7 @@ declare global {
     sellingPrice: number
     seller: string
     error: boolean | undefined
+    unitMultiplier?: number
   }
 
   interface FilterStatement {

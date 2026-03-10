@@ -25,6 +25,7 @@ interface Props {
   permissions: string[]
   usingParentQuote: boolean
   usingQuoteChild?: string
+  unitMultipliers?: Record<string, number>
 }
 
 const QuoteChildren: React.FC<Props> = ({
@@ -34,6 +35,7 @@ const QuoteChildren: React.FC<Props> = ({
   permissions,
   usingParentQuote,
   usingQuoteChild,
+  unitMultipliers,
 }) => {
   const { culture, navigate } = useRuntime()
   const intl = useIntl()
@@ -62,9 +64,12 @@ const QuoteChildren: React.FC<Props> = ({
   const originalSubtotal = useMemo(
     () =>
       (items ?? []).reduce((acc, item) => {
-        return acc + item.price * item.quantity
+        const multiplier =
+          unitMultipliers?.[item.id] ?? item.unitMultiplier ?? 1
+
+        return acc + item.price * item.quantity * multiplier
       }, 0),
-    [items]
+    [items, unitMultipliers]
   )
 
   const discount = useMemo(

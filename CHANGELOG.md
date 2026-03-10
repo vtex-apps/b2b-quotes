@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Fixed originalSubtotal calculation to include unitMultiplier in QuoteDetails and QuoteChildren
+
 ## [3.0.7] - 2026-03-06
 
 ### Changed
