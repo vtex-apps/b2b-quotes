@@ -226,6 +226,8 @@ const QuoteTable = ({
     />
   )
 
+  console.log('>> Before computing', updatingSubtotal, computedSubtotal)
+
   const totalizers = [
     {
       label: formatMessage(quoteMessages.originalSubtotal),
@@ -268,6 +270,8 @@ const QuoteTable = ({
       },
     ]),
   ]
+
+  console.log('>>> Totalizers', totalizers)
 
   if (!isNewQuote || !checkedExternalSellers?.length) {
     return renderTable(quoteState.items, totalizers)

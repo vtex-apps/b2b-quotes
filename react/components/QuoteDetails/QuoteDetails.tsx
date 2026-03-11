@@ -596,13 +596,13 @@ const QuoteDetails: FunctionComponent = () => {
 
   useEffect(() => {
     if (!quoteState.items.find((item) => item.error)) {
-      setUpdatingSubtotal(
-        quoteState.items.reduce(
-          (sum, item) =>
-            sum + item.sellingPrice * item.quantity * unitMultipliers[item.id],
-          0
-        )
+      const reducedSubtotal = quoteState.items.reduce(
+        (sum, item) =>
+          sum + item.sellingPrice * item.quantity * (unitMultipliers[item.id] ?? 1),
+        0
       )
+
+      setUpdatingSubtotal(reducedSubtotal)
     }
 
     const price = quoteState.items.reduce(
@@ -750,6 +750,7 @@ const QuoteDetails: FunctionComponent = () => {
     setQuoteState((prevState) => {
       return { ...prevState, items: itemsCopy }
     })
+
     setUpdatingSubtotal(subtotal)
   }, [isNewQuote, orderFormData, setEditable])
 
@@ -759,11 +760,9 @@ const QuoteDetails: FunctionComponent = () => {
   const computedSubtotal = useMemo(() => {
     const quoteItems = quoteState?.items || []
 
-    if (unitMultipliers.legth <= 0) return
-
     const detailedItems = quoteItems.map((item: any) => ({
       skuId: item.id,
-      effectivePrice: item.price * item.quantity * unitMultipliers[item.id],
+      effectivePrice: item.price * item.quantity * (unitMultipliers[item.id] ?? 1),
     }))
 
     return detailedItems.reduce(
