@@ -5,6 +5,8 @@ metadata:
   annotations:
     github.com/project-slug: vtex-apps/b2b-quotes
     vtex.com/application-id: XIWYRN8I
+    vtex.com/sdd-check-skip: 'true'
+    vtex.com/sdd-check-skip-reason: This repository is part of the B2B Suite package.
 spec:
   system: b2b-suite
   type: frontend-ui
