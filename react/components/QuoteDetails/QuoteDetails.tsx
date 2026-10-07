@@ -574,7 +574,7 @@ const QuoteDetails: FunctionComponent = () => {
                 fetchPolicy: 'network-only',
               })
 
-              const multiplier = res?.data?.sku?.unitMultiplier || 1
+              const multiplier = res?.data?.getUnitMultiplier || 1
 
               setUnitMultipliers((prev) => ({
                 ...prev,
@@ -671,7 +671,7 @@ const QuoteDetails: FunctionComponent = () => {
               fetchPolicy: 'network-only',
             })
 
-            const multiplier = res?.data?.sku?.unitMultiplier || 1
+            const multiplier = res?.data?.getUnitMultiplier || 1
             const newSellingPrice =
               item.sellingPrice === item.price * multiplier
                 ? item.price
