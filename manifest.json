@@ -27,8 +27,7 @@
     "vtex.css-handles": "0.x",
     "vtex.format-currency": "0.x",
     "vtex.my-account": "1.x",
-    "vtex.my-account-commons": "1.x",
-    "vtex.catalog-graphql": "1.x"
+    "vtex.my-account-commons": "1.x"
   },
   "registries": [
     "smartcheckout"

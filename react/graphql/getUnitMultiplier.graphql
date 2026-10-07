@@ -1,9 +1,3 @@
 query GetUnitMultiplier($skuId: ID!) {
-  sku(identifier:{
-    field: id
-    value: $skuId
-  })@context(provider: "vtex.catalog-graphql"){
-    unitMultiplier
-    id
-  }
+  getUnitMultiplier(skuId: $skuId) @context(provider: "vtex.b2b-quotes-graphql")
 }

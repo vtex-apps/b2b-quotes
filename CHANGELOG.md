@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Storefront no longer calls `vtex.catalog-graphql` for `unitMultiplier` [B2BTEAM-4234]
+
 ## [3.0.9] - 2026-03-16
 ### Fixed
 - Change subtotal and discount calculations to avoid NaNs
